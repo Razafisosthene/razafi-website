@@ -132,14 +132,14 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white text-neutral-950">
       <header className="fixed left-0 top-0 z-50 w-full border-b border-black/5 bg-white/80 backdrop-blur-2xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:py-4">
           <a href="#">
             <Image
               src="/images/logo-full.png"
               alt="RAZAFI"
               width={150}
               height={40}
-              className="h-11 w-auto"
+              className="h-9 w-auto md:h-11"
               priority
             />
           </a>
@@ -158,7 +158,7 @@ export default function Home() {
 
           <a
             href={whatsappUrl}
-            className="rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:scale-105"
+            className="rounded-full bg-black px-5 py-3 text-sm font-semibold text-white transition hover:scale-105 md:px-5 md:py-2.5"
           >
             WhatsApp
           </a>
@@ -227,7 +227,7 @@ export default function Home() {
         </Reveal>
       </section>
 
-      <section id="pour-qui" className="px-5 py-14">
+      <section id="pour-qui" className="px-5 py-8 md:py-14">
         <div className="mx-auto max-w-7xl">
           <Reveal className="max-w-3xl">
             <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">
@@ -235,7 +235,7 @@ export default function Home() {
             </h2>
           </Reveal>
 
-          <div className="mt-12 grid gap-4 md:grid-cols-3">
+          <div className="mt-6 grid gap-3 md:mt-12 md:grid-cols-3 md:gap-4">
             {targetCards.map((item, index) => (
               <motion.div
                 key={item.title}
@@ -244,11 +244,13 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: index * 0.08 }}
                 variants={fadeUp}
-                className="rounded-[1.75rem] border border-neutral-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                className="flex items-start gap-4 rounded-[1.5rem] border border-neutral-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-xl md:block md:rounded-[1.75rem] md:p-8"
               >
-                <item.icon className="h-10 w-10 text-blue-600" />
-                <h3 className="mt-8 text-2xl font-semibold">{item.title}</h3>
-                <p className="mt-4 leading-6 text-neutral-600">{item.text}</p>
+                <item.icon className="mt-1 h-8 w-8 shrink-0 text-blue-600 md:mt-0 md:h-10 md:w-10" />
+                <div>
+                  <h3 className="text-xl font-semibold md:mt-8 md:text-2xl">{item.title}</h3>
+                  <p className="mt-1 text-base leading-6 text-neutral-600 md:mt-4">{item.text}</p>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -532,7 +534,7 @@ export default function Home() {
         </Reveal>
       </section>
 
-      <footer className="border-t border-neutral-200 px-5 py-12">
+      <footer className="border-t border-neutral-200 px-5 pb-24 pt-10 md:py-12">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 md:flex-row">
           <div>
             <Image
@@ -555,10 +557,10 @@ export default function Home() {
 
       <a
         href={whatsappUrl}
-        className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-green-500 px-5 py-4 font-semibold text-white shadow-xl transition hover:scale-105"
+        className="fixed bottom-4 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 font-semibold text-white shadow-xl transition hover:scale-105 md:bottom-5 md:right-5 md:h-auto md:w-auto md:gap-2 md:px-5 md:py-4"
       >
         <MessageCircle className="h-5 w-5" />
-        WhatsApp
+        <span className="hidden md:inline">WhatsApp</span>
       </a>
     </main>
   );
