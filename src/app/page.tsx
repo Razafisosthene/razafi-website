@@ -51,10 +51,6 @@ const faqItems = [
     a: "Oui. RAZAFI transforme votre connexion existante en réseau WiFi prêt à être partagé.",
   },
   {
-    q: "Le système fonctionne-t-il automatiquement ?",
-    a: "Oui. Le réseau fonctionne automatiquement 24h/24 sans intervention humaine pendant que vous vous concentrez sur votre activité.",
-  },
-  {
     q: "Est-ce que RAZAFI fournit le matériel ?",
     a: "Oui. RAZAFI fournit et installe les équipements nécessaires selon votre projet, notamment les routeurs MikroTik et les points d’accès UniFi.",
   },
@@ -63,22 +59,18 @@ const faqItems = [
     a: "Oui. Vous pouvez personnaliser le nom du réseau selon votre activité, votre boutique, votre snack ou votre fokontany.",
   },
   {
-    q: "Peut-on commencer petit puis agrandir le réseau ?",
-    a: "Oui. Vous pouvez commencer avec une petite installation puis étendre progressivement votre couverture WiFi selon les besoins de votre zone.",
-  },
+  q: "Peut-on commencer petit puis agrandir la couverture ?",
+  a: "Oui. Vous pouvez commencer avec une petite installation puis étendre progressivement la couverture WiFi selon les besoins de votre zone, jusqu’à couvrir un fokontany ou une grande zone communautaire.",
+},
   {
     q: "Peut-on suivre plusieurs réseaux ou plusieurs sites ?",
     a: "Oui. La plateforme RAZAFI permet de suivre plusieurs réseaux WiFi et plusieurs sites depuis un seul tableau de bord.",
   },
   {
-    q: "Dois-je être sur place pour suivre le réseau ?",
-    a: "Non. Le système fonctionne automatiquement sans intervention humaine. Suivez les connexions, l’activité et les revenus à distance depuis votre téléphone.",
-  },
-  {
-    q: "Peut-on couvrir une grande zone ?",
-    a: "Oui. Avec plusieurs points d’accès WiFi, la couverture peut être étendue sur un fokontany, un espace public ou une grande zone communautaire.",
-  },
-  {
+  q: "Dois-je être sur place pour gérer le réseau ?",
+  a: "Non. Le réseau fonctionne automatiquement 24h/24 sans intervention humaine. Suivez les connexions, l’activité et les revenus à distance directement depuis votre téléphone.",
+},
+{
     q: "Quels appareils peuvent se connecter ?",
     a: "Les utilisateurs peuvent se connecter depuis leurs téléphones, tablettes ou ordinateurs tant qu’ils reçoivent le signal WiFi.",
   },
