@@ -66,10 +66,10 @@ const faqItems = [
     q: "Les utilisateurs ont-ils besoin d’une application ?",
     a: "Non. Les utilisateurs se connectent simplement au WiFi, paient via Mobile Money puis reçoivent automatiquement leur accès Internet.",
   },
-  {
-    q: "Puis-je suivre mon réseau et mes revenus à distance ?",
-    a: "Oui. Le réseau fonctionne automatiquement 24h/24 sans intervention humaine. Suivez les connexions, les ventes et les revenus directement depuis votre téléphone.",
-  },
+ {
+  q: "Puis-je suivre mon réseau et mon activité à distance ?",
+  a: "Oui. Le réseau fonctionne automatiquement 24h/24 sans intervention humaine. Suivez les connexions, les ventes et l’activité directement depuis votre téléphone. Les paiements des utilisateurs sont reçus par la plateforme RAZAFI, puis votre part est versée selon l’organisation prévue avec vous.",
+},
   {
     q: "Peut-on suivre plusieurs réseaux ou plusieurs sites ?",
     a: "Oui. La plateforme RAZAFI permet de suivre plusieurs réseaux WiFi et plusieurs sites depuis un seul tableau de bord.",
