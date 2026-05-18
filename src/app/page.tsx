@@ -40,10 +40,11 @@ const targetCards = [
     text: "Idéal pour les quartiers, snacks, boutiques, espaces publics et zones communautaires connectées.",
   },
 ];
+
 const faqItems = [
   {
     q: "À qui s’adresse RAZAFI ?",
-    a: "RAZAFI s’adresse aux particuliers, fokontany, snacks, bars, karaoké, cybercafés, boutiques et espaces publics disposant déjà d’une connexion Internet et souhaitant développer une activité WiFi moderne dans leur zone.",
+    a: "RAZAFI s’adresse aux particuliers, fokontany, snacks, boutiques et espaces publics disposant déjà d’une connexion Internet et souhaitant développer une activité WiFi moderne dans leur zone.",
   },
   {
     q: "Est-ce que je dois déjà avoir Internet ?",
@@ -51,7 +52,7 @@ const faqItems = [
   },
   {
     q: "Le système fonctionne-t-il automatiquement ?",
-    a: "Oui. Le réseau fonctionne automatiquement 24h/24 pendant que vous vous concentrez sur votre activité.",
+    a: "Oui. Le réseau fonctionne automatiquement 24h/24 sans intervention humaine pendant que vous vous concentrez sur votre activité.",
   },
   {
     q: "Est-ce que RAZAFI fournit le matériel ?",
@@ -62,50 +63,47 @@ const faqItems = [
     a: "Oui. Vous pouvez personnaliser le nom du réseau selon votre activité, votre boutique, votre snack ou votre fokontany.",
   },
   {
-  q: "Peut-on commencer petit puis agrandir le réseau ?",
-  a: "Oui. Vous pouvez commencer avec une petite installation puis étendre progressivement votre couverture WiFi selon les besoins de votre zone.",
-},
-{
-  q: "Peut-on gérer plusieurs réseaux ou plusieurs sites ?",
-  a: "Oui. La plateforme RAZAFI permet de gérer plusieurs réseaux WiFi et plusieurs sites depuis un seul tableau de bord.",
-},
+    q: "Peut-on commencer petit puis agrandir le réseau ?",
+    a: "Oui. Vous pouvez commencer avec une petite installation puis étendre progressivement votre couverture WiFi selon les besoins de votre zone.",
+  },
   {
-    q: "Dois-je être sur place pour gérer le réseau ?",
-    a: "Non. Gérez votre réseau à distance directement depuis votre téléphone.",
+    q: "Peut-on suivre plusieurs réseaux ou plusieurs sites ?",
+    a: "Oui. La plateforme RAZAFI permet de suivre plusieurs réseaux WiFi et plusieurs sites depuis un seul tableau de bord.",
+  },
+  {
+    q: "Dois-je être sur place pour suivre le réseau ?",
+    a: "Non. Le système fonctionne automatiquement sans intervention humaine. Suivez les connexions, l’activité et les revenus à distance depuis votre téléphone.",
   },
   {
     q: "Peut-on couvrir une grande zone ?",
-    a: "Oui. Avec plusieurs points d’accès WiFi, la couverture peut être étendue sur un quartier, un espace public ou un fokontany.",
+    a: "Oui. Avec plusieurs points d’accès WiFi, la couverture peut être étendue sur un fokontany, un espace public ou une grande zone communautaire.",
   },
   {
-    q: "Quels appareils peuvent se connecter au réseau WiFi ?",
-    a: "Les utilisateurs peuvent se connecter directement depuis leurs téléphones, tablettes ou ordinateurs tant qu’ils reçoivent le signal WiFi.",
-  },
-  {
-    q: "Comment fonctionne le paiement ?",
-    a: "Les utilisateurs paient via Mobile Money puis reçoivent automatiquement leur accès Internet.",
+    q: "Quels appareils peuvent se connecter ?",
+    a: "Les utilisateurs peuvent se connecter depuis leurs téléphones, tablettes ou ordinateurs tant qu’ils reçoivent le signal WiFi.",
   },
   {
     q: "Les utilisateurs ont-ils besoin d’une application ?",
-    a: "Non. Les utilisateurs se connectent simplement au WiFi et paient via Mobile Money.",
+    a: "Non. Les utilisateurs se connectent simplement au WiFi, paient via Mobile Money puis reçoivent automatiquement leur accès Internet.",
   },
   {
-  q: "Puis-je suivre mes revenus et mon activité ?",
-  a: "Oui. Vous pouvez suivre vos réseaux WiFi, vos ventes et vos revenus directement depuis votre tableau de bord RAZAFI sur téléphone. Les paiements des utilisateurs sont gérés par la plateforme RAZAFI, puis votre part est versée selon l’organisation prévue avec vous.",
-},
+    q: "Puis-je suivre mes revenus et mon activité ?",
+    a: "Oui. Suivez les connexions, les ventes et les revenus directement depuis votre tableau de bord RAZAFI sur téléphone. Votre part est ensuite versée selon l’organisation prévue avec vous.",
+  },
   {
     q: "Est-ce qu’il y a un abonnement mensuel RAZAFI ?",
     a: "Non. RAZAFI fonctionne avec un système de commission sur les ventes réalisées via le réseau WiFi.",
   },
   {
-  q: "Les revenus sont-ils garantis ?",
-  a: "Non. Les revenus dépendent du nombre d’utilisateurs, de l’emplacement et de la visibilité du réseau dans votre zone. Comme toute activité locale, il est important de faire connaître votre réseau WiFi autour de vous.",
-},
+    q: "Les revenus sont-ils garantis ?",
+    a: "Non. Les revenus dépendent du nombre d’utilisateurs, de l’emplacement et de la visibilité du réseau dans votre zone. Comme toute activité locale, il est important de faire connaître votre réseau WiFi autour de vous.",
+  },
   {
     q: "Comment démarrer ?",
-    a: "Contactez RAZAFI sur WhatsApp pour démarrer votre projet rapidement.",
+    a: "Contactez RAZAFI sur WhatsApp pour discuter de votre projet et recevoir une estimation rapide.",
   },
 ];
+
 function Reveal({
   children,
   className = "",
