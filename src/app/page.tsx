@@ -160,11 +160,11 @@ export default function Home() {
           </h1>
 
           <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-neutral-600 md:text-xl">
-            Transformez votre connexion Starlink ou Fibre en activité locale moderne grâce à la plateforme WiFi RAZAFI.
+            Vendez l’accès WiFi de votre Starlink ou Fibre grâce à la plateforme RAZAFI.
           </p>
 
           <p className="mx-auto mt-7 max-w-3xl text-xl font-medium tracking-tight md:text-2xl">
-            Une seule connexion peut connecter un quartier entier.
+            Une seule installation peut connecter tout un fokontany.
           </p>
 
           <div className="mt-5 flex flex-col justify-center gap-4 sm:flex-row">
