@@ -177,7 +177,7 @@ export default function Home() {
             WiFi communautaire moderne
           </p>
 
-          <h1 className="text-[2.45rem] font-semibold leading-[1.04] tracking-[-0.045em] md:text-6xl md:leading-none lg:text-7xl">
+          <h1 className="mx-auto max-w-[21rem] text-[2.25rem] font-semibold leading-[1.08] tracking-[-0.04em] md:max-w-none md:text-6xl md:leading-none lg:text-7xl">
             Transformez votre connexion Starlink en source de revenus.
           </h1>
 
@@ -424,7 +424,7 @@ export default function Home() {
               height={1000}
               className="h-[260px] w-full object-cover object-center transition duration-700 group-hover:scale-[1.03] md:h-[340px]"
             />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent p-4 text-white md:p-4">
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-4 text-white md:from-black/65 md:via-black/20 md:p-4">
               <Wifi className="h-8 w-8 text-blue-300" />
               <h2 className="mt-3 text-xl font-semibold tracking-tight md:text-2xl">
                 Une seule connexion peut connecter tout un quartier.
@@ -445,7 +445,7 @@ export default function Home() {
               height={1600}
               className="h-[260px] w-full object-cover object-[center_72%] transition duration-700 group-hover:scale-[1.03] md:h-[340px]"
             />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent p-4 text-white md:p-4">
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-4 text-white md:from-black/65 md:via-black/20 md:p-4">
               <Smartphone className="h-8 w-8 text-blue-300" />
               <h2 className="mt-3 text-xl font-semibold tracking-tight md:text-2xl">
                 Internet accessible simplement.
@@ -518,7 +518,7 @@ export default function Home() {
 </section>
       <section className="px-5 py-11 md:py-14">
         <Reveal className="mx-auto max-w-5xl rounded-[2rem] bg-neutral-950 px-6 py-10 text-center text-white md:rounded-[2.5rem] md:px-16 md:py-12">
-          <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">
+          <h2 className="mx-auto max-w-[20rem] text-[2rem] font-semibold leading-tight tracking-tight md:max-w-none md:text-5xl">
             Votre connexion Internet peut faire plus.
           </h2>
           <p className="mx-auto mt-6 max-w-2xl leading-8 text-neutral-300">
