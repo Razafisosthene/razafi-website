@@ -27,17 +27,17 @@ const targetCards = [
   {
     icon: Wifi,
     title: "Particuliers",
-    text: "Vous avez une connexion Starlink à la maison ? Partagez-la avec votre voisinage et générez des revenus supplémentaires.",
+    text: "Votre connexion ne doit pas rester inutilisée. Partagez-la avec votre voisinage et créez une nouvelle source de revenus.",
   },
   {
     icon: MapPin,
     title: "Pour les Fokontany",
-    text: "Une seule connexion peut connecter tout un fokontany.",
+    text: "Une seule connexion peut faire vivre un réseau communautaire entier.",
   },
   {
     icon: Smartphone,
     title: "Espaces connectés",
-    text: "Idéal pour les bars, karaoké, snacks, cybercafés, boutiques et espaces publics.",
+    text: "Idéal pour les quartiers, snacks, boutiques, espaces publics et zones communautaires connectées.",
   },
 ];
 const faqItems = [
@@ -47,11 +47,11 @@ const faqItems = [
   },
   {
     q: "Est-ce que je dois déjà avoir Internet ?",
-    a: "Oui. Vous avez déjà une connexion Starlink ou Fibre ? RAZAFI la transforme en réseau WiFi public moderne.",
+    a: "Oui. RAZAFI transforme votre connexion existante en réseau WiFi prêt à être partagé.",
   },
   {
     q: "Le système fonctionne-t-il automatiquement ?",
-    a: "Oui. Les connexions, paiements et accès Internet sont gérés automatiquement 24h/24 et 7j/7 par la plateforme RAZAFI.",
+    a: "Oui. Le réseau fonctionne automatiquement 24h/24 pendant que vous vous concentrez sur votre activité.",
   },
   {
     q: "Est-ce que RAZAFI fournit le matériel ?",
@@ -71,7 +71,7 @@ const faqItems = [
 },
   {
     q: "Dois-je être sur place pour gérer le réseau ?",
-    a: "Non. La plateforme RAZAFI permet de suivre l’activité et gérer les réseaux WiFi à distance depuis votre téléphone.",
+    a: "Non. Gérez votre réseau à distance directement depuis votre téléphone.",
   },
   {
     q: "Peut-on couvrir une grande zone ?",
@@ -83,7 +83,7 @@ const faqItems = [
   },
   {
     q: "Comment fonctionne le paiement ?",
-    a: "Les utilisateurs paient via Mobile Money avant d’obtenir automatiquement l’accès Internet.",
+    a: "Les utilisateurs paient via Mobile Money puis reçoivent automatiquement leur accès Internet.",
   },
   {
     q: "Les utilisateurs ont-ils besoin d’une application ?",
@@ -103,7 +103,7 @@ const faqItems = [
 },
   {
     q: "Comment démarrer ?",
-    a: "Contactez RAZAFI sur WhatsApp pour discuter de votre projet et recevoir une estimation rapide.",
+    a: "Contactez RAZAFI sur WhatsApp pour démarrer votre projet rapidement.",
   },
 ];
 function Reveal({
@@ -132,14 +132,14 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white text-neutral-950">
       <header className="fixed left-0 top-0 z-50 w-full border-b border-black/5 bg-white/80 backdrop-blur-2xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-5 md:py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
           <a href="#">
             <Image
               src="/images/logo-full.png"
               alt="RAZAFI"
               width={150}
               height={40}
-              className="h-9 w-auto md:h-11"
+              className="h-11 w-auto"
               priority
             />
           </a>
@@ -158,14 +158,14 @@ export default function Home() {
 
           <a
             href={whatsappUrl}
-            className="rounded-full bg-black px-4 py-2 text-sm font-semibold text-white transition hover:scale-105 md:px-5 md:py-2.5"
+            className="rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:scale-105"
           >
             WhatsApp
           </a>
         </div>
       </header>
 
-      <section className="relative overflow-hidden px-5 pb-10 pt-24 md:pb-16 md:pt-32">
+      <section className="relative overflow-hidden px-5 pb-12 pt-28 md:pb-16 md:pt-32">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -173,34 +173,32 @@ export default function Home() {
           variants={fadeUp}
           className="mx-auto max-w-6xl text-center"
         >
-          <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-blue-600 md:mb-5 md:text-sm md:tracking-[0.35em]">
+          <p className="mb-5 text-xs font-semibold uppercase tracking-[0.35em] text-blue-600 md:text-sm">
             WiFi communautaire moderne
           </p>
 
-          <h1 className="mx-auto max-w-[21rem] text-[2.25rem] font-semibold leading-[1.08] tracking-[-0.04em] md:max-w-none md:text-6xl md:leading-none lg:text-7xl">
-            Transformez votre connexion Starlink en source de revenus.
+          <h1 className="text-4xl font-semibold tracking-tight md:text-6xl lg:text-7xl">
+            Votre connexion peut faire plus.
           </h1>
 
-          <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-neutral-600 md:mt-7 md:text-xl md:leading-8">
-            Partagez votre connexion Internet avec votre quartier, votre
-            fokontany ou votre communauté grâce au système WiFi RAZAFI.
+          <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-neutral-600 md:text-xl">
+            Transformez votre connexion Starlink ou Fibre en activité locale moderne grâce à la plateforme WiFi RAZAFI.
           </p>
 
-          <p className="mx-auto mt-5 max-w-3xl text-lg font-medium leading-7 tracking-tight md:mt-7 md:text-2xl md:leading-normal">
-            Vous avez déjà une connexion Internet ? RAZAFI la transforme en
-            réseau WiFi public moderne.
+          <p className="mx-auto mt-7 max-w-3xl text-xl font-medium tracking-tight md:text-2xl">
+            Une seule connexion peut connecter un quartier entier.
           </p>
 
-          <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row md:gap-4">
+          <div className="mt-5 flex flex-col justify-center gap-4 sm:flex-row">
             <a
               href={whatsappUrl}
-              className="rounded-full bg-blue-600 px-8 py-3.5 font-semibold text-white shadow-xl shadow-blue-600/20 transition hover:scale-105 hover:bg-blue-700 md:py-4"
+              className="rounded-full bg-blue-600 px-8 py-4 font-semibold text-white shadow-xl shadow-blue-600/20 transition hover:scale-105 hover:bg-blue-700"
             >
               Commencer
             </a>
             <a
               href="#faq"
-              className="rounded-full border border-neutral-200 px-8 py-3.5 font-semibold transition hover:scale-105 hover:bg-neutral-50 md:py-4"
+              className="rounded-full border border-neutral-200 px-8 py-4 font-semibold transition hover:scale-105 hover:bg-neutral-50"
             >
               En savoir plus
             </a>
@@ -208,28 +206,28 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section className="px-5 py-11 md:py-14">
-        <Reveal className="mx-auto max-w-5xl rounded-[2rem] bg-neutral-950 px-6 py-10 text-center text-white md:rounded-[2.5rem] md:px-16 md:py-12">
+      <section className="px-5 py-14">
+        <Reveal className="mx-auto max-w-5xl rounded-[2.5rem] bg-neutral-950 px-8 py-12 text-center text-white md:px-16">
           <Sparkles className="mx-auto h-10 w-10 text-blue-400" />
-          <h2 className="mt-6 text-3xl font-semibold leading-tight tracking-tight md:text-5xl">
+          <h2 className="mt-6 text-3xl font-semibold tracking-tight md:text-5xl">
             Simple. Moderne. Automatique.
           </h2>
-          <p className="mx-auto mt-6 max-w-3xl text-base leading-7 text-neutral-300 md:mt-8 md:text-lg md:leading-8">
+          <p className="mx-auto mt-8 max-w-3xl text-lg leading-8 text-neutral-300">
             RAZAFI transforme une simple connexion Starlink ou Fibre en réseau
             WiFi public prêt à être utilisé.
           </p>
 
-          <div className="mx-auto mt-6 grid max-w-3xl gap-3 text-lg font-medium md:mt-4 md:grid-cols-3 md:gap-4 md:text-xl">
+          <div className="mx-auto mt-4 grid max-w-3xl gap-4 text-xl font-medium md:grid-cols-3">
             <div>Vos utilisateurs se connectent.</div>
             <div>Ils paient.</div>
             <div>Le système fonctionne.</div>
           </div>
 
-          <p className="mt-5 text-sm text-neutral-400 md:mt-4 md:text-base">Portal powered by RAZAFI.</p>
+          <p className="mt-4 text-neutral-400">Portal powered by RAZAFI.</p>
         </Reveal>
       </section>
 
-      <section id="pour-qui" className="px-5 py-11 md:py-14">
+      <section id="pour-qui" className="px-5 py-14">
         <div className="mx-auto max-w-7xl">
           <Reveal className="max-w-3xl">
             <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">
@@ -237,7 +235,7 @@ export default function Home() {
             </h2>
           </Reveal>
 
-          <div className="mt-8 grid gap-4 md:mt-12 md:grid-cols-3">
+          <div className="mt-12 grid gap-4 md:grid-cols-3">
             {targetCards.map((item, index) => (
               <motion.div
                 key={item.title}
@@ -246,29 +244,29 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: index * 0.08 }}
                 variants={fadeUp}
-                className="rounded-[1.5rem] border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl md:rounded-[1.75rem] md:p-8"
+                className="rounded-[1.75rem] border border-neutral-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
               >
                 <item.icon className="h-10 w-10 text-blue-600" />
-                <h3 className="mt-6 text-2xl font-semibold md:mt-8">{item.title}</h3>
-                <p className="mt-3 leading-6 text-neutral-600 md:mt-4">{item.text}</p>
+                <h3 className="mt-8 text-2xl font-semibold">{item.title}</h3>
+                <p className="mt-4 leading-6 text-neutral-600">{item.text}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="marque" className="px-5 py-11 md:py-14">
-        <div className="mx-auto grid max-w-7xl items-center gap-8 md:grid-cols-2 md:gap-12">
+      <section id="marque" className="px-5 py-14">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 md:grid-cols-2">
           <Reveal>
             <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">
               Votre propre marque WiFi.
             </h2>
-            <p className="mt-5 text-base leading-7 text-neutral-600 md:mt-6 md:text-lg md:leading-8">
+            <p className="mt-6 text-lg leading-8 text-neutral-600">
               Personnalisez le nom de votre réseau WiFi selon votre activité.
               Votre marque reste visible pour vos utilisateurs.
             </p>
 
-            <div className="mt-6 grid gap-3 text-neutral-700 md:mt-8">
+            <div className="mt-8 grid gap-3 text-neutral-700">
               {[
                 "WiFi Chez Tina",
                 "Snack Express WiFi",
@@ -283,16 +281,16 @@ export default function Home() {
               ))}
             </div>
 
-            <p className="mt-6 text-sm font-medium text-neutral-500 md:mt-8">
+            <p className="mt-8 text-sm font-medium text-neutral-500">
               Portal powered by RAZAFI.
             </p>
           </Reveal>
 
-          <Reveal className="rounded-[1.5rem] bg-neutral-100 p-4 md:rounded-[1.75rem] md:p-8">
+          <Reveal className="rounded-[1.75rem] bg-neutral-100 p-8">
             <div className="rounded-[1.5rem] bg-white p-4 shadow-sm">
               <p className="text-sm text-neutral-500">Nom du réseau</p>
-              <p className="mt-3 text-2xl font-semibold md:text-3xl">Snack Express WiFi</p>
-              <div className="mt-6 rounded-2xl bg-blue-600 p-4 text-white md:mt-8 md:p-5">
+              <p className="mt-3 text-3xl font-semibold">Snack Express WiFi</p>
+              <div className="mt-8 rounded-2xl bg-blue-600 p-5 text-white">
                 Connectez-vous pour accéder à Internet
               </div>
             </div>
@@ -309,7 +307,7 @@ export default function Home() {
                 alt="Installation MikroTik RAZAFI"
                 width={1200}
                 height={900}
-                className="h-56 w-full object-contain md:h-[390px]"
+                className="h-72 w-full object-contain md:h-[390px]"
               />
             </div>
           </Reveal>
@@ -347,20 +345,20 @@ export default function Home() {
               ))}
             </div>
 
-            <p className="mt-5 text-lg font-semibold leading-7 tracking-tight md:text-2xl">
+            <p className="mt-5 text-xl font-semibold tracking-tight md:text-2xl">
               Commencez petit. Développez votre réseau progressivement.
             </p>
           </Reveal>
         </div>
       </section>
 
-      <section className="px-5 py-11 md:py-14">
-        <div className="mx-auto grid max-w-7xl items-center gap-8 rounded-[2rem] bg-neutral-100 p-4 md:grid-cols-2 md:gap-12 md:rounded-[2.5rem] md:p-14">
+      <section className="px-5 py-14">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 rounded-[2.5rem] bg-neutral-100 p-4 md:grid-cols-2 md:p-14">
           <Reveal>
             <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">
               Gérez votre réseau à distance.
             </h2>
-            <p className="mt-5 text-base leading-7 text-neutral-600 md:mt-6 md:text-lg md:leading-8">
+            <p className="mt-6 text-lg leading-8 text-neutral-600">
               Supervisez vos utilisateurs, votre capacité réseau et vos points
               WiFi directement depuis votre téléphone.
             </p>
@@ -382,7 +380,7 @@ export default function Home() {
           </Reveal>
 
           <Reveal>
-            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-2">
+            <div className="grid gap-4 md:grid-cols-2">
               <div className="overflow-hidden rounded-[1.75rem] bg-white shadow-sm">
                 <Image
                   src="/images/owner-phone.jpg"
@@ -422,9 +420,9 @@ export default function Home() {
               alt="Point d’accès UniFi extérieur"
               width={1400}
               height={1000}
-              className="h-[260px] w-full object-cover object-center transition duration-700 group-hover:scale-[1.03] md:h-[340px]"
+              className="h-[300px] w-full object-cover object-center transition duration-700 group-hover:scale-[1.03] md:h-[340px]"
             />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-4 text-white md:from-black/65 md:via-black/20 md:p-4">
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent p-5 text-white md:p-4">
               <Wifi className="h-8 w-8 text-blue-300" />
               <h2 className="mt-3 text-xl font-semibold tracking-tight md:text-2xl">
                 Une seule connexion peut connecter tout un quartier.
@@ -443,9 +441,9 @@ export default function Home() {
               alt="Utilisation du WiFi public"
               width={1200}
               height={1600}
-              className="h-[260px] w-full object-cover object-[center_72%] transition duration-700 group-hover:scale-[1.03] md:h-[340px]"
+              className="h-[300px] w-full object-cover object-[center_72%] transition duration-700 group-hover:scale-[1.03] md:h-[340px]"
             />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-4 text-white md:from-black/65 md:via-black/20 md:p-4">
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent p-5 text-white md:p-4">
               <Smartphone className="h-8 w-8 text-blue-300" />
               <h2 className="mt-3 text-xl font-semibold tracking-tight md:text-2xl">
                 Internet accessible simplement.
@@ -466,7 +464,7 @@ export default function Home() {
           </p>
         </div>
       </section>
-<section id="faq" className="px-5 py-11 md:py-14">
+<section id="faq" className="px-5 py-14">
   <div className="mx-auto max-w-3xl">
     <Reveal>
       <h2 className="text-center text-3xl font-semibold tracking-tight md:text-5xl">
@@ -477,7 +475,7 @@ export default function Home() {
       </p>
     </Reveal>
 
-    <div className="mt-8 overflow-hidden rounded-[1.5rem] border border-neutral-200 bg-white md:mt-10 md:rounded-[1.75rem]">
+    <div className="mt-10 overflow-hidden rounded-[1.75rem] border border-neutral-200 bg-white">
       {faqItems.map((faq, index) => {
         const isOpen = openFaq === index;
 
@@ -489,7 +487,7 @@ export default function Home() {
             <button
               type="button"
               onClick={() => setOpenFaq(isOpen ? null : index)}
-              className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-[15px] font-semibold leading-6 transition hover:bg-neutral-50 md:text-lg"
+              className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-base font-semibold transition hover:bg-neutral-50 md:text-lg"
             >
               {faq.q}
               <ChevronDown
@@ -505,7 +503,7 @@ export default function Home() {
               }`}
             >
               <div className="overflow-hidden">
-                <p className="px-5 pb-5 text-[15px] leading-7 text-neutral-600">
+                <p className="px-5 pb-5 text-[15px] leading-6 text-neutral-600">
                   {faq.a}
                 </p>
               </div>
@@ -516,9 +514,9 @@ export default function Home() {
     </div>
   </div>
 </section>
-      <section className="px-5 py-11 md:py-14">
-        <Reveal className="mx-auto max-w-5xl rounded-[2rem] bg-neutral-950 px-6 py-10 text-center text-white md:rounded-[2.5rem] md:px-16 md:py-12">
-          <h2 className="mx-auto max-w-[20rem] text-[2rem] font-semibold leading-tight tracking-tight md:max-w-none md:text-5xl">
+      <section className="px-5 py-14">
+        <Reveal className="mx-auto max-w-5xl rounded-[2.5rem] bg-neutral-950 px-8 py-12 text-center text-white md:px-16">
+          <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">
             Votre connexion Internet peut faire plus.
           </h2>
           <p className="mx-auto mt-6 max-w-2xl leading-8 text-neutral-300">
@@ -527,14 +525,14 @@ export default function Home() {
           </p>
           <a
             href={whatsappUrl}
-            className="mt-6 inline-flex rounded-full bg-white px-8 py-3.5 font-semibold text-black transition hover:scale-105 md:mt-4 md:py-4"
+            className="mt-4 inline-flex rounded-full bg-white px-8 py-4 font-semibold text-black transition hover:scale-105"
           >
             Parler sur WhatsApp
           </a>
         </Reveal>
       </section>
 
-      <footer className="border-t border-neutral-200 px-5 pb-24 pt-10 md:py-12">
+      <footer className="border-t border-neutral-200 px-5 py-12">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 md:flex-row">
           <div>
             <Image
@@ -557,10 +555,10 @@ export default function Home() {
 
       <a
         href={whatsappUrl}
-        className="fixed bottom-4 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 font-semibold text-white shadow-xl transition hover:scale-105 md:bottom-5 md:right-5 md:h-auto md:w-auto md:gap-2 md:px-5 md:py-4"
+        className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-green-500 px-5 py-4 font-semibold text-white shadow-xl transition hover:scale-105"
       >
         <MessageCircle className="h-5 w-5" />
-        <span className="hidden md:inline">WhatsApp</span>
+        WhatsApp
       </a>
     </main>
   );
