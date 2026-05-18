@@ -156,7 +156,7 @@ export default function Home() {
           </p>
 
           <h1 className="text-4xl font-semibold tracking-tight md:text-6xl lg:text-7xl">
-            Votre connexion peut faire plus.
+            Transformez votre connexion Internet en source de revenus.
           </h1>
 
           <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-neutral-600 md:text-xl">
