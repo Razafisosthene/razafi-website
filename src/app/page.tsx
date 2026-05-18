@@ -82,11 +82,7 @@ const faqItems = [
     q: "Les revenus sont-ils garantis ?",
     a: "Non. Les revenus dépendent du nombre d’utilisateurs, de l’emplacement et de la visibilité du réseau dans votre zone. Comme toute activité locale, il est important de faire connaître votre réseau WiFi autour de vous.",
   },
-  {
-    q: "Comment démarrer ?",
-    a: "Contactez RAZAFI sur WhatsApp pour discuter de votre projet et recevoir une estimation rapide.",
-  },
-];
+  ];
 
 function Reveal({
   children,
