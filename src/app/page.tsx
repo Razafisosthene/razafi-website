@@ -126,9 +126,6 @@ export default function Home() {
             <a href="#pour-qui" className="transition hover:text-black">
               Pour qui ?
             </a>
-            <a href="#marque" className="transition hover:text-black">
-              Marque WiFi
-            </a>
             <a href="#faq" className="transition hover:text-black">
               FAQ
             </a>
@@ -235,49 +232,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="marque" className="px-5 py-14">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 md:grid-cols-2">
-          <Reveal>
-            <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">
-              Votre propre marque WiFi.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-neutral-600">
-              Personnalisez le nom de votre réseau WiFi selon votre activité.
-              Votre marque reste visible pour vos utilisateurs.
-            </p>
-
-            <div className="mt-8 grid gap-3 text-neutral-700">
-              {[
-                "WiFi Chez Tina",
-                "Snack Express WiFi",
-                "Cyber RAZAFI",
-                "Karaoké Connect",
-                "Fokontany Andrainjato WiFi",
-              ].map((name) => (
-                <div key={name} className="flex items-center gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-blue-600" />
-                  {name}
-                </div>
-              ))}
-            </div>
-
-            <p className="mt-8 text-sm font-medium text-neutral-500">
-              Portal powered by RAZAFI.
-            </p>
-          </Reveal>
-
-          <Reveal className="rounded-[1.75rem] bg-neutral-100 p-8">
-            <div className="rounded-[1.5rem] bg-white p-4 shadow-sm">
-              <p className="text-sm text-neutral-500">Nom du réseau</p>
-              <p className="mt-3 text-3xl font-semibold">Snack Express WiFi</p>
-              <div className="mt-8 rounded-2xl bg-blue-600 p-5 text-white">
-                Connectez-vous pour accéder à Internet
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       <section className="px-5 py-10 md:py-12">
         <div className="mx-auto grid max-w-7xl items-center gap-8 md:grid-cols-2">
           <Reveal className="order-2 md:order-1">
@@ -336,25 +290,25 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl items-center gap-12 rounded-[2.5rem] bg-neutral-100 p-4 md:grid-cols-2 md:p-14">
           <Reveal>
             <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">
-              Gérez votre réseau à distance.
+              Suivez votre activité WiFi à distance.
             </h2>
             <p className="mt-6 text-lg leading-8 text-neutral-600">
-              Supervisez vos utilisateurs, votre capacité réseau et vos points
-              WiFi directement depuis votre téléphone.
+              Consultez plusieurs zones WiFi, utilisateurs et ventes directement
+              depuis votre téléphone.
             </p>
 
             <div className="mt-8 grid gap-4 text-neutral-700">
               <div className="flex items-center gap-3">
                 <BarChart3 className="h-5 w-5 text-blue-600" />
-                Suivi des ventes et revenus
+                Suivi en temps réel
               </div>
               <div className="flex items-center gap-3">
                 <Smartphone className="h-5 w-5 text-blue-600" />
-                Tableau de bord propriétaire
+                Plusieurs zones WiFi
               </div>
               <div className="flex items-center gap-3">
                 <ShieldCheck className="h-5 w-5 text-blue-600" />
-                Gestion moderne et sécurisée
+                Tableau de bord propriétaire
               </div>
             </div>
           </Reveal>
