@@ -130,13 +130,13 @@ export default function Home() {
               FAQ
             </a>
           </nav>
+        <a
+  href="https://portal.razafistore.com/admin/login.html"
+  className="rounded-full bg-black px-3 py-2 text-xs font-semibold text-white transition hover:scale-105 md:px-5 md:py-2.5 md:text-sm"
+>
+  Espace propriétaire
+</a>
 
-          <a
-            href={whatsappUrl}
-            className="rounded-full bg-black px-5 py-3 text-sm font-semibold text-white transition hover:scale-105 md:px-5 md:py-2.5"
-          >
-            WhatsApp
-          </a>
         </div>
       </header>
 
