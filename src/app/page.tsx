@@ -48,7 +48,7 @@ const faqItems = [
   },
   {
     q: "Est-ce que RAZAFI fournit le matériel ?",
-    a: "Oui. RAZAFI fournit et installe les équipements nécessaires selon votre projet, notamment les routeurs MikroTik et les points d’accès UniFi.",
+    a: "Oui. RAZAFI fournit et installe les équipements nécessaires selon votre projet, notamment le routeur MikroTik et les équipements WiFi adaptés à votre projet.",
   },
   {
     q: "Peut-on commencer petit puis agrandir la couverture ?",
@@ -252,14 +252,14 @@ export default function Home() {
             </h2>
             <p className="mt-4 text-base leading-6 text-neutral-600 md:text-lg">
               Il est possible de démarrer avec une connexion Starlink ou Fibre,
-              un routeur MikroTik et un ou plusieurs points d’accès UniFi.
+              un routeur MikroTik et les équipements WiFi adaptés à votre zone.
             </p>
 
             <div className="mt-5 grid gap-3">
               {[
                 ["Connexion", "Une connexion Starlink ou Fibre existante."],
                 ["Routeur", "Un routeur MikroTik fourni et configuré."],
-                ["Points WiFi", "Un ou plusieurs points d’accès UniFi."],
+                ["Points WiFi", "Équipements WiFi adaptés à la couverture souhaitée."],
               ].map(([title, text]) => (
                 <div
   key={title}
@@ -351,7 +351,7 @@ export default function Home() {
           <Reveal className="group relative overflow-hidden rounded-[2.5rem] bg-neutral-100 shadow-sm">
             <Image
               src="/images/unifi-outdoor.jpg"
-              alt="Point d’accès UniFi extérieur"
+              alt="Point d’accès WiFi extérieur"
               width={1400}
               height={1000}
               className="h-[300px] w-full object-cover object-center transition duration-700 group-hover:scale-[1.03] md:h-[340px]"
@@ -359,12 +359,12 @@ export default function Home() {
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent p-5 text-white md:p-4">
               <Wifi className="h-8 w-8 text-blue-300" />
               <h2 className="mt-3 text-xl font-semibold tracking-tight md:text-2xl">
-                Une seule connexion peut connecter tout un quartier.
+                Une seule connexion peut desservir tout un quartier.
               </h2>
               <p className="mt-2 max-w-xl text-sm leading-6 text-white/90 md:text-base">
-                Grâce à plusieurs points d’accès WiFi, RAZAFI permet d’étendre
-                la couverture Internet sur une grande zone tout en gardant une
-                connexion simple et stable.
+                Une seule connexion Internet peut couvrir plusieurs zones WiFi.
+                Les utilisateurs restent connectés avec le même accès dans toute
+                la zone couverte.
               </p>
             </div>
           </Reveal>
