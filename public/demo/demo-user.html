@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kristof WiFi — Démo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ffffff" />
+  <style>
+    /* =========================================================
+       Kristof WiFi — Demo User Portal v2
+       100% local simulation — no backend, no real payments
+       ========================================================= */
+    :root{
+      --ios-bg:#f5f5f7;
+      --ios-card:#ffffff;
+      --ios-text:#111827;
+      --ios-muted:#6b7280;
+      --ios-border:rgba(17,24,39,.08);
+      --ios-shadow:0 18px 42px rgba(15,23,42,.08);
+      --ios-soft-shadow:0 10px 28px rgba(15,23,42,.06);
+      --ios-blue:#007aff;
+      --ios-green:#34c759;
+      --ios-orange:#ff9500;
+      --ios-red:#ff3b30;
+      --ios-radius:26px;
+    }
+    html{background:var(--ios-bg);}
+    body.theme-light{
+      background:
+        radial-gradient(circle at top left,rgba(0,122,255,.08),transparent 28%),
+        linear-gradient(180deg,#fbfbfd 0%,#f5f5f7 48%,#f2f2f7 100%);
+      color:var(--ios-text);
+    }
+    body.theme-dark{
+      --ios-bg:#050507;
+      --ios-card:#151518;
+      --ios-text:#f5f5f7;
+      --ios-muted:#a1a1aa;
+      --ios-border:rgba(255,255,255,.10);
+      --ios-shadow:0 18px 46px rgba(0,0,0,.42);
+      --ios-soft-shadow:0 10px 30px rgba(0,0,0,.34);
+      background:
+        radial-gradient(circle at top left,rgba(0,122,255,.18),transparent 28%),
+        linear-gradient(180deg,#050507 0%,#0b0b0f 54%,#111116 100%);
+      color:var(--ios-text);
+    }
+    *,*::before,*::after{box-sizing:border-box;}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+
+    /* ---- HEADER ---- */
+    .portal-header{
+      max-width:680px;margin:0 auto;
+      padding:calc(14px + env(safe-area-inset-top,0px)) 18px 6px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+    }
+    .brand{display:flex;align-items:center;min-height:42px;}
+    .theme-toggle{
+      width:38px;height:38px;min-width:38px;border-radius:999px;
+      border:1px solid var(--ios-border);background:rgba(255,255,255,.76);
+      color:var(--ios-text);box-shadow:0 8px 22px rgba(15,23,42,.06);
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:17px;line-height:1;cursor:pointer;-webkit-tap-highlight-color:transparent;
+    }
+    body.theme-dark .theme-toggle{background:rgba(255,255,255,.08);}
+    .theme-toggle:active{transform:scale(.96);}
+
+    /* ---- CONTAINER ---- */
+    .portal-container{max-width:680px;margin:0 auto;padding:10px 16px 22px;}
+    .card,#networkInfoCard{
+      border-radius:var(--ios-radius)!important;
+      border:1px solid var(--ios-border)!important;
+      background:var(--ios-card)!important;
+      box-shadow:var(--ios-soft-shadow);
+    }
+
+    /* ---- HERO ---- */
+    .status-card{
+      padding:24px 20px 20px!important;box-shadow:var(--ios-shadow)!important;
+      overflow:hidden;animation:razafiFadeUp .32s ease both;
+    }
+    .portal-hero{text-align:center;padding:6px 4px 14px;}
+    .portal-hero h2{margin:0 0 6px;color:var(--ios-muted);font-size:15px;font-weight:700;letter-spacing:-.01em;}
+    .pool-name-display{
+      text-align:center;font-weight:900!important;
+      font-size:clamp(1.78rem,7vw,2.55rem)!important;
+      line-height:1.02!important;letter-spacing:-.055em;
+      color:var(--ios-text)!important;margin:8px auto 12px!important;
+    }
+    .pool-name-line{display:block;}
+
+    /* Hero pill — states: fluide / charge / sature */
+    .hero-network-pill{
+      display:inline-flex;align-items:center;justify-content:center;
+      gap:7px;margin:4px auto 8px;padding:7px 13px;border-radius:999px;
+      font-size:13px;font-weight:800;white-space:nowrap;
+      transition:background .4s,border-color .4s,color .4s;
+    }
+    .hero-network-pill.net-fluide{background:rgba(52,199,89,.12);border:1px solid rgba(52,199,89,.22);color:#167a35;}
+    .hero-network-pill.net-charge{background:rgba(255,149,0,.12);border:1px solid rgba(255,149,0,.28);color:#9a5000;}
+    .hero-network-pill.net-sature{background:rgba(255,59,48,.10);border:1px solid rgba(255,59,48,.28);color:#9a1a10;}
+    body.theme-dark .hero-network-pill.net-fluide{color:#7ee59b;background:rgba(52,199,89,.14);border-color:rgba(52,199,89,.26);}
+    body.theme-dark .hero-network-pill.net-charge{color:#ffb84d;background:rgba(255,149,0,.18);border-color:rgba(255,149,0,.35);}
+    body.theme-dark .hero-network-pill.net-sature{color:#ff7a72;background:rgba(255,59,48,.18);border-color:rgba(255,59,48,.35);}
+
+    .hero-network-dot{
+      width:8px;height:8px;border-radius:999px;flex:0 0 auto;
+      transition:background .4s,box-shadow .4s;
+    }
+    .net-fluide .hero-network-dot{background:var(--ios-green);box-shadow:0 0 0 4px rgba(52,199,89,.14);}
+    .net-charge .hero-network-dot{background:var(--ios-orange);box-shadow:0 0 0 4px rgba(255,149,0,.14);}
+    .net-sature .hero-network-dot{background:var(--ios-red);box-shadow:0 0 0 4px rgba(255,59,48,.14);}
+
+    .hero-availability{margin:0;color:var(--ios-muted);font-size:13px;font-weight:700;}
+    .hero-availability strong{color:var(--ios-text);}
+    .demo-banner{
+      display:inline-block;margin:10px auto 0;padding:6px 14px;border-radius:999px;
+      background:rgba(255,149,0,.12);border:1px solid rgba(255,149,0,.30);
+      color:#b05a00;font-size:12px;font-weight:800;letter-spacing:.02em;
+    }
+    body.theme-dark .demo-banner{color:#ffb84d;background:rgba(255,149,0,.18);border-color:rgba(255,149,0,.35);}
+
+    /* ---- PLANS ---- */
+    .plans-shell{margin-top:18px;animation:razafiFadeUp .38s ease both;animation-delay:.04s;}
+    .plans-heading-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 4px 6px;min-width:0;}
+    .section-title-ios{margin:0;font-size:1.18rem;font-weight:900;letter-spacing:-.025em;color:var(--ios-text);line-height:1.1;flex:0 0 auto;}
+    .section-subtitle-ios{margin:0 4px 12px;color:var(--ios-muted);font-size:13px;line-height:1.35;}
+    .plan-filters{
+      display:flex;align-items:center;justify-content:flex-end;
+      gap:8px;margin:0;padding:2px 0 1px;
+      overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+      min-width:0;flex:1 1 auto;
+    }
+    .plan-filters::-webkit-scrollbar{display:none;}
+    .plan-filter-btn{
+      flex:0 0 auto;border:0;border-radius:999px;min-height:34px;padding:0 15px;
+      background:rgba(118,118,128,.12);color:#374151;
+      font-size:14px;font-weight:850;letter-spacing:-.01em;cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+      transition:transform .12s ease,background .16s ease,color .16s ease,box-shadow .16s ease;
+    }
+    .plan-filter-btn:active{transform:scale(.97);}
+    .plan-filter-btn.active{background:#1f2937;color:#fff;box-shadow:0 7px 16px rgba(17,24,39,.12);}
+    body.theme-dark .plan-filter-btn{background:rgba(255,255,255,.09);color:#d1d5db;}
+    body.theme-dark .plan-filter-btn.active{background:#f5f5f7;color:#111827;box-shadow:none;}
+
+    .plans-grid{display:flex;flex-direction:column;gap:14px;}
+
+    .plan-card{
+      position:relative;overflow:hidden;border-radius:28px!important;
+      border:1px solid var(--ios-border)!important;background:var(--ios-card)!important;
+      box-shadow:var(--ios-soft-shadow)!important;padding:16px 15px 14px!important;
+      transition:transform .16s ease,box-shadow .18s ease,border-color .18s ease;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .plan-card:active{transform:scale(.992);}
+    .plan-card.selected{
+      border-color:rgba(0,122,255,.58)!important;
+      box-shadow:0 22px 46px rgba(0,122,255,.16),0 0 0 1.5px rgba(0,122,255,.18) inset!important;
+      transform:translateY(-1px);
+    }
+    .plan-ux-badge{
+      display:inline-block;padding:5px 10px;border-radius:999px;
+      background:rgba(255,149,0,.12);border:1px solid rgba(255,149,0,.28);
+      color:#9a5d00;font-size:10px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;
+      margin-bottom:10px;
+    }
+    body.theme-dark .plan-ux-badge{color:#ffb84d;background:rgba(255,149,0,.18);border-color:rgba(255,149,0,.35);}
+    .plan-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;}
+    .plan-title-wrap{min-width:0;flex:1;}
+    .plan-name{margin:0!important;font-size:1.08rem!important;line-height:1.15!important;font-weight:900!important;letter-spacing:-.025em;color:var(--ios-text)!important;}
+    .plan-selected-mark{
+      display:none;flex:0 0 auto;padding:6px 10px;border-radius:999px;
+      background:var(--ios-blue);color:#fff;font-size:12px;font-weight:900;white-space:nowrap;
+      box-shadow:0 8px 18px rgba(0,122,255,.18);
+    }
+    .plan-card.selected .plan-selected-mark{display:inline-flex;}
+    .plan-price-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 0 10px;}
+    .plan-card .price{margin:0!important;font-size:clamp(1.9rem,8vw,2.55rem)!important;line-height:.95!important;font-weight:950!important;letter-spacing:-.065em!important;color:var(--ios-text)!important;}
+    .plan-compact-meta{display:block;margin:0 0 10px;color:var(--ios-text);font-size:13px;font-weight:850;line-height:1.28;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .plan-compact-sep{margin:0 5px;color:var(--ios-muted);font-weight:900;}
+
+    .choose-plan-btn,.pay-btn,.primary-btn,.secondary-btn{
+      border-radius:999px!important;min-height:46px;font-weight:800!important;letter-spacing:-.01em;
+      -webkit-tap-highlight-color:transparent;
+      transition:transform .12s ease,box-shadow .16s ease,opacity .16s ease;cursor:pointer;
+    }
+    .choose-plan-btn:active,.pay-btn:active{transform:scale(.98);}
+    .plan-card .choose-plan-btn{
+      width:100%;min-height:42px!important;padding:10px 14px!important;margin-top:2px!important;
+      background:var(--ios-blue)!important;color:#fff!important;border:0!important;
+      box-shadow:0 10px 20px rgba(0,122,255,.14)!important;font-size:15px;
+    }
+    .plan-card.selected .choose-plan-btn{
+      background:rgba(118,118,128,.16)!important;color:var(--ios-text)!important;
+      box-shadow:none!important;border:1px solid rgba(118,118,128,.10)!important;
+    }
+    .plan-payment{margin-top:14px;padding-top:14px;border-top:1px solid var(--ios-border);}
+    .plan-payment label{display:block;font-size:13px;font-weight:800;color:var(--ios-muted);margin-bottom:6px;}
+    .plan-payment input[type="tel"]{
+      width:100%;padding:12px 14px;border:1.5px solid var(--ios-border);border-radius:16px;
+      background:rgba(118,118,128,.07);color:var(--ios-text);font-size:15px;font-weight:600;
+      outline:none;transition:border-color .18s ease;
+    }
+    body.theme-dark .plan-payment input[type="tel"]{background:rgba(255,255,255,.06);}
+    .plan-payment input[type="tel"]:focus{border-color:var(--ios-blue);}
+    .plan-payment input.input-error{border-color:rgba(220,53,69,.55)!important;}
+    .mvola-error{display:none;margin-top:6px;padding:8px 12px;border-radius:12px;border:1px solid rgba(220,53,69,.22);background:rgba(220,53,69,.08);color:#b42318;font-size:13px;font-weight:700;}
+    body.theme-dark .mvola-error{border-color:rgba(255,122,122,.30);background:rgba(255,122,122,.10);color:#ff9d9d;}
+    .mvola-error.visible{display:block;}
+    .pay-btn{
+      width:100%;margin-top:10px;background:var(--ios-green)!important;color:#fff!important;border:0!important;
+      box-shadow:0 10px 20px rgba(52,199,89,.20)!important;font-size:15px;
+    }
+
+    /* ---- NETWORK CARD ---- */
+    #networkInfoCard{margin-top:18px!important;animation:razafiFadeUp .38s ease both;padding:16px!important;}
+    .network-head{margin-bottom:10px;}
+    .network-title{font-weight:900;letter-spacing:-.02em;color:var(--ios-text);font-size:14px;}
+    .network-bar-wrap{margin-bottom:8px;}
+    .network-bar{height:8px;background:rgba(118,118,128,.14);border-radius:999px;overflow:hidden;}
+    .network-bar-fill{height:100%;border-radius:999px;transition:width .8s ease,background .4s ease;}
+    .network-bar-fill.level-low{background:var(--ios-green);}
+    .network-bar-fill.level-mid{background:var(--ios-orange);}
+    .network-bar-fill.level-high{background:var(--ios-red);}
+    .network-bar-meta{display:flex;align-items:center;justify-content:space-between;margin-top:6px;}
+    .network-percent{font-weight:900;font-size:14px;color:var(--ios-text);}
+    .network-status{font-size:13px;font-weight:700;}
+    .net-status-fluide{color:#167a35;}
+    .net-status-charge{color:#9a5000;}
+    .net-status-sature{color:#9a1a10;}
+    body.theme-dark .net-status-fluide{color:#7ee59b;}
+    body.theme-dark .net-status-charge{color:#ffb84d;}
+    body.theme-dark .net-status-sature{color:#ff7a72;}
+
+    /* ---- ASSISTANCE + TERMS ---- */
+    .faq,.terms-card{margin-top:18px!important;animation:razafiFadeUp .38s ease both;}
+    .faq{padding:16px!important;}
+    .faq h3,.terms-card h3{margin:0 0 8px;font-size:1rem;font-weight:900;letter-spacing:-.02em;}
+    .faq p{margin:0;color:var(--ios-muted);font-size:14px;line-height:1.45;}
+    .faq p strong{color:var(--ios-text);}
+    .terms-card{padding:16px!important;}
+    .terms-check{display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-top:6px;line-height:1.45;}
+    .terms-check input{margin-top:3px;flex:0 0 auto;accent-color:var(--ios-blue);}
+    .terms-toggle{margin-top:10px;padding:0;background:none;border:none;color:var(--ios-blue);font-weight:800;cursor:pointer;font-size:14px;}
+    .terms-toggle:hover{text-decoration:underline;}
+    body.theme-dark .terms-toggle{color:#7cb6ff;}
+    .terms-content{margin-top:10px;padding:12px 14px;border:1px solid rgba(0,122,255,.16);border-radius:18px;background:rgba(0,122,255,.055);}
+    body.theme-dark .terms-content{border-color:rgba(83,148,255,.28);background:rgba(83,148,255,.10);}
+    .terms-list{margin:0;padding-left:18px;color:var(--ios-muted);}
+    .terms-list li+li{margin-top:6px;}
+    .terms-error{margin-top:10px;padding:10px 12px;border-radius:16px;border:1px solid rgba(220,53,69,.22);background:rgba(220,53,69,.08);color:#b42318;font-weight:700;font-size:13px;}
+    body.theme-dark .terms-error{border-color:rgba(255,122,122,.30);background:rgba(255,122,122,.10);color:#ff9d9d;}
+    .hidden{display:none!important;}
+    .muted{color:var(--ios-muted)!important;}
+    .small{font-size:12px;}
+
+    /* ---- FOOTER ---- */
+    .portal-footer{padding:4px 16px calc(18px + env(safe-area-inset-bottom,0px));text-align:center;}
+    .portal-footer a{color:inherit;font-weight:700;text-decoration:none;}
+    .portal-footer a:hover{text-decoration:underline;}
+
+    /* ---- MODAL ---- */
+    .modal-overlay{
+      display:none;position:fixed;inset:0;z-index:999;
+      background:rgba(0,0,0,.50);
+      backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+      align-items:flex-end;justify-content:center;
+    }
+    .modal-overlay.open{display:flex;}
+    @media(min-width:480px){.modal-overlay.open{align-items:center;}}
+    .modal-sheet{
+      width:100%;max-width:460px;background:var(--ios-card);
+      border-radius:28px 28px 0 0;padding:24px 22px 32px;
+      box-shadow:0 -16px 60px rgba(0,0,0,.22);
+      animation:sheetUp .28s ease both;
+    }
+    @media(min-width:480px){.modal-sheet{border-radius:28px;}}
+    @keyframes sheetUp{from{transform:translateY(40px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+    .modal-grab{width:40px;height:5px;border-radius:999px;background:rgba(118,118,128,.28);margin:0 auto 20px;}
+    @media(min-width:480px){.modal-grab{display:none;}}
+    .modal-title{font-size:1.05rem;font-weight:900;letter-spacing:-.025em;color:var(--ios-text);margin:0 0 6px;}
+    .modal-subtitle{font-size:14px;color:var(--ios-muted);font-weight:600;margin:0 0 18px;line-height:1.4;}
+    .modal-demo-notice{
+      margin-bottom:18px;padding:10px 14px;border-radius:16px;
+      background:rgba(255,149,0,.10);border:1px solid rgba(255,149,0,.28);
+      color:#9a5d00;font-size:12px;font-weight:700;line-height:1.4;
+    }
+    body.theme-dark .modal-demo-notice{color:#ffb84d;background:rgba(255,149,0,.18);border-color:rgba(255,149,0,.35);}
+    .modal-code-input{
+      width:100%;padding:16px;border:1.5px solid var(--ios-border);border-radius:18px;
+      background:rgba(118,118,128,.07);color:var(--ios-text);
+      font-size:26px;font-weight:900;letter-spacing:.45em;text-align:center;
+      outline:none;transition:border-color .18s ease;
+    }
+    body.theme-dark .modal-code-input{background:rgba(255,255,255,.06);}
+    .modal-code-input:focus{border-color:var(--ios-blue);}
+    .modal-code-input.input-error{border-color:rgba(220,53,69,.55)!important;}
+    .modal-code-error{display:none;margin-top:8px;padding:8px 12px;border-radius:12px;border:1px solid rgba(220,53,69,.22);background:rgba(220,53,69,.08);color:#b42318;font-size:13px;font-weight:700;}
+    body.theme-dark .modal-code-error{border-color:rgba(255,122,122,.30);background:rgba(255,122,122,.10);color:#ff9d9d;}
+    .modal-code-error.visible{display:block;}
+    .modal-btn-row{display:flex;gap:10px;margin-top:18px;}
+    .modal-cancel-btn{flex:1;min-height:46px;border-radius:999px;background:rgba(118,118,128,.12);border:0;color:var(--ios-text);font-weight:800;font-size:15px;cursor:pointer;}
+    .modal-send-btn{flex:2;min-height:46px;border-radius:999px;background:var(--ios-blue);border:0;color:#fff;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 10px 20px rgba(0,122,255,.20);}
+    .modal-send-btn:active,.modal-cancel-btn:active{transform:scale(.98);}
+    .modal-status{display:none;margin-top:18px;text-align:center;}
+    .modal-status.visible{display:block;}
+    .modal-status-icon{font-size:2.2rem;line-height:1;margin-bottom:8px;}
+    .modal-status-text{font-size:1.05rem;font-weight:900;color:var(--ios-text);margin:0 0 4px;}
+    .modal-status-sub{font-size:14px;color:var(--ios-muted);font-weight:600;margin:0 0 10px;}
+    .modal-voucher-code{
+      display:inline-block;padding:10px 18px;border-radius:16px;
+      background:rgba(52,199,89,.10);border:1px solid rgba(52,199,89,.28);
+      color:#0f6a3e;font-size:1.15rem;font-weight:950;letter-spacing:.08em;
+      margin:8px 0 14px;
+    }
+    body.theme-dark .modal-voucher-code{color:#7ee59b;background:rgba(52,199,89,.18);border-color:rgba(52,199,89,.30);}
+    .use-code-btn{
+      width:100%;min-height:46px;border-radius:999px;
+      background:var(--ios-green)!important;border:0!important;
+      color:#fff!important;font-weight:800;font-size:15px;cursor:pointer;
+      box-shadow:0 10px 20px rgba(52,199,89,.20);
+    }
+    .use-code-btn:active{transform:scale(.98);}
+
+    @keyframes razafiFadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+    @media(max-width:420px){
+      .portal-container{padding-left:14px;padding-right:14px;}
+      .status-card{padding:22px 16px 18px!important;}
+      .pool-name-display{font-size:clamp(1.62rem,8vw,2.12rem)!important;}
+      .theme-toggle{width:36px;height:36px;min-width:36px;}
+    }
+    @media(max-width:360px){
+      .plans-heading-row{gap:8px;}
+      .plan-filter-btn{min-height:32px;padding:0 12px;font-size:13px;}
+    }
+  </style>
+</head>
+
+<body class="theme-light">
+
+  <!-- ================= HEADER ================= -->
+  <header class="portal-header">
+    <div class="brand">
+      <!-- Real Kristof WiFi logo — base64 PNG from production portal -->
+      <img src="data:image/png;base64,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" alt="Kristof WiFi" style="max-height:48px;max-width:190px;object-fit:contain;display:block;filter:drop-shadow(0 8px 16px rgba(15,23,42,.08));">
+    </div>
+    <button id="themeToggle" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+  </header>
+
+  <!-- ================= MAIN ================= -->
+  <main class="portal-container">
+
+    <!-- ========= HERO ========= -->
+    <section class="card status-card">
+      <div class="portal-hero">
+        <h2>Bienvenue sur</h2>
+        <p class="pool-name-display">
+          <span class="pool-name-line">Kristof WiFi</span>
+          <span class="pool-name-line">Tsianolondroa</span>
+        </p>
+        <!-- Dynamic pill — class updated by JS -->
+        <div class="hero-network-pill net-fluide" id="heroPill" aria-live="polite">
+          <span class="hero-network-dot" aria-hidden="true"></span>
+          <span id="heroPillText">Réseau fluide</span>
+        </div>
+        <p class="hero-availability">Occupation : <strong id="heroOccupation">—</strong></p>
+        <span class="demo-banner">🧪 Mode démonstration</span>
+      </div>
+    </section>
+
+    <!-- ========= PLANS ========= -->
+    <section class="plans-shell">
+      <div class="plans-heading-row">
+        <h3 class="section-title-ios">Plans</h3>
+        <div class="plan-filters" role="tablist" aria-label="Filtrer les forfaits">
+          <button type="button" class="plan-filter-btn active" data-filter="all"       aria-pressed="true">Tous</button>
+          <button type="button" class="plan-filter-btn"        data-filter="data"      aria-pressed="false">Data</button>
+          <button type="button" class="plan-filter-btn"        data-filter="unlimited" aria-pressed="false">Illimité</button>
+        </div>
+      </div>
+      <p class="section-subtitle-ios">Choisissez votre forfait et confirmez avec MVola.</p>
+
+      <div id="plansGrid" class="plans-grid">
+
+        <!-- Plan 1 : Illimité 1H 7M -->
+        <div class="plan-card" data-type="unlimited" data-plan-id="1" data-plan-name="Illimité 1H 7M" data-plan-price="400">
+          <div class="plan-card-head">
+            <div class="plan-title-wrap"><h4 class="plan-name">Illimité 1H 7M</h4></div>
+            <span class="plan-selected-mark">✓ Choisi</span>
+          </div>
+          <div class="plan-price-row"><p class="price">400 Ar</p></div>
+          <span class="plan-compact-meta">⏳ 1h <span class="plan-compact-sep">·</span> 📦 Illimité <span class="plan-compact-sep">·</span> 🚀 7 Mbps</span>
+          <button type="button" class="choose-plan-btn" data-for-plan="1">Choisir ce forfait</button>
+          <div class="plan-payment hidden" id="payment-1">
+            <label for="mvola-1">Numéro MVola</label>
+            <input type="tel" id="mvola-1" placeholder="034 XX XXX XX" maxlength="16" inputmode="numeric" autocomplete="tel" />
+            <div class="mvola-error" id="mvola-error-1">Numéro MVola invalide. Entrez un numéro valide, ex : 034 12 345 67.</div>
+            <button type="button" class="pay-btn" data-pay-plan="1">Payer 400 Ar</button>
+          </div>
+        </div>
+
+        <!-- Plan 2 : 2 Go Jour -->
+        <div class="plan-card" data-type="data" data-plan-id="2" data-plan-name="2 Go Jour" data-plan-price="500">
+          <div class="plan-card-head">
+            <div class="plan-title-wrap"><h4 class="plan-name">2 Go Jour</h4></div>
+            <span class="plan-selected-mark">✓ Choisi</span>
+          </div>
+          <div class="plan-price-row"><p class="price">500 Ar</p></div>
+          <span class="plan-compact-meta">⏳ 1 jour <span class="plan-compact-sep">·</span> 📦 2 Go <span class="plan-compact-sep">·</span> 🚀 10 Mbps</span>
+          <button type="button" class="choose-plan-btn" data-for-plan="2">Choisir ce forfait</button>
+          <div class="plan-payment hidden" id="payment-2">
+            <label for="mvola-2">Numéro MVola</label>
+            <input type="tel" id="mvola-2" placeholder="034 XX XXX XX" maxlength="16" inputmode="numeric" autocomplete="tel" />
+            <div class="mvola-error" id="mvola-error-2">Numéro MVola invalide. Entrez un numéro valide, ex : 034 12 345 67.</div>
+            <button type="button" class="pay-btn" data-pay-plan="2">Payer 500 Ar</button>
+          </div>
+        </div>
+
+        <!-- Plan 3 : 20 Go Semaine -->
+        <div class="plan-card" data-type="data" data-plan-id="3" data-plan-name="20 Go Semaine" data-plan-price="3500">
+          <span class="plan-ux-badge">⭐ RECOMMANDÉ</span>
+          <div class="plan-card-head">
+            <div class="plan-title-wrap"><h4 class="plan-name">20 Go Semaine</h4></div>
+            <span class="plan-selected-mark">✓ Choisi</span>
+          </div>
+          <div class="plan-price-row"><p class="price">3 500 Ar</p></div>
+          <span class="plan-compact-meta">⏳ 7 jours <span class="plan-compact-sep">·</span> 📦 20 Go <span class="plan-compact-sep">·</span> 🚀 10 Mbps</span>
+          <button type="button" class="choose-plan-btn" data-for-plan="3">Choisir ce forfait</button>
+          <div class="plan-payment hidden" id="payment-3">
+            <label for="mvola-3">Numéro MVola</label>
+            <input type="tel" id="mvola-3" placeholder="034 XX XXX XX" maxlength="16" inputmode="numeric" autocomplete="tel" />
+            <div class="mvola-error" id="mvola-error-3">Numéro MVola invalide. Entrez un numéro valide, ex : 034 12 345 67.</div>
+            <button type="button" class="pay-btn" data-pay-plan="3">Payer 3 500 Ar</button>
+          </div>
+        </div>
+
+      </div><!-- /plansGrid -->
+    </section>
+
+    <!-- ========= ÉTAT DU RÉSEAU ========= -->
+    <section id="networkInfoCard" class="card network-card">
+      <div class="network-head">
+        <div class="network-title">🌐 État du réseau — Kristof WiFi — Tsianolondroa</div>
+      </div>
+      <div class="network-bar-wrap" role="img" aria-label="Saturation du réseau">
+        <div class="network-bar">
+          <div class="network-bar-fill level-low" id="netBarFill" style="width:0%"></div>
+        </div>
+        <div class="network-bar-meta">
+          <span class="network-percent" id="netPercent">—%</span>
+          <span class="network-status" id="netStatusText">—</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========= ASSISTANCE ========= -->
+    <section class="card faq">
+      <h3>🛟 Assistance</h3>
+      <p>Contact : <strong>034 83 705 77</strong></p>
+    </section>
+
+    <!-- ========= RÈGLES D'UTILISATION ========= -->
+    <section class="card terms-card" id="termsCard" aria-labelledby="termsTitle">
+      <h3 id="termsTitle">Règles d'utilisation</h3>
+      <label class="terms-check" for="acceptTermsCheckbox">
+        <input type="checkbox" id="acceptTermsCheckbox" checked>
+        <span>J'accepte les règles d'utilisation de Kristof WiFi</span>
+      </label>
+      <button type="button" id="toggleTermsBtn" class="terms-toggle" aria-expanded="false" aria-controls="termsContent">Voir les règles</button>
+      <div id="termsContent" class="terms-content hidden">
+        <ul class="terms-list">
+          <li>Activités illégales interdites.</li>
+          <li>Le service peut être ralenti ou interrompu selon le réseau disponible ou les coupures JIRAMA.</li>
+          <li>Assistance : <strong>038 75 005 92</strong> (réclamation, suggestion ou aide).</li>
+        </ul>
+      </div>
+      <div id="termsError" class="terms-error hidden" role="alert" aria-live="polite">
+        Veuillez accepter les règles avant de continuer.
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="portal-footer">
+    <p class="muted small">
+      Portail sécurisé • Powered by
+      <a href="https://www.razafistore.com/" target="_blank" rel="noopener">RAZAFI</a>
+    </p>
+  </footer>
+
+  <!-- ================= MVOLA PIN MODAL ================= -->
+  <div class="modal-overlay" id="mvolaModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-sheet">
+      <div class="modal-grab"></div>
+
+      <!-- Step 1 : PIN entry -->
+      <div id="modalStep1">
+        <div class="modal-title" id="modalTitle">Confirmation MVola</div>
+        <div class="modal-subtitle">Pour accepter le transfert de <strong id="modalAmount">—</strong> vers <strong>RAZAFI</strong>, entrer votre code secret :</div>
+        <div class="modal-demo-notice">
+          🧪 Mode démonstration : aucun paiement réel ne sera effectué.<br>
+          Entrez n'importe quel code à 4 chiffres pour continuer.
+        </div>
+        <input type="password" class="modal-code-input" id="modalCodeInput" placeholder="••••" maxlength="4" inputmode="numeric" autocomplete="one-time-code" />
+        <div class="modal-code-error" id="modalCodeError">Code invalide. Pour la démonstration, entrez uniquement 4 chiffres.</div>
+        <div class="modal-btn-row">
+          <button type="button" class="modal-cancel-btn" id="modalCancelBtn">ANNULER</button>
+          <button type="button" class="modal-send-btn"   id="modalSendBtn">ENVOYER</button>
+        </div>
+      </div>
+
+      <!-- Step 2 : Waiting / Success -->
+      <div id="modalStep2" class="modal-status">
+        <div class="modal-status-icon" id="modalStatusIcon">⏳</div>
+        <div class="modal-status-text" id="modalStatusText">En attente de confirmation MVola…</div>
+        <div class="modal-status-sub"  id="modalStatusSub">Veuillez patienter</div>
+        <div id="modalVoucherBlock" class="hidden">
+          <div class="modal-voucher-code" id="modalVoucherCode">—</div>
+          <button type="button" class="use-code-btn" id="useCodeBtn">Utiliser ce code</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= INLINE JS ================= -->
+  <script>
+  (function(){
+    "use strict";
+
+    /* =====================================================
+       1. THEME TOGGLE
+       ===================================================== */
+    var themeToggle = document.getElementById("themeToggle");
+    var body = document.body;
+
+    function applyTheme(theme){
+      body.classList.remove("theme-light","theme-dark");
+      body.classList.add(theme);
+      themeToggle.textContent = theme === "theme-dark" ? "☀️" : "🌙";
+      try{ localStorage.setItem("kw_demo_theme", theme); }catch(e){}
+    }
+    (function initTheme(){
+      var saved = "";
+      try{ saved = localStorage.getItem("kw_demo_theme") || ""; }catch(e){}
+      applyTheme(saved === "theme-dark" ? "theme-dark" : "theme-light");
+    })();
+    themeToggle.addEventListener("click", function(){
+      applyTheme(body.classList.contains("theme-dark") ? "theme-light" : "theme-dark");
+    });
+
+    /* =====================================================
+       2. RANDOMISED NETWORK STATUS
+       ===================================================== */
+    function initNetwork(){
+      var pct = Math.floor(Math.random() * 58) + 15; // 15 – 72 %
+
+      var label, pillClass, barClass, statusClass;
+      if(pct < 40){
+        label       = "Réseau fluide";
+        pillClass   = "net-fluide";
+        barClass    = "level-low";
+        statusClass = "net-status-fluide";
+      } else if(pct < 65){
+        label       = "Réseau chargé";
+        pillClass   = "net-charge";
+        barClass    = "level-mid";
+        statusClass = "net-status-charge";
+      } else {
+        label       = "Réseau saturé";
+        pillClass   = "net-sature";
+        barClass    = "level-high";
+        statusClass = "net-status-sature";
+      }
+
+      // Network card bar + texts
+      var fill       = document.getElementById("netBarFill");
+      var percent    = document.getElementById("netPercent");
+      var statusText = document.getElementById("netStatusText");
+
+      // Animate bar after a short delay so the CSS transition plays
+      setTimeout(function(){
+        if(fill){
+          fill.style.width = pct + "%";
+          fill.className   = "network-bar-fill " + barClass;
+        }
+      }, 120);
+
+      if(percent)    percent.textContent    = pct + "%";
+      if(statusText){
+        statusText.textContent = label;
+        statusText.className   = "network-status " + statusClass;
+      }
+
+      // Hero pill + occupation
+      var pill        = document.getElementById("heroPill");
+      var pillText    = document.getElementById("heroPillText");
+      var heroOccup   = document.getElementById("heroOccupation");
+
+      if(pill){
+        pill.classList.remove("net-fluide","net-charge","net-sature");
+        pill.classList.add(pillClass);
+      }
+      if(pillText)  pillText.textContent  = label;
+      if(heroOccup) heroOccup.textContent = pct + "%";
+    }
+    initNetwork();
+
+    /* =====================================================
+       3. PLAN FILTERS
+       ===================================================== */
+    var filterBtns = document.querySelectorAll(".plan-filter-btn");
+    var planCards  = document.querySelectorAll(".plan-card");
+
+    filterBtns.forEach(function(btn){
+      btn.addEventListener("click", function(){
+        filterBtns.forEach(function(b){ b.classList.remove("active"); b.setAttribute("aria-pressed","false"); });
+        btn.classList.add("active");
+        btn.setAttribute("aria-pressed","true");
+        var filter = btn.getAttribute("data-filter");
+        planCards.forEach(function(card){
+          card.style.display = (filter === "all" || card.getAttribute("data-type") === filter) ? "" : "none";
+        });
+      });
+    });
+
+    /* =====================================================
+       4. SELECT PLAN + AUTO-SCROLL TO MVOLA INPUT
+       ===================================================== */
+    var selectedPlanId = null;
+
+    function deselectAll(){
+      planCards.forEach(function(c){
+        c.classList.remove("selected");
+        var btn = c.querySelector(".choose-plan-btn");
+        if(btn) btn.textContent = "Choisir ce forfait";
+        var panel = c.querySelector(".plan-payment");
+        if(panel) panel.classList.add("hidden");
+      });
+      selectedPlanId = null;
+    }
+
+    document.querySelectorAll(".choose-plan-btn").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var planId = btn.getAttribute("data-for-plan");
+        var card   = btn.closest(".plan-card");
+        if(selectedPlanId === planId){ deselectAll(); return; }
+        deselectAll();
+        selectedPlanId = planId;
+        card.classList.add("selected");
+        btn.textContent = "Forfait sélectionné";
+        var panel = document.getElementById("payment-" + planId);
+        if(panel){
+          panel.classList.remove("hidden");
+          // Auto-scroll so MVola input is visible
+          setTimeout(function(){
+            var inputEl = document.getElementById("mvola-" + planId);
+            if(inputEl){
+              inputEl.scrollIntoView({ behavior:"smooth", block:"center" });
+              // Small extra delay so keyboard doesn't fight the scroll on mobile
+              setTimeout(function(){ inputEl.focus(); }, 420);
+            }
+          }, 60);
+        }
+      });
+    });
+
+    /* =====================================================
+       5. MVOLA NUMBER VALIDATION
+       ===================================================== */
+    function validateMvola(raw){
+      var num = raw.replace(/[\s\-\.]/g,"");
+      if(/^\+261(34|37|38)\d{7}$/.test(num)) num = "0" + num.slice(4);
+      if(/^261(34|37|38)\d{7}$/.test(num))   num = "0" + num.slice(3);
+      return /^(034|037|038)\d{7}$/.test(num);
+    }
+
+    // Live clear error on input
+    document.querySelectorAll(".plan-payment input[type='tel']").forEach(function(input){
+      input.addEventListener("input", function(){
+        input.classList.remove("input-error");
+        var id = input.id.replace("mvola-","");
+        var errEl = document.getElementById("mvola-error-" + id);
+        if(errEl) errEl.classList.remove("visible");
+      });
+    });
+
+    /* =====================================================
+       6. TERMS — pre-checked, toggle content, auto-scroll
+       ===================================================== */
+    var termsCheckbox = document.getElementById("acceptTermsCheckbox");
+    var termsError    = document.getElementById("termsError");
+    var termsCard     = document.getElementById("termsCard");
+
+    termsCheckbox.addEventListener("change", function(){
+      if(termsCheckbox.checked) termsError.classList.add("hidden");
+    });
+
+    document.getElementById("toggleTermsBtn").addEventListener("click", function(){
+      var content  = document.getElementById("termsContent");
+      var willOpen = content.classList.contains("hidden");
+      content.classList.toggle("hidden",!willOpen);
+      this.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      this.textContent = willOpen ? "Masquer les règles" : "Voir les règles";
+    });
+
+    /* =====================================================
+       7. PAY BUTTONS
+       ===================================================== */
+    var currentPlanPrice = "";
+
+    document.querySelectorAll(".pay-btn").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var planId = btn.getAttribute("data-pay-plan");
+        var card   = btn.closest(".plan-card");
+        var input  = document.getElementById("mvola-" + planId);
+        var errEl  = document.getElementById("mvola-error-" + planId);
+
+        // --- Terms guard ---
+        if(!termsCheckbox.checked){
+          termsError.classList.remove("hidden");
+          // Auto-scroll to terms card so user sees the checkbox
+          if(termsCard){
+            termsCard.scrollIntoView({ behavior:"smooth", block:"center" });
+          }
+          return;
+        }
+
+        // --- MVola validation ---
+        var raw = input ? input.value : "";
+        if(!validateMvola(raw)){
+          if(input){ input.classList.add("input-error"); }
+          if(errEl) { errEl.classList.add("visible"); }
+          if(input) { input.focus(); }
+          return;
+        }
+        if(input) input.classList.remove("input-error");
+        if(errEl)  errEl.classList.remove("visible");
+
+        currentPlanPrice = card.getAttribute("data-plan-price") || "—";
+        openModal(currentPlanPrice + " Ar");
+      });
+    });
+
+    /* =====================================================
+       8. MODAL
+       ===================================================== */
+    var modal             = document.getElementById("mvolaModal");
+    var modalStep1        = document.getElementById("modalStep1");
+    var modalStep2        = document.getElementById("modalStep2");
+    var modalCodeInput    = document.getElementById("modalCodeInput");
+    var modalCodeError    = document.getElementById("modalCodeError");
+    var modalAmount       = document.getElementById("modalAmount");
+    var modalCancelBtn    = document.getElementById("modalCancelBtn");
+    var modalSendBtn      = document.getElementById("modalSendBtn");
+    var modalStatusIcon   = document.getElementById("modalStatusIcon");
+    var modalStatusText   = document.getElementById("modalStatusText");
+    var modalStatusSub    = document.getElementById("modalStatusSub");
+    var modalVoucherBlock = document.getElementById("modalVoucherBlock");
+    var modalVoucherCode  = document.getElementById("modalVoucherCode");
+    var useCodeBtn        = document.getElementById("useCodeBtn");
+
+    function openModal(amountStr){
+      modalAmount.textContent = amountStr;
+      modalCodeInput.value = "";
+      modalCodeInput.classList.remove("input-error");
+      modalCodeError.classList.remove("visible");
+      modalStep1.style.display = "block";
+      modalStep2.classList.remove("visible");
+      modal.classList.add("open");
+      setTimeout(function(){ modalCodeInput.focus(); }, 220);
+    }
+    function closeModal(){ modal.classList.remove("open"); }
+
+    modalCancelBtn.addEventListener("click", closeModal);
+    modal.addEventListener("click", function(e){ if(e.target === modal) closeModal(); });
+    modal.addEventListener("touchmove", function(e){ e.stopPropagation(); },{passive:true});
+
+    modalCodeInput.addEventListener("input", function(){
+      modalCodeInput.classList.remove("input-error");
+      modalCodeError.classList.remove("visible");
+    });
+
+    modalSendBtn.addEventListener("click", function(){
+      var code = modalCodeInput.value.trim();
+      if(!/^\d{4}$/.test(code)){
+        modalCodeInput.classList.add("input-error");
+        modalCodeError.classList.add("visible");
+        modalCodeInput.focus();
+        return;
+      }
+      modalCodeInput.classList.remove("input-error");
+      modalCodeError.classList.remove("visible");
+      modalStep1.style.display = "none";
+      modalStep2.classList.add("visible");
+      modalStatusIcon.textContent = "⏳";
+      modalStatusText.textContent = "En attente de confirmation MVola…";
+      modalStatusSub.textContent  = "Veuillez patienter";
+      modalVoucherBlock.classList.add("hidden");
+
+      setTimeout(function(){
+        var fakeCode = "RAZAFI-DEMO-" + Math.floor(100000 + Math.random() * 899999);
+        modalStatusIcon.textContent = "✅";
+        modalStatusText.textContent = "Paiement confirmé";
+        modalStatusSub.textContent  = "Votre code est prêt";
+        modalVoucherCode.textContent = fakeCode;
+        modalVoucherBlock.classList.remove("hidden");
+      }, 1800);
+    });
+
+    useCodeBtn.addEventListener("click", function(){
+      useCodeBtn.textContent = "Connexion en cours…";
+      useCodeBtn.disabled = true;
+      setTimeout(function(){ window.location.href = "https://www.google.com/"; }, 1200);
+    });
+
+  })();
+  </script>
+
+</body>
+</html>

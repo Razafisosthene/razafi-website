@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RAZAFI Admin — Démo</title>
+<style>
+/* ===== RESET & BASE ===== */
+*{box-sizing:border-box;font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;}
+:root{
+  --rz-blue:#0d6efd;--rz-blue-soft:rgba(13,110,253,.10);--rz-green:#22c55e;
+  --rz-text:#0f172a;--rz-muted:#64748b;--rz-line:rgba(15,23,42,.08);
+  --rz-radius-xl:28px;--rz-radius-lg:20px;
+  --rz-shadow-card:0 18px 42px rgba(15,23,42,.10);
+  --rz-card-shadow:0 18px 42px rgba(15,23,42,.10);
+  --rz-card-shadow-soft:0 10px 28px rgba(15,23,42,.08);
+  --rz-blue-2:#1473ff;
+}
+html,body{margin:0;padding:0;max-width:100%;overflow-x:hidden;}
+body{
+  min-height:100vh;padding-bottom:118px;
+  background:
+    radial-gradient(circle at 20% -10%,rgba(13,110,253,.16),transparent 38%),
+    radial-gradient(circle at 90% 5%,rgba(34,197,94,.10),transparent 28%),
+    linear-gradient(180deg,#f8fbff 0%,#eef5ff 48%,#f8fafc 100%);
+}
+h1{margin:0;text-align:center;font-size:26px;color:#0d6efd;}
+input,select{
+  width:100%;padding:14px;margin-bottom:14px;border-radius:10px;
+  border:1px solid #ddd;font-size:15px;
+}
+input:focus,select:focus{outline:none;border-color:#0d6efd;}
+button{
+  width:100%;padding:14px;background:#0d6efd;color:#fff;border:none;
+  border-radius:10px;font-size:16px;cursor:pointer;
+}
+button:hover{background:#0b5ed7;}
+.error{margin-top:12px;color:#d9534f;text-align:center;font-size:14px;}
+.subtitle{text-align:center;color:#666;margin-bottom:24px;}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+.topbar .title h1{margin:0;font-size:26px;line-height:1.1;}
+.nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;align-items:center;}
+.table-wrap{overflow:auto;margin-top:14px;-webkit-overflow-scrolling:touch;}
+tr.row-status-active{background:rgba(25,135,84,.18);box-shadow:inset 4px 0 0 rgba(25,135,84,.90);}
+tr.row-status-active td{color:#0f5132;font-weight:600;}
+tr.row-status-pending{background:rgba(13,110,253,.10);}
+tr.row-status-expired{background:rgba(108,117,125,.12);}
+tr.row-status-active:hover{background:rgba(25,135,84,.24);}
+tr.row-status-pending:hover{background:rgba(13,110,253,.14);}
+tr.row-status-expired:hover{background:rgba(108,117,125,.16);}
+tr.row-status-active,tr.row-status-pending,tr.row-status-expired{transition:background-color 180ms ease;}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;line-height:18px;vertical-align:middle;}
+.sticky-bar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:10px;margin-top:10px;}
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.filter-search{flex:1 1 260px;min-width:220px;}
+.filter-select{width:auto;}
+.filter-btn{width:auto;}
+.filter-btn.primary{font-weight:700;}
+
+/* ===== LOGIN CONTAINER / CARD ===== */
+.login-container{width:100%;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;}
+.card{background:#fff;border-radius:14px;padding:32px 28px;box-shadow:0 20px 40px rgba(0,0,0,.15);}
+
+/* ===== ADMIN SHELL OVERRIDES ===== */
+.login-container>.card{box-shadow:none;border:0;background:rgba(255,255,255,.66);}
+
+/* ===== TOPBAR / HERO / OWNER CHIP ===== */
+.rz-hero-title{
+  margin:0;font-size:clamp(26px,4.5vw,38px);line-height:1.02;
+  letter-spacing:-.055em;color:#0f172a;
+}
+.rz-owner-chip{
+  display:inline-flex;align-items:center;gap:8px;max-width:min(520px,100%);
+  margin-top:10px;padding:7px 10px;border-radius:999px;
+  background:rgba(13,110,253,.08);color:#1d4ed8;
+  font-weight:850;font-size:12px;white-space:nowrap;
+}
+.rz-owner-chip::before{
+  content:"";width:7px;height:7px;border-radius:999px;
+  background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.14);flex:0 0 auto;
+}
+.rz-owner-text{display:flex;flex-direction:column;min-width:0;line-height:1.12;}
+.rz-owner-label{font-size:11px;font-weight:850;color:#64748b;}
+.rz-owner-name{margin-top:2px;font-size:12px;font-weight:950;color:#1d4ed8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* ===== DASHBOARD TOOLS ===== */
+.rz-dashboard-shell{display:flex;flex-direction:column;gap:14px;background:transparent!important;}
+.sticky-bar.rz-dashboard-tools{
+  border:0!important;box-shadow:var(--rz-card-shadow-soft)!important;
+  background:rgba(255,255,255,.86)!important;border-radius:30px!important;
+  padding:16px!important;margin-bottom:10px;
+}
+.rz-dashboard-tools-compact{max-width:760px;width:100%;margin-left:auto;margin-right:auto;padding:12px!important;border-radius:26px!important;}
+.rz-dashboard-tools-compact .filters{display:grid;grid-template-columns:minmax(180px,1fr) auto;align-items:stretch;gap:10px;}
+.rz-dashboard-tools input,.rz-dashboard-tools select,.sticky-bar input,.sticky-bar select{
+  height:52px;border-radius:18px!important;border:1px solid rgba(15,23,42,.08)!important;
+  background:rgba(248,250,252,.92)!important;color:#0f172a;
+  box-shadow:inset 0 1px 2px rgba(15,23,42,.03);
+}
+.rz-dashboard-tools input:focus,.rz-dashboard-tools select:focus,.sticky-bar input:focus,.sticky-bar select:focus{
+  outline:none;border-color:rgba(13,110,253,.35)!important;
+  box-shadow:0 0 0 4px rgba(13,110,253,.10),inset 0 1px 2px rgba(15,23,42,.03);
+}
+.filter-btn,.rz-dashboard-tools button,button.filter-btn.primary{
+  border:0!important;outline:0!important;border-radius:18px!important;
+  box-shadow:0 10px 22px rgba(13,110,253,.18)!important;font-weight:950!important;letter-spacing:-.02em;
+}
+.rz-dashboard-tools #refresh,button.filter-btn.primary{
+  min-height:52px;padding:0 20px!important;
+  background:linear-gradient(180deg,#2382ff 0%,#0d6efd 100%)!important;
+}
+.rz-dashboard-tools #refresh::before{content:"↻";display:inline-block;margin-right:8px;font-size:18px;transform:translateY(1px);}
+.rz-dashboard-tools #refresh:hover{transform:translateY(-1px);box-shadow:0 14px 28px rgba(13,110,253,.24)!important;}
+.rz-dashboard-status{
+  max-width:760px;width:100%;margin-left:auto;margin-right:auto;
+  padding-bottom:76px!important;display:inline-flex;align-items:center;
+  gap:8px;margin-top:10px;color:#64748b;font-size:13px;font-weight:750;
+}
+.rz-dashboard-status::before{content:"";width:7px;height:7px;border-radius:999px;background:#0d6efd;box-shadow:0 0 0 4px rgba(13,110,253,.10);}
+
+/* ===== POOL CARDS ===== */
+.rz-pools-grid{
+  display:grid;grid-template-columns:minmax(0,760px)!important;
+  justify-content:center;gap:12px!important;margin-top:12px!important;
+}
+.rz-pool-card{
+  position:relative;overflow:hidden;padding:18px;border-radius:34px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(255,255,255,.89))!important;
+  border:1px solid rgba(15,23,42,.06)!important;box-shadow:var(--rz-card-shadow)!important;
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.rz-pool-card::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,#0d6efd 0%,#16a34a 100%);}
+.rz-pool-card:hover{transform:translateY(-1px);box-shadow:0 22px 48px rgba(15,23,42,.13)!important;}
+.rz-pool-card-compact{padding:15px 16px 14px!important;border-radius:26px!important;min-height:auto;}
+.rz-pool-card-compact::before{height:4px!important;}
+.rz-pool-compact-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.rz-pool-name{font-size:21px!important;line-height:1.05;font-weight:950;letter-spacing:-.045em;}
+.rz-pool-compact-sub{margin-top:6px;color:#64748b;font-size:13px;font-weight:850;}
+.rz-pool-usage-pill{
+  flex:0 0 auto;min-width:58px;padding:8px 10px;border-radius:18px;
+  background:linear-gradient(180deg,rgba(13,110,253,.12),rgba(13,110,253,.06));
+  color:#0d6efd;border:1px solid rgba(13,110,253,.10);
+  text-align:center;font-weight:950;font-size:18px;line-height:1;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.85);
+}
+.rz-pool-usage-pill span{display:block;margin-top:4px;color:rgba(13,110,253,.72);font-size:9px;font-weight:950;letter-spacing:-.01em;}
+.rz-progress-block{margin-top:12px!important;}
+.rz-progress-top{display:flex;justify-content:space-between;gap:10px;color:#64748b;font-size:12.5px;font-weight:850;margin-bottom:7px;}
+.rz-progress-track{height:9px!important;border-radius:999px;background:rgba(15,23,42,.06);overflow:hidden;box-shadow:inset 0 1px 2px rgba(15,23,42,.05);}
+.rz-progress-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,#22c55e 0%,#86efac 52%,#0d6efd 100%);box-shadow:0 0 14px rgba(34,197,94,.25);transition:width .22s ease;min-width:0;}
+.rz-progress-fill.warn{background:linear-gradient(90deg,#f59e0b,#fbbf24);box-shadow:0 0 14px rgba(245,158,11,.22);}
+.rz-progress-fill.danger{background:linear-gradient(90deg,#ef4444,#fb7185);box-shadow:0 0 14px rgba(239,68,68,.22);}
+.rz-empty-card{border-radius:24px;background:rgba(248,250,252,.72);border:1px dashed rgba(100,116,139,.20);color:#64748b;text-align:center;padding:20px;font-weight:750;}
+
+/* ===== BOTTOM NAV ===== */
+.rz-bottom-nav{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:10px!important;
+  width:min(420px,calc(100vw - 30px))!important;z-index:99999!important;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:4px!important;
+  padding:6px!important;border-radius:26px!important;
+  background:rgba(255,255,255,.86);border:1px solid rgba(226,232,240,.72);
+  box-shadow:0 20px 55px rgba(15,23,42,.18),0 6px 18px rgba(15,23,42,.08);
+  -webkit-backdrop-filter:blur(22px) saturate(1.25);backdrop-filter:blur(22px) saturate(1.25);
+}
+.rz-bottom-item{
+  text-decoration:none;color:#64748b;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:2px!important;
+  min-height:46px!important;border-radius:20px!important;
+  font-size:10px!important;font-weight:900;letter-spacing:-.02em;
+  transition:transform .14s ease,background-color .14s ease,color .14s ease;
+  border:none;background:none;cursor:pointer;line-height:1.05!important;
+  padding:4px 2px;
+}
+.rz-bottom-item:active{transform:scale(.98);}
+.rz-bottom-icon{width:20px!important;height:20px!important;display:inline-flex;align-items:center;justify-content:center;}
+.rz-bottom-icon svg{width:20px!important;height:20px!important;display:block;}
+.rz-bottom-item.active{
+  background:linear-gradient(180deg,rgba(13,110,253,.15),rgba(13,110,253,.08));
+  color:#0d6efd;box-shadow:inset 0 0 0 1px rgba(13,110,253,.12),0 8px 18px rgba(13,110,253,.09);
+}
+.rz-bottom-item.active .rz-bottom-icon{filter:drop-shadow(0 4px 7px rgba(13,110,253,.18));}
+
+/* ===== CLIENTS ===== */
+.rz-clients-shell{background:transparent!important;}
+.rz-clients-shell,.rz-clients-shell *{min-width:0;}
+.rz-clients-topbar{position:relative;justify-content:center!important;text-align:center;margin-bottom:12px!important;}
+.rz-clients-topbar .title{width:100%;display:flex;flex-direction:column;align-items:center;}
+.rz-clients-shell .rz-owner-chip{flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;max-width:min(300px,calc(100vw - 110px))!important;padding:6px 10px!important;border-radius:18px!important;text-align:left;}
+.rz-clients-shell .rz-owner-text{display:flex!important;flex-direction:column!important;align-items:flex-start!important;min-width:0;line-height:1.12;}
+.rz-clients-tools{width:min(100%,960px);margin-left:auto;margin-right:auto;padding:12px!important;border-radius:28px!important;}
+.rz-clients-tools .filters{display:grid!important;grid-template-columns:minmax(220px,1.6fr) minmax(120px,.75fr) minmax(140px,.9fr) minmax(140px,.9fr) auto auto;gap:10px!important;align-items:center!important;}
+.rz-clients-tools input,.rz-clients-tools select,.rz-clients-tools button{width:100%!important;min-width:0!important;margin:0!important;height:46px!important;min-height:46px!important;padding:0 12px!important;border-radius:18px!important;font-size:14px!important;line-height:1.1!important;}
+.rz-clients-tools select{color:#0f172a!important;appearance:auto!important;-webkit-appearance:menulist!important;}
+.rz-clients-tools button{white-space:nowrap;font-weight:950!important;}
+.rz-clients-tools select#clientStatus,.rz-clients-tools select#clientStatus.filter-select{height:42px!important;min-height:42px!important;max-height:42px!important;padding:0 12px!important;line-height:42px!important;display:block!important;}
+.rz-clients-summary{width:min(100%,960px);margin:12px auto 0;display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px!important;}
+.rz-client-summary-card{padding:11px 13px;border-radius:20px;background:rgba(255,255,255,.84);border:1px solid rgba(226,232,240,.82);box-shadow:0 10px 24px rgba(15,23,42,.07);cursor:pointer;transition:box-shadow .14s ease,transform .14s ease;}
+.rz-client-summary-card:hover{transform:translateY(-1px);box-shadow:0 14px 32px rgba(15,23,42,.10);}
+.rz-client-summary-card.active-filter{box-shadow:inset 0 0 0 2px #0d6efd,0 10px 24px rgba(13,110,253,.12);}
+.rz-client-summary-label{color:#64748b;font-size:12px;font-weight:900;}
+.rz-client-summary-value{margin-top:2px;color:#0d6efd;font-size:24px;font-weight:950;line-height:1;}
+.rz-clients-shell .table-wrap{width:min(100%,1080px);max-width:100%;margin:14px auto 0;overflow-x:auto;overflow-y:visible;border-radius:22px;-webkit-overflow-scrolling:touch;background:rgba(255,255,255,.54);box-shadow:0 10px 26px rgba(15,23,42,.06);}
+.rz-clients-shell table{width:100%;min-width:700px;background:rgba(255,255,255,.82);}
+.rz-clients-shell thead th{background:rgba(255,255,255,.88);color:#334155;font-size:12px;font-weight:950;white-space:nowrap;padding:10px;border-bottom:1px solid rgba(0,0,0,.12);}
+.rz-clients-shell tbody td{font-size:13px;vertical-align:middle;padding:10px;border-bottom:1px solid rgba(0,0,0,.06);}
+
+/* ===== REVENUE ===== */
+.rz-revenue-shell{display:flex;flex-direction:column;gap:14px;}
+.rz-revenue-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;}
+.rz-stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:2px;}
+.rz-stat-card{position:relative;overflow:hidden;padding:16px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.78));border:1px solid rgba(255,255,255,.92);box-shadow:0 12px 28px rgba(15,23,42,.08);}
+.rz-stat-card::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,#0d6efd,#60a5fa,#22c55e);}
+.rz-stat-card-owner{background:radial-gradient(circle at top right,rgba(22,163,74,.16),transparent 34%),linear-gradient(180deg,rgba(240,253,244,.98),rgba(255,255,255,.84));border-color:rgba(22,163,74,.24);box-shadow:0 16px 34px rgba(22,163,74,.12),0 12px 28px rgba(15,23,42,.08);}
+.rz-stat-card-owner::before{background:linear-gradient(90deg,#16a34a,#22c55e,#0d6efd);}
+.rz-owner-stat-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.rz-owner-stat-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;background:rgba(22,163,74,.12);color:#15803d;font-size:11px;font-weight:950;white-space:nowrap;}
+.rz-owner-stat-hint{margin-top:8px;color:#64748b;font-size:12px;font-weight:800;line-height:1.25;}
+.rz-stat-label{color:#6b7280;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;}
+.rz-stat-value{margin-top:8px;font-size:clamp(22px,4vw,32px);line-height:1;font-weight:950;letter-spacing:-.045em;color:#0f172a;word-break:break-word;}
+.rz-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:8px;border-radius:24px;background:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.90);box-shadow:0 10px 26px rgba(15,23,42,.07);width:fit-content;max-width:100%;}
+.rz-tab-btn{width:auto;border-radius:18px;background:rgba(255,255,255,.86);color:#111827;border:1px solid rgba(17,24,39,.08);box-shadow:none;padding:10px 14px;}
+.rz-tab-btn.active{background:linear-gradient(135deg,#0d6efd,#2563eb);color:#fff;border-color:transparent;box-shadow:0 10px 22px rgba(13,110,253,.20);}
+.rz-panel-card{margin-top:0;padding:14px;border-radius:26px;background:rgba(255,255,255,.70);border:1px solid rgba(255,255,255,.90);box-shadow:0 12px 28px rgba(15,23,42,.08);backdrop-filter:blur(16px);}
+.rz-table-wrap{overflow:auto;border-radius:20px;border:1px solid rgba(17,24,39,.07);background:rgba(255,255,255,.72);-webkit-overflow-scrolling:touch;}
+.rz-data-table{width:100%;border-collapse:collapse;}
+.rz-data-table th{background:rgba(248,250,252,.94);color:#6b7280;font-size:12px;font-weight:950;text-transform:uppercase;letter-spacing:.035em;white-space:nowrap;border-bottom:1px solid rgba(17,24,39,.08);padding:10px 12px;}
+.rz-data-table td{color:#111827;vertical-align:middle;padding:10px 12px;border-bottom:1px solid rgba(17,24,39,.06);}
+.rz-data-table tbody tr:hover{background:rgba(13,110,253,.035);}
+.rz-filter-label{font-size:13px;color:#6b7280;font-weight:850;}
+
+/* ===== PLANS ===== */
+.rz-plans-shell{display:flex;flex-direction:column;gap:14px;}
+.rz-plans-header{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.rz-plans-title-block{min-width:0;}
+.rz-plans-filter-grid{display:grid;grid-template-columns:minmax(220px,1.4fr) minmax(150px,.7fr) minmax(180px,.9fr) auto;gap:10px;align-items:center;}
+.rz-plans-filter-grid select,.rz-plans-filter-grid input{margin-bottom:0;}
+.rz-plans-table-card{margin-top:14px;border-radius:24px;background:rgba(255,255,255,.76);border:1px solid rgba(255,255,255,.88);box-shadow:0 12px 28px rgba(15,23,42,.08);overflow:hidden;}
+.rz-plans-table-wrap{overflow:auto;-webkit-overflow-scrolling:touch;}
+.rz-plans-table{width:100%;border-collapse:separate;border-spacing:0;min-width:700px;}
+.rz-plans-table th{position:sticky;top:0;z-index:2;text-align:left;padding:12px 10px;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#6b7280;background:rgba(248,250,252,.96);border-bottom:1px solid rgba(17,24,39,.08);}
+.rz-plans-table td{padding:12px 10px;border-bottom:1px solid rgba(17,24,39,.07);vertical-align:middle;font-size:14px;}
+.rz-plans-table tbody tr{transition:background .16s ease;}
+.rz-plan-name{font-weight:950;letter-spacing:-.02em;}
+.rz-status-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;font-size:12px;font-weight:900;border:1px solid rgba(17,24,39,.08);background:rgba(255,255,255,.78);white-space:nowrap;}
+.rz-status-pill.ok{background:rgba(22,163,74,.12);color:#15803d;border-color:rgba(22,163,74,.22);}
+.rz-status-pill.off{background:rgba(107,114,128,.10);color:#4b5563;border-color:rgba(107,114,128,.18);}
+.rz-plan-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.rz-plan-actions button{width:auto;padding:8px 11px;border-radius:12px;font-size:13px;box-shadow:none;}
+.rz-empty-state{padding:22px;color:#6b7280;font-weight:800;}
+.rz-plan-feedback-toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:100000;display:inline-flex;align-items:center;gap:8px;padding:11px 14px;border-radius:999px;background:rgba(240,253,244,.94);border:1px solid rgba(25,135,84,.28);color:#15803d;font-size:13px;font-weight:950;box-shadow:0 18px 45px rgba(15,23,42,.16);backdrop-filter:blur(16px);animation:rzPlanToastIn .18s ease-out;}
+@keyframes rzPlanToastIn{from{opacity:0;transform:translateX(-50%) translateY(8px) scale(.96);}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1);}}
+
+/* ===== SECTIONS ===== */
+.rz-section{display:none;}
+.rz-section.active{display:block;}
+
+/* ===== PILL HELPERS ===== */
+.pill{display:inline-block;padding:5px 10px;border-radius:999px;font-weight:900;font-size:12px;}
+.pill-ok{background:rgba(80,200,120,.18);color:rgba(10,120,50,.95);}
+.pill-warn{background:rgba(255,196,0,.22);color:rgba(140,100,0,.95);}
+.pill-neutral{background:rgba(0,0,0,.06);color:rgba(0,0,0,.75);}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:700px){
+  .login-container{padding-top:10px!important;padding-bottom:96px!important;}
+  .login-container>.card{padding:14px;border-radius:26px;width:100%!important;}
+  .rz-hero-title{font-size:24px!important;line-height:1.02!important;}
+  .rz-owner-chip{margin-top:8px!important;padding:6px 9px!important;border-radius:18px!important;}
+  .rz-dashboard-tools.rz-dashboard-tools-compact{padding:8px!important;border-radius:22px!important;margin-top:6px!important;margin-bottom:4px!important;}
+  .rz-dashboard-tools-compact .filters{grid-template-columns:minmax(0,1fr) 116px!important;gap:8px!important;align-items:center!important;}
+  .rz-dashboard-tools-compact #poolFilter,.rz-dashboard-tools select,.sticky-bar select{height:42px!important;min-height:42px!important;border-radius:16px!important;font-size:15px!important;padding:0 12px!important;}
+  .rz-dashboard-tools-compact #refresh{width:auto!important;min-width:0!important;min-height:42px!important;height:42px!important;border-radius:16px!important;padding:0 10px!important;font-size:14px!important;}
+  .rz-pools-grid{gap:10px!important;margin-top:8px!important;}
+  .rz-pool-card.rz-pool-card-compact{padding:14px 15px 13px!important;border-radius:24px!important;}
+  .rz-pool-card-compact .rz-pool-name{font-size:20px!important;}
+  .rz-pool-usage-pill{min-width:54px;padding:7px 9px;border-radius:16px;font-size:17px;}
+  .rz-bottom-nav{width:calc(100vw - 28px)!important;}
+  .rz-clients-tools .filters{grid-template-columns:1fr 1fr!important;gap:8px!important;}
+  .rz-clients-tools input,.rz-clients-tools select,.rz-clients-tools button{height:42px!important;min-height:42px!important;border-radius:17px!important;}
+  .rz-clients-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px!important;margin-top:10px;}
+  .rz-client-summary-value{font-size:20px;}
+  .rz-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .rz-plans-filter-grid{grid-template-columns:1fr;}
+  .rz-plans-filter-grid button{width:100%;}
+}
+@media(max-width:400px){
+  .rz-clients-summary{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+</style>
+</head>
+<body class="rz-admin-shell">
+
+<div class="login-container">
+<div class="card" style="max-width:1100px;width:96%;">
+
+<!-- ======================================================= -->
+<!-- SECTION: DASHBOARD -->
+<!-- ======================================================= -->
+<div id="section-dashboard" class="rz-section active rz-dashboard-shell">
+  <div class="topbar">
+    <div class="title">
+      <h1 class="rz-hero-title">Tableau de bord</h1>
+      <div class="rz-owner-chip">
+        <span class="rz-owner-text">
+          <span class="rz-owner-label">Mode</span>
+          <span class="rz-owner-name">Démo propriétaire</span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="sticky-bar rz-dashboard-tools rz-dashboard-tools-compact">
+    <div class="filters">
+      <select id="poolFilter">
+        <option value="">Tous les pools</option>
+      </select>
+      <button type="button" id="refresh" class="filter-btn primary" style="width:auto;">Actualiser</button>
+    </div>
+  </div>
+  <div id="poolsContainer" class="rz-pools-grid"></div>
+  <div id="dashStatus" class="rz-dashboard-status"></div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECTION: CLIENTS -->
+<!-- ======================================================= -->
+<div id="section-clients" class="rz-section rz-clients-shell">
+  <div class="topbar rz-clients-topbar">
+    <div class="title">
+      <h1 class="rz-hero-title">Clients</h1>
+      <div class="rz-owner-chip">
+        <span class="rz-owner-text">
+          <span class="rz-owner-label">Mode</span>
+          <span class="rz-owner-name">Démo propriétaire</span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="sticky-bar rz-clients-tools">
+    <div class="filters">
+      <input id="clientSearch" class="filter-search" placeholder="Rechercher : client, plan, pool..." />
+      <select id="clientStatus" class="filter-select">
+        <option value="all">Tous</option>
+        <option value="active">Actifs</option>
+        <option value="online">Connectés 🟢</option>
+        <option value="offline">Hors ligne ⚫</option>
+        <option value="pending">En attente</option>
+        <option value="expired">Expirés</option>
+      </select>
+      <select id="clientPlanFilter" class="filter-select">
+        <option value="all">Tous les plans</option>
+      </select>
+      <select id="clientPoolFilter" class="filter-select">
+        <option value="all">Tous les pools</option>
+      </select>
+      <button id="clientRefreshBtn" class="filter-btn" type="button" style="background:linear-gradient(180deg,#2382ff,#0d6efd);color:#fff;">Actualiser</button>
+      <button id="clientClearBtn" class="filter-btn" type="button">Effacer</button>
+    </div>
+  </div>
+  <div id="clientSummary" class="rz-clients-summary"></div>
+  <div class="table-wrap rz-clients-shell" style="margin-top:14px;">
+    <table id="clientTable" style="width:100%;border-collapse:collapse;min-width:700px;">
+      <thead>
+        <tr>
+          <th style="padding:10px;border-bottom:1px solid rgba(0,0,0,.12);background:rgba(255,255,255,.88);color:#334155;font-size:12px;font-weight:950;">Client</th>
+          <th style="padding:10px;border-bottom:1px solid rgba(0,0,0,.12);background:rgba(255,255,255,.88);color:#334155;font-size:12px;font-weight:950;">Statut</th>
+          <th style="padding:10px;border-bottom:1px solid rgba(0,0,0,.12);background:rgba(255,255,255,.88);color:#334155;font-size:12px;font-weight:950;">Plan</th>
+          <th style="padding:10px;border-bottom:1px solid rgba(0,0,0,.12);background:rgba(255,255,255,.88);color:#334155;font-size:12px;font-weight:950;">Pool</th>
+          <th style="padding:10px;border-bottom:1px solid rgba(0,0,0,.12);background:rgba(255,255,255,.88);color:#334155;font-size:12px;font-weight:950;">Temps restant</th>
+        </tr>
+      </thead>
+      <tbody id="clientTbody"></tbody>
+    </table>
+  </div>
+  <div id="clientEmpty" style="display:none;padding:18px;color:#64748b;font-weight:750;">Aucun enregistrement trouvé.</div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECTION: REVENUE -->
+<!-- ======================================================= -->
+<div id="section-revenue" class="rz-section rz-revenue-shell">
+  <div class="rz-revenue-head topbar">
+    <div class="title">
+      <h1 class="rz-hero-title">Revenue</h1>
+      <div class="rz-owner-chip">
+        <span class="rz-owner-text">
+          <span class="rz-owner-label">Mode</span>
+          <span class="rz-owner-name">Démo propriétaire</span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div id="revStatsGrid" class="rz-stats-grid"></div>
+  <div class="sticky-bar" style="margin-top:14px;">
+    <div class="filters" style="flex-wrap:wrap;gap:10px;">
+      <input id="revSearch" placeholder="Rechercher…" style="flex:1 1 200px;min-width:160px;margin:0;height:46px;border-radius:18px;border:1px solid rgba(15,23,42,.08);background:rgba(248,250,252,.92);padding:0 12px;font-size:14px;" />
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:#6b7280;font-weight:850;white-space:nowrap;">Du <input type="date" id="revFrom" style="flex:none;width:auto;margin:0;height:42px;border-radius:14px;border:1px solid rgba(15,23,42,.08);background:rgba(248,250,252,.92);padding:0 10px;font-size:13px;" /></label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:#6b7280;font-weight:850;white-space:nowrap;">Au <input type="date" id="revTo" style="flex:none;width:auto;margin:0;height:42px;border-radius:14px;border:1px solid rgba(15,23,42,.08);background:rgba(248,250,252,.92);padding:0 10px;font-size:13px;" /></label>
+      <select id="revPoolFilter" style="margin:0;height:46px;border-radius:18px;border:1px solid rgba(15,23,42,.08);background:rgba(248,250,252,.92);padding:0 12px;font-size:14px;width:auto;">
+        <option value="all">Tous les pools</option>
+      </select>
+      <button id="revRefreshBtn" type="button" class="filter-btn primary" style="width:auto;height:46px;padding:0 18px;min-height:0;background:linear-gradient(180deg,#2382ff,#0d6efd);color:#fff;border-radius:18px;font-size:14px;">Actualiser</button>
+      <button id="revResetBtn" type="button" class="filter-btn" style="width:auto;height:46px;padding:0 18px;min-height:0;border-radius:18px;font-size:14px;">Réinitialiser</button>
+    </div>
+  </div>
+  <div class="rz-tabs" style="margin-top:14px;">
+    <button class="rz-tab-btn active" type="button" data-tab="tx">Transactions</button>
+    <button class="rz-tab-btn" type="button" data-tab="plan">Par forfait</button>
+    <button class="rz-tab-btn" type="button" data-tab="pool">Par pool</button>
+  </div>
+  <div class="rz-panel-card" style="margin-top:14px;">
+    <div id="revPanelTx">
+      <div class="rz-table-wrap">
+        <table class="rz-data-table">
+          <thead><tr>
+            <th>Date</th><th>Plan</th><th>Pool</th><th>Montant</th><th>Votre part</th><th>Statut</th>
+          </tr></thead>
+          <tbody id="revTxBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div id="revPanelPlan" style="display:none;">
+      <div class="rz-table-wrap">
+        <table class="rz-data-table">
+          <thead><tr>
+            <th>Plan</th><th>Transactions</th><th>Montant payé</th><th>Votre part</th>
+          </tr></thead>
+          <tbody id="revPlanBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div id="revPanelPool" style="display:none;">
+      <div class="rz-table-wrap">
+        <table class="rz-data-table">
+          <thead><tr>
+            <th>Pool</th><th>Transactions</th><th>Montant payé</th><th>Votre part</th>
+          </tr></thead>
+          <tbody id="revPoolBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div id="revEmpty" style="display:none;padding:18px;color:#64748b;font-weight:750;">Aucune transaction pour ces filtres.</div>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECTION: PLANS -->
+<!-- ======================================================= -->
+<div id="section-plans" class="rz-section rz-plans-shell">
+  <div class="topbar rz-plans-header">
+    <div class="rz-plans-title-block">
+      <h1 class="rz-hero-title">Plans</h1>
+      <div class="rz-owner-chip" style="margin-top:10px;">
+        <span class="rz-owner-text">
+          <span class="rz-owner-label">Mode</span>
+          <span class="rz-owner-name">Démo propriétaire</span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="sticky-bar" style="margin-top:10px;">
+    <div class="rz-plans-filter-grid">
+      <input id="planSearch" placeholder="Rechercher un plan…" style="margin:0;height:46px;border-radius:18px;border:1px solid rgba(15,23,42,.08);background:rgba(248,250,252,.92);padding:0 12px;font-size:14px;" />
+      <select id="planPoolFilter" style="margin:0;height:46px;border-radius:18px;border:1px solid rgba(15,23,42,.08);background:rgba(248,250,252,.92);padding:0 12px;font-size:14px;">
+        <option value="all">Tous les pools</option>
+      </select>
+      <button id="planRefreshBtn" type="button" class="filter-btn primary" style="width:auto;height:46px;padding:0 18px;min-height:0;background:linear-gradient(180deg,#2382ff,#0d6efd);color:#fff;border-radius:18px;font-size:14px;">↻ Actualiser</button>
+      <button id="planClearBtn" type="button" class="filter-btn" style="width:auto;height:46px;padding:0 18px;min-height:0;border-radius:18px;font-size:14px;">Effacer</button>
+    </div>
+  </div>
+  <div class="rz-plans-table-card">
+    <div class="rz-plans-table-wrap">
+      <table class="rz-plans-table">
+        <thead>
+          <tr>
+            <th>Plan</th><th>Prix</th><th>Durée</th><th>Data</th><th>Vitesse</th><th>Visible</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="plansTbody"></tbody>
+      </table>
+    </div>
+    <div id="plansEmpty" style="display:none;" class="rz-empty-state">Aucun plan trouvé.</div>
+  </div>
+</div>
+
+</div><!-- /card -->
+</div><!-- /login-container -->
+
+<!-- ======================================================= -->
+<!-- BOTTOM NAV -->
+<!-- ======================================================= -->
+<nav class="rz-bottom-nav" id="bottomNav" aria-label="Navigation principale">
+  <button class="rz-bottom-item active" type="button" data-section="dashboard">
+    <span class="rz-bottom-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-9.5Z" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <span>Dashboard</span>
+  </button>
+  <button class="rz-bottom-item" type="button" data-section="clients">
+    <span class="rz-bottom-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 1 0-8 0" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M5.5 20c.7-3.2 3-5 6.5-5s5.8 1.8 6.5 5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M18.5 12.5c1.9.3 3.1 1.5 3.5 3.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M5.5 12.5C3.6 12.8 2.4 14 2 16" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></svg></span>
+    <span>Clients</span>
+  </button>
+  <button class="rz-bottom-item" type="button" data-section="revenue">
+    <span class="rz-bottom-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M17 7.5c-.9-1.2-2.4-2-4.5-2C10 5.5 8 6.8 8 8.8c0 4 9 2 9 6.6 0 2-2 3.1-4.7 3.1-2.3 0-4.1-.8-5.3-2.2" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <span>Revenue</span>
+  </button>
+  <button class="rz-bottom-item" type="button" data-section="plans">
+    <span class="rz-bottom-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 7.5h14M7 4.5h10a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-11a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 11h8M8 15h5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></svg></span>
+    <span>Plans</span>
+  </button>
+</nav>
+
+<script>
+/* ================================================================
+   RAZAFI DEMO ADMIN — 100% local, no backend, no fetch, no API
+   ================================================================ */
+
+// ---------------------------------------------------------------
+// HELPERS
+// ---------------------------------------------------------------
+function esc(s){
+  return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function rnd(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function pick(arr){return arr[rnd(0,arr.length-1)];}
+function fmtAr(n){return Number(n).toLocaleString('fr-FR')+' Ar';}
+function fmtDate(d){return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});}
+function fmtDateTime(d){return new Date(d).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+
+// ---------------------------------------------------------------
+// SHARED DEMO DATA — generated once
+// ---------------------------------------------------------------
+
+const POOL_SOURCE = [
+  'Kristof WiFi — Tsianolondroa',
+  'Judicaël WiFi — Ambanja',
+  'Andeboka Resort — Mananjary',
+  'RAZAFI — Antsahavola',
+  'Sitraka WiFi — Fianarantsoa',
+  'Tiana WiFi — Ambatomena',
+  'Nomena WiFi — Anosy',
+  'StarConnect — Ambositra',
+  'MadaNet — Antsirabe',
+  'Tsara WiFi — Toamasina'
+];
+const CAPACITIES = [30,40,50,60,70,80,100];
+
+// Pick 3 to 5 unique pools
+function generatePools(){
+  const shuffled = [...POOL_SOURCE].sort(()=>Math.random()-.5);
+  const count = rnd(3,5);
+  return shuffled.slice(0,count).map((name,i)=>{
+    const cap = pick(CAPACITIES);
+    const pct = rnd(15,75);
+    const live = Math.round(cap*pct/100);
+    return {id:'pool-'+i, name, cap, live, pct};
+  });
+}
+
+const DEMO_PLANS = [
+  {id:'plan-1', name:'Illimité 1H 7M', price:400, duration:'1h', data:'Illimité', speed:'7 Mbps'},
+  {id:'plan-2', name:'2 Go Jour',       price:500, duration:'1 jour', data:'2 Go',    speed:'10 Mbps'},
+  {id:'plan-3', name:'20 Go Semaine',   price:3500,duration:'7 jours',data:'20 Go',   speed:'10 Mbps'}
+];
+
+const DEMO_POOLS = generatePools();
+
+// Visibility state — in-memory only
+const VISIBILITY = {};
+DEMO_POOLS.forEach(pool=>{
+  DEMO_PLANS.forEach(plan=>{
+    VISIBILITY[pool.id+':'+plan.id] = true; // all visible by default
+  });
+});
+
+// ----------- Generate Clients -----------
+const FIRST_NAMES = ['Tiana','Nomena','Lalaina','Haja','Tahiry','Fanja','Sitraka','Zo','Vola','Lova','Rado','Mamy','Fidy','Harizo','Misa','Andry','Rija','Kanto','Lanto','Meva'];
+const LAST_INITIALS = 'ABCDEFGHIJKLMNOPRSTV';
+const STATUSES = ['online','online','active','active','offline','pending','expired'];
+const STATUS_LABELS = {
+  online:'🟢 Connecté', active:'🟢 Connecté', offline:'⚫ Hors ligne',
+  pending:'🟡 En attente', expired:'🔴 Expiré'
+};
+const STATUS_ROW_CLASS = {
+  online:'row-status-active', active:'row-status-active',
+  offline:'', pending:'row-status-pending', expired:'row-status-expired'
+};
+
+function fmtRemaining(minutes){
+  if(minutes<=0) return '—';
+  const d=Math.floor(minutes/1440);
+  const h=Math.floor((minutes%1440)/60);
+  const m=minutes%60;
+  const parts=[];
+  if(d>0) parts.push(d+'j');
+  if(h>0||d>0) parts.push(h+'h');
+  parts.push(m+'min');
+  return parts.join(' ');
+}
+
+function generateClients(){
+  const clients=[];
+  const count=rnd(55,80);
+  for(let i=0;i<count;i++){
+    const fn=pick(FIRST_NAMES);
+    const li=LAST_INITIALS[rnd(0,LAST_INITIALS.length-1)];
+    const st=pick(STATUSES);
+    const pool=pick(DEMO_POOLS);
+    const plan=pick(DEMO_PLANS);
+    let remaining=0;
+    if(st==='online'||st==='active'){
+      remaining=rnd(5,plan.id==='plan-1'?60:plan.id==='plan-2'?1440:10080);
+    } else if(st==='pending'){
+      remaining=rnd(1,30);
+    }
+    clients.push({
+      id:'client-'+i,
+      name:fn+' '+li+'.',
+      status:st,
+      plan:plan.name,
+      planId:plan.id,
+      pool:pool.name,
+      poolId:pool.id,
+      remaining
+    });
+  }
+  return clients;
+}
+
+const DEMO_CLIENTS = generateClients();
+
+// ----------- Generate Transactions -----------
+function generateTransactions(){
+  const txs=[];
+  const now=Date.now();
+  const count=rnd(80,120);
+  for(let i=0;i<count;i++){
+    const daysAgo=rnd(0,89);
+    const date=new Date(now-daysAgo*86400000-rnd(0,86399)*1000);
+    const pool=pick(DEMO_POOLS);
+    const plan=pick(DEMO_PLANS);
+    const amount=plan.price;
+    txs.push({
+      id:'tx-'+i,
+      date,
+      planName:plan.name,
+      planId:plan.id,
+      poolName:pool.name,
+      poolId:pool.id,
+      amount,
+      ownerShare:Math.round(amount*0.8),
+      status:'Payé'
+    });
+  }
+  return txs.sort((a,b)=>b.date-a.date);
+}
+
+const DEMO_TX = generateTransactions();
+
+// ---------------------------------------------------------------
+// NAV — section switching
+// ---------------------------------------------------------------
+function showSection(name){
+  document.querySelectorAll('.rz-section').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById('section-'+name);
+  if(el) el.classList.add('active');
+
+  document.querySelectorAll('.rz-bottom-item').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.section===name);
+  });
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.querySelectorAll('.rz-bottom-item').forEach(btn=>{
+  btn.addEventListener('click',()=>showSection(btn.dataset.section));
+});
+
+// ---------------------------------------------------------------
+// DASHBOARD
+// ---------------------------------------------------------------
+let dashOccupancy = DEMO_POOLS.map(p=>({id:p.id, live:p.live, pct:p.pct}));
+
+function networkStatusLabel(pct){
+  if(pct>=70) return 'Réseau occupé';
+  if(pct>=40) return 'Réseau stable';
+  return 'Réseau fluide';
+}
+
+function pctFillClass(pct){
+  if(pct>=70) return 'danger';
+  if(pct>=40) return 'warn';
+  return '';
+}
+
+function renderDashboard(filtered){
+  const container=document.getElementById('poolsContainer');
+  const poolFilterEl=document.getElementById('poolFilter');
+
+  // Populate selector if needed
+  if(poolFilterEl.options.length<=1){
+    DEMO_POOLS.forEach(p=>{
+      const opt=document.createElement('option');
+      opt.value=p.id; opt.textContent=p.name;
+      poolFilterEl.appendChild(opt);
+    });
+  }
+
+  const selectedId=poolFilterEl.value;
+  const pools=DEMO_POOLS.filter(p=>!selectedId||p.id===selectedId);
+
+  if(!pools.length){container.innerHTML='<div class="rz-empty-card">Aucun pool trouvé.</div>';return;}
+
+  container.innerHTML=pools.map(p=>{
+    const occ=dashOccupancy.find(o=>o.id===p.id)||{live:p.live,pct:p.pct};
+    const clientWord=occ.live===1?'client connecté':'clients connectés';
+    const fillClass=pctFillClass(occ.pct);
+    return `
+      <article class="rz-pool-card rz-pool-card-compact${occ.pct>=70?' rz-saturated':''}">
+        <div class="rz-pool-compact-head">
+          <div>
+            <div class="rz-pool-name">${esc(p.name)}</div>
+            <div class="rz-pool-compact-sub">${esc(occ.live)} ${esc(clientWord)}</div>
+          </div>
+          <div class="rz-pool-usage-pill">
+            ${esc(occ.live)}/${esc(p.cap)}
+            <span>capacité</span>
+          </div>
+        </div>
+        <div class="rz-progress-block">
+          <div class="rz-progress-top">
+            <span>${esc(networkStatusLabel(occ.pct))}</span>
+            <span>${esc(occ.pct)}%</span>
+          </div>
+          <div class="rz-progress-track">
+            <div class="rz-progress-fill ${esc(fillClass)}" style="width:${esc(occ.pct)}%;"></div>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+document.getElementById('refresh').addEventListener('click',()=>{
+  // Slightly vary occupancy ±5%
+  dashOccupancy=DEMO_POOLS.map(p=>{
+    const base=dashOccupancy.find(o=>o.id===p.id)||{live:p.live,pct:p.pct};
+    const delta=rnd(-5,5);
+    const newPct=Math.min(95,Math.max(10,base.pct+delta));
+    const newLive=Math.round(p.cap*newPct/100);
+    return {id:p.id,live:newLive,pct:newPct};
+  });
+  renderDashboard();
+  const st=document.getElementById('dashStatus');
+  st.textContent='✅ Données actualisées';
+  setTimeout(()=>{if(st.textContent==='✅ Données actualisées') st.textContent='';},2200);
+});
+
+document.getElementById('poolFilter').addEventListener('change',()=>renderDashboard());
+
+renderDashboard();
+
+// ---------------------------------------------------------------
+// CLIENTS
+// ---------------------------------------------------------------
+
+// Populate filters
+(()=>{
+  const planSel=document.getElementById('clientPlanFilter');
+  const poolSel=document.getElementById('clientPoolFilter');
+  DEMO_PLANS.forEach(p=>{
+    const o=document.createElement('option');o.value=p.id;o.textContent=p.name;planSel.appendChild(o);
+  });
+  DEMO_POOLS.forEach(p=>{
+    const o=document.createElement('option');o.value=p.id;o.textContent=p.name;poolSel.appendChild(o);
+  });
+})();
+
+let clientSummaryFilter=null;
+
+function getFilteredClients(){
+  const search=(document.getElementById('clientSearch').value||'').toLowerCase().trim();
+  const statusVal=document.getElementById('clientStatus').value;
+  const planVal=document.getElementById('clientPlanFilter').value;
+  const poolVal=document.getElementById('clientPoolFilter').value;
+
+  return DEMO_CLIENTS.filter(c=>{
+    if(clientSummaryFilter){
+      if(clientSummaryFilter==='online'&&c.status!=='online'&&c.status!=='active') return false;
+      if(clientSummaryFilter==='active'&&c.status!=='active'&&c.status!=='online') return false;
+      if(clientSummaryFilter==='offline'&&c.status!=='offline') return false;
+      if(clientSummaryFilter==='pending'&&c.status!=='pending') return false;
+      if(clientSummaryFilter==='expired'&&c.status!=='expired') return false;
+    }
+    if(statusVal!=='all'){
+      if(statusVal==='online'&&c.status!=='online'&&c.status!=='active') return false;
+      if(statusVal==='active'&&c.status!=='active'&&c.status!=='online') return false;
+      if(statusVal==='offline'&&c.status!=='offline') return false;
+      if(statusVal==='pending'&&c.status!=='pending') return false;
+      if(statusVal==='expired'&&c.status!=='expired') return false;
+    }
+    if(planVal!=='all'&&c.planId!==planVal) return false;
+    if(poolVal!=='all'&&c.poolId!==poolVal) return false;
+    if(search){
+      const hay=(c.name+' '+c.plan+' '+c.pool).toLowerCase();
+      if(!hay.includes(search)) return false;
+    }
+    return true;
+  });
+}
+
+function renderClientSummary(){
+  const all=DEMO_CLIENTS;
+  const active=all.filter(c=>c.status==='active'||c.status==='online');
+  const online=all.filter(c=>c.status==='online'||c.status==='active');
+  const offline=all.filter(c=>c.status==='offline');
+  const pending=all.filter(c=>c.status==='pending');
+  const expired=all.filter(c=>c.status==='expired');
+
+  const cards=[
+    {key:'active',  label:'Actifs',     count:active.length},
+    {key:'online',  label:'Connectés',  count:online.length},
+    {key:'offline', label:'Hors ligne', count:offline.length},
+    {key:'pending', label:'En attente', count:pending.length},
+    {key:'expired', label:'Expirés',    count:expired.length},
+    {key:null,      label:'Total',      count:all.length}
+  ];
+
+  const el=document.getElementById('clientSummary');
+  el.innerHTML=cards.map(c=>`
+    <div class="rz-client-summary-card${clientSummaryFilter===c.key&&c.key?' active-filter':''}" data-sf="${esc(c.key||'')}">
+      <div class="rz-client-summary-label">${esc(c.label)}</div>
+      <div class="rz-client-summary-value">${esc(c.count)}</div>
+    </div>
+  `).join('');
+
+  el.querySelectorAll('.rz-client-summary-card').forEach(card=>{
+    card.addEventListener('click',()=>{
+      const sf=card.dataset.sf||null;
+      clientSummaryFilter=(clientSummaryFilter===sf?null:sf)||null;
+      if(!sf) clientSummaryFilter=null;
+      renderClientSummary();
+      renderClients();
+    });
+  });
+}
+
+function renderClients(){
+  const rows=getFilteredClients();
+  const tbody=document.getElementById('clientTbody');
+  const empty=document.getElementById('clientEmpty');
+
+  if(!rows.length){
+    tbody.innerHTML='';
+    empty.style.display='';
+    return;
+  }
+  empty.style.display='none';
+
+  tbody.innerHTML=rows.map(c=>{
+    const rowClass=STATUS_ROW_CLASS[c.status]||'';
+    const statusLabel=STATUS_LABELS[c.status]||c.status;
+    const rem=c.remaining>0?fmtRemaining(c.remaining):'—';
+    return `<tr class="${esc(rowClass)}">
+      <td style="padding:10px;border-bottom:1px solid rgba(0,0,0,.06);">${esc(c.name)}</td>
+      <td style="padding:10px;border-bottom:1px solid rgba(0,0,0,.06);">${esc(statusLabel)}</td>
+      <td style="padding:10px;border-bottom:1px solid rgba(0,0,0,.06);">${esc(c.plan)}</td>
+      <td style="padding:10px;border-bottom:1px solid rgba(0,0,0,.06);">${esc(c.pool)}</td>
+      <td style="padding:10px;border-bottom:1px solid rgba(0,0,0,.06);">${esc(rem)}</td>
+    </tr>`;
+  }).join('');
+}
+
+renderClientSummary();
+renderClients();
+
+['clientSearch','clientStatus','clientPlanFilter','clientPoolFilter'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',()=>renderClients());
+  document.getElementById(id).addEventListener('change',()=>renderClients());
+});
+document.getElementById('clientRefreshBtn').addEventListener('click',()=>renderClients());
+document.getElementById('clientClearBtn').addEventListener('click',()=>{
+  document.getElementById('clientSearch').value='';
+  document.getElementById('clientStatus').value='all';
+  document.getElementById('clientPlanFilter').value='all';
+  document.getElementById('clientPoolFilter').value='all';
+  clientSummaryFilter=null;
+  renderClientSummary();
+  renderClients();
+});
+
+// ---------------------------------------------------------------
+// REVENUE
+// ---------------------------------------------------------------
+
+// Populate pool filter
+(()=>{
+  const sel=document.getElementById('revPoolFilter');
+  DEMO_POOLS.forEach(p=>{
+    const o=document.createElement('option');o.value=p.id;o.textContent=p.name;sel.appendChild(o);
+  });
+})();
+
+let currentRevTab='tx';
+
+function getFilteredTx(){
+  const search=(document.getElementById('revSearch').value||'').toLowerCase().trim();
+  const from=document.getElementById('revFrom').value;
+  const to=document.getElementById('revTo').value;
+  const pool=document.getElementById('revPoolFilter').value;
+
+  return DEMO_TX.filter(tx=>{
+    if(pool!=='all'&&tx.poolId!==pool) return false;
+    if(from){const d=new Date(from+'T00:00:00');if(tx.date<d) return false;}
+    if(to){const d=new Date(to+'T23:59:59');if(tx.date>d) return false;}
+    if(search){
+      const hay=(tx.planName+' '+tx.poolName).toLowerCase();
+      if(!hay.includes(search)) return false;
+    }
+    return true;
+  });
+}
+
+function renderRevStats(txs){
+  const total=txs.reduce((s,t)=>s+t.amount,0);
+  const ownerTotal=txs.reduce((s,t)=>s+t.ownerShare,0);
+  const count=txs.length;
+  const lastDate=txs.length?fmtDate(txs[0].date):'—';
+
+  document.getElementById('revStatsGrid').innerHTML=`
+    <div class="rz-stat-card">
+      <div class="rz-stat-label">Montant payé</div>
+      <div class="rz-stat-value">${esc(fmtAr(total))}</div>
+    </div>
+    <div class="rz-stat-card rz-stat-card-owner">
+      <div class="rz-owner-stat-top">
+        <div class="rz-stat-label">Ma part propriétaire</div>
+        <span class="rz-owner-stat-badge">💰 Votre part</span>
+      </div>
+      <div class="rz-stat-value">${esc(fmtAr(ownerTotal))}</div>
+      <div class="rz-owner-stat-hint">80% des transactions filtrées</div>
+    </div>
+    <div class="rz-stat-card">
+      <div class="rz-stat-label">Transactions payées</div>
+      <div class="rz-stat-value">${esc(count)}</div>
+    </div>
+    <div class="rz-stat-card">
+      <div class="rz-stat-label">Dernier paiement</div>
+      <div class="rz-stat-value" style="font-size:clamp(16px,3vw,22px);">${esc(lastDate)}</div>
+    </div>
+  `;
+}
+
+function renderRevTx(txs){
+  const tbody=document.getElementById('revTxBody');
+  const empty=document.getElementById('revEmpty');
+  if(!txs.length){tbody.innerHTML='';empty.style.display='';return;}
+  empty.style.display='none';
+  tbody.innerHTML=txs.map(t=>`<tr>
+    <td>${esc(fmtDateTime(t.date))}</td>
+    <td>${esc(t.planName)}</td>
+    <td>${esc(t.poolName)}</td>
+    <td>${esc(fmtAr(t.amount))}</td>
+    <td style="color:#15803d;font-weight:900;">${esc(fmtAr(t.ownerShare))}</td>
+    <td><span class="pill pill-ok">${esc(t.status)}</span></td>
+  </tr>`).join('');
+}
+
+function renderRevByPlan(txs){
+  const map={};
+  txs.forEach(t=>{
+    if(!map[t.planId]) map[t.planId]={name:t.planName,count:0,amount:0,owner:0};
+    map[t.planId].count++;map[t.planId].amount+=t.amount;map[t.planId].owner+=t.ownerShare;
+  });
+  const rows=Object.values(map);
+  const tbody=document.getElementById('revPlanBody');
+  const empty=document.getElementById('revEmpty');
+  if(!rows.length){tbody.innerHTML='';empty.style.display='';return;}
+  empty.style.display='none';
+  tbody.innerHTML=rows.map(r=>`<tr>
+    <td style="font-weight:900;">${esc(r.name)}</td>
+    <td>${esc(r.count)}</td>
+    <td>${esc(fmtAr(r.amount))}</td>
+    <td style="color:#15803d;font-weight:900;">${esc(fmtAr(r.owner))}</td>
+  </tr>`).join('');
+}
+
+function renderRevByPool(txs){
+  const map={};
+  txs.forEach(t=>{
+    if(!map[t.poolId]) map[t.poolId]={name:t.poolName,count:0,amount:0,owner:0};
+    map[t.poolId].count++;map[t.poolId].amount+=t.amount;map[t.poolId].owner+=t.ownerShare;
+  });
+  const rows=Object.values(map);
+  const tbody=document.getElementById('revPoolBody');
+  const empty=document.getElementById('revEmpty');
+  if(!rows.length){tbody.innerHTML='';empty.style.display='';return;}
+  empty.style.display='none';
+  tbody.innerHTML=rows.map(r=>`<tr>
+    <td style="font-weight:900;">${esc(r.name)}</td>
+    <td>${esc(r.count)}</td>
+    <td>${esc(fmtAr(r.amount))}</td>
+    <td style="color:#15803d;font-weight:900;">${esc(fmtAr(r.owner))}</td>
+  </tr>`).join('');
+}
+
+function renderRevenue(){
+  const txs=getFilteredTx();
+  renderRevStats(txs);
+
+  // Show only active panel
+  document.getElementById('revPanelTx').style.display=currentRevTab==='tx'?'':'none';
+  document.getElementById('revPanelPlan').style.display=currentRevTab==='plan'?'':'none';
+  document.getElementById('revPanelPool').style.display=currentRevTab==='pool'?'':'none';
+  document.getElementById('revEmpty').style.display='none';
+
+  if(currentRevTab==='tx') renderRevTx(txs);
+  else if(currentRevTab==='plan') renderRevByPlan(txs);
+  else renderRevByPool(txs);
+}
+
+document.querySelectorAll('.rz-tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    currentRevTab=btn.dataset.tab;
+    document.querySelectorAll('.rz-tab-btn').forEach(b=>b.classList.toggle('active',b===btn));
+    renderRevenue();
+  });
+});
+
+['revSearch'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',()=>renderRevenue());
+});
+['revFrom','revTo','revPoolFilter'].forEach(id=>{
+  document.getElementById(id).addEventListener('change',()=>renderRevenue());
+});
+document.getElementById('revRefreshBtn').addEventListener('click',()=>renderRevenue());
+document.getElementById('revResetBtn').addEventListener('click',()=>{
+  document.getElementById('revSearch').value='';
+  document.getElementById('revFrom').value='';
+  document.getElementById('revTo').value='';
+  document.getElementById('revPoolFilter').value='all';
+  renderRevenue();
+});
+
+renderRevenue();
+
+// ---------------------------------------------------------------
+// PLANS
+// ---------------------------------------------------------------
+
+// Populate pool filter
+(()=>{
+  const sel=document.getElementById('planPoolFilter');
+  DEMO_POOLS.forEach(p=>{
+    const o=document.createElement('option');o.value=p.id;o.textContent=p.name;sel.appendChild(o);
+  });
+})();
+
+// All plan rows: DEMO_POOLS × DEMO_PLANS
+const ALL_PLAN_ROWS = [];
+DEMO_POOLS.forEach(pool=>{
+  DEMO_PLANS.forEach(plan=>{
+    ALL_PLAN_ROWS.push({
+      key:pool.id+':'+plan.id,
+      poolId:pool.id, poolName:pool.name,
+      planId:plan.id, planName:plan.name,
+      price:plan.price, duration:plan.duration,
+      data:plan.data, speed:plan.speed
+    });
+  });
+});
+
+let toastTimer=null;
+function showToast(msg){
+  const old=document.getElementById('rzPlanToast');
+  if(old) old.remove();
+  const t=document.createElement('div');
+  t.id='rzPlanToast';t.className='rz-plan-feedback-toast';t.textContent=msg;
+  document.body.appendChild(t);
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{const el=document.getElementById('rzPlanToast');if(el)el.remove();},2200);
+}
+
+function getFilteredPlanRows(){
+  const search=(document.getElementById('planSearch').value||'').toLowerCase().trim();
+  const pool=document.getElementById('planPoolFilter').value;
+  return ALL_PLAN_ROWS.filter(r=>{
+    if(pool!=='all'&&r.poolId!==pool) return false;
+    if(search&&!(r.planName+' '+r.poolName).toLowerCase().includes(search)) return false;
+    return true;
+  });
+}
+
+function renderPlans(){
+  const rows=getFilteredPlanRows();
+  const tbody=document.getElementById('plansTbody');
+  const empty=document.getElementById('plansEmpty');
+
+  if(!rows.length){tbody.innerHTML='';empty.style.display='';return;}
+  empty.style.display='none';
+
+  tbody.innerHTML=rows.map(r=>{
+    const vis=VISIBILITY[r.key]!==false;
+    const pillClass=vis?'ok':'off';
+    const pillLabel=vis?'Visible':'Masqué';
+    const btnLabel=vis?'Masquer':'Afficher';
+    return `<tr>
+      <td>
+        <div class="rz-plan-name">${esc(r.planName)}</div>
+        <div style="margin-top:4px;color:#64748b;font-size:12px;font-weight:700;">${esc(r.poolName)}</div>
+      </td>
+      <td style="font-weight:900;">${esc(fmtAr(r.price))}</td>
+      <td>${esc(r.duration)}</td>
+      <td>${esc(r.data)}</td>
+      <td>${esc(r.speed)}</td>
+      <td><span class="rz-status-pill ${esc(pillClass)}">${esc(pillLabel)}</span></td>
+      <td>
+        <div class="rz-plan-actions">
+          <button type="button" class="rz-vis-btn" data-key="${esc(r.key)}" style="background:${vis?'rgba(239,68,68,.12)':'rgba(22,163,74,.12)'};color:${vis?'#dc2626':'#15803d'};border:1px solid ${vis?'rgba(239,68,68,.22)':'rgba(22,163,74,.22)'};padding:7px 12px;border-radius:12px;font-size:12px;font-weight:950;cursor:pointer;width:auto;">${esc(btnLabel)}</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  tbody.querySelectorAll('.rz-vis-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const key=btn.dataset.key;
+      VISIBILITY[key]=!VISIBILITY[key];
+      showToast('✅ Enregistré');
+      renderPlans();
+    });
+  });
+}
+
+['planSearch'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',()=>renderPlans());
+});
+document.getElementById('planPoolFilter').addEventListener('change',()=>renderPlans());
+document.getElementById('planRefreshBtn').addEventListener('click',()=>{showToast('✅ Actualisé');renderPlans();});
+document.getElementById('planClearBtn').addEventListener('click',()=>{
+  document.getElementById('planSearch').value='';
+  document.getElementById('planPoolFilter').value='all';
+  renderPlans();
+});
+
+renderPlans();
+</script>
+</body>
+</html>
