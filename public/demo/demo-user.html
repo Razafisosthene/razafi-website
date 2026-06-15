@@ -259,29 +259,35 @@
     .portal-footer a{color:inherit;font-weight:700;text-decoration:none;}
     .portal-footer a:hover{text-decoration:underline;}
 
-    /* ---- MODAL ---- */
+    /* ---- MODAL — true centered popup, keyboard-safe ---- */
     .modal-overlay{
       display:none;position:fixed;inset:0;z-index:999;
-      background:rgba(0,0,0,.50);
-      backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-      align-items:flex-end;justify-content:center;
+      background:rgba(0,0,0,.52);
+      backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+      align-items:center;justify-content:center;
+      padding:16px;
+      /* Use dvh so overlay shrinks when keyboard appears */
+      min-height:100dvh;
     }
     .modal-overlay.open{display:flex;}
-    @media(min-width:480px){.modal-overlay.open{align-items:center;}}
     .modal-sheet{
-      width:100%;max-width:460px;background:var(--ios-card);
-      border-radius:28px 28px 0 0;padding:24px 22px 32px;
-      box-shadow:0 -16px 60px rgba(0,0,0,.22);
-      animation:sheetUp .28s ease both;
+      width:100%;max-width:420px;background:var(--ios-card);
+      border-radius:28px;
+      padding:22px 20px 24px;
+      box-shadow:0 24px 80px rgba(0,0,0,.30);
+      animation:popIn .22s cubic-bezier(.34,1.36,.64,1) both;
+      /* Allow internal scroll if content is taller than viewport */
+      max-height:calc(100dvh - 32px);
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
     }
-    @media(min-width:480px){.modal-sheet{border-radius:28px;}}
-    @keyframes sheetUp{from{transform:translateY(40px);opacity:0;}to{transform:translateY(0);opacity:1;}}
-    .modal-grab{width:40px;height:5px;border-radius:999px;background:rgba(118,118,128,.28);margin:0 auto 20px;}
-    @media(min-width:480px){.modal-grab{display:none;}}
-    .modal-title{font-size:1.05rem;font-weight:900;letter-spacing:-.025em;color:var(--ios-text);margin:0 0 6px;}
-    .modal-subtitle{font-size:14px;color:var(--ios-muted);font-weight:600;margin:0 0 18px;line-height:1.4;}
+    @keyframes popIn{from{transform:scale(.88);opacity:0;}to{transform:scale(1);opacity:1;}}
+    /* Hide the bottom-sheet grab bar — not needed for centered popup */
+    .modal-grab{display:none!important;}
+    .modal-title{font-size:1.05rem;font-weight:900;letter-spacing:-.025em;color:var(--ios-text);margin:0 0 4px;}
+    .modal-subtitle{font-size:13px;color:var(--ios-muted);font-weight:600;margin:0 0 12px;line-height:1.35;}
     .modal-demo-notice{
-      margin-bottom:18px;padding:10px 14px;border-radius:16px;
+      margin-bottom:12px;padding:8px 12px;border-radius:14px;
       background:rgba(255,149,0,.10);border:1px solid rgba(255,149,0,.28);
       color:#9a5d00;font-size:12px;font-weight:700;line-height:1.4;
     }
@@ -298,7 +304,7 @@
     .modal-code-error{display:none;margin-top:8px;padding:8px 12px;border-radius:12px;border:1px solid rgba(220,53,69,.22);background:rgba(220,53,69,.08);color:#b42318;font-size:13px;font-weight:700;}
     body.theme-dark .modal-code-error{border-color:rgba(255,122,122,.30);background:rgba(255,122,122,.10);color:#ff9d9d;}
     .modal-code-error.visible{display:block;}
-    .modal-btn-row{display:flex;gap:10px;margin-top:18px;}
+    .modal-btn-row{display:flex;gap:10px;margin-top:12px;}
     .modal-cancel-btn{flex:1;min-height:46px;border-radius:999px;background:rgba(118,118,128,.12);border:0;color:var(--ios-text);font-weight:800;font-size:15px;cursor:pointer;}
     .modal-send-btn{flex:2;min-height:46px;border-radius:999px;background:var(--ios-blue);border:0;color:#fff;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 10px 20px rgba(0,122,255,.20);}
     .modal-send-btn:active,.modal-cancel-btn:active{transform:scale(.98);}
@@ -685,6 +691,17 @@
         var errEl = document.getElementById("mvola-error-" + id);
         if(errEl) errEl.classList.remove("visible");
       });
+      // When user focuses the MVola field, scroll the pay button into view
+      // so it stays visible above the keyboard
+      input.addEventListener("focus", function(){
+        var id = input.id.replace("mvola-","");
+        var payBtn = document.querySelector(".pay-btn[data-pay-plan='" + id + "']");
+        if(payBtn){
+          setTimeout(function(){
+            payBtn.scrollIntoView({ behavior:"smooth", block:"end" });
+          }, 320);
+        }
+      });
     });
 
     /* =====================================================
@@ -770,6 +787,7 @@
       modalStep1.style.display = "block";
       modalStep2.classList.remove("visible");
       modal.classList.add("open");
+      // Focus after a short delay; modal is centered so keyboard won't hide buttons
       setTimeout(function(){ modalCodeInput.focus(); }, 220);
     }
     function closeModal(){ modal.classList.remove("open"); }
@@ -815,6 +833,27 @@
       useCodeBtn.disabled = true;
       setTimeout(function(){ window.location.href = "https://www.google.com/"; }, 1200);
     });
+
+    /* =====================================================
+       9. KEEP PAY BUTTON VISIBLE ABOVE KEYBOARD
+          Uses visualViewport API (supported on all modern mobile browsers)
+       ===================================================== */
+    if(window.visualViewport){
+      window.visualViewport.addEventListener("resize", function(){
+        // When keyboard opens, the viewport shrinks.
+        // Find the focused mvola input and re-scroll pay button into view.
+        var focused = document.activeElement;
+        if(focused && focused.type === "tel"){
+          var id = focused.id.replace("mvola-","");
+          var payBtn = document.querySelector(".pay-btn[data-pay-plan='" + id + "']");
+          if(payBtn){
+            setTimeout(function(){
+              payBtn.scrollIntoView({ behavior:"smooth", block:"end" });
+            }, 80);
+          }
+        }
+      });
+    }
 
   })();
   </script>
