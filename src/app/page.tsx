@@ -297,6 +297,13 @@ export default function Home() {
               depuis votre téléphone.
             </p>
 
+            <a
+              href="/demo/demo-admin"
+              className="mt-6 inline-flex rounded-full bg-black px-7 py-3.5 font-semibold text-white shadow-xl shadow-black/10 transition hover:scale-105"
+            >
+              Voir la démo propriétaire
+            </a>
+
             <div className="mt-8 grid gap-4 text-neutral-700">
               <div className="flex items-center gap-3">
                 <BarChart3 className="h-5 w-5 text-blue-600" />
@@ -396,6 +403,13 @@ export default function Home() {
             pour permettre à votre réseau WiFi de fonctionner en continu,
             24h/24 et 7j/7.
           </p>
+
+          <a
+            href="/demo/demo-user"
+            className="mt-6 inline-flex rounded-full bg-blue-600 px-7 py-3.5 font-semibold text-white shadow-xl shadow-blue-600/20 transition hover:scale-105 hover:bg-blue-700"
+          >
+            Voir la démo client
+          </a>
         </div>
       </section>
 <section id="faq" className="px-5 py-14">
