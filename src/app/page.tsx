@@ -160,9 +160,21 @@ export default function Home() {
             Vendez l’accès WiFi de votre Starlink ou Fibre grâce à la plateforme RAZAFI.
           </p>
 
-          <p className="mx-auto mt-7 max-w-3xl text-xl font-medium tracking-tight md:text-2xl">
-            Une seule installation peut connecter tout un fokontany.
-          </p>
+          <div className="mx-auto mt-7 flex max-w-3xl flex-col items-center justify-center gap-3 sm:flex-row">
+  <a
+    href="/demo/demo-admin"
+    className="group inline-flex w-full items-center justify-center rounded-full bg-black px-7 py-4 text-sm font-semibold text-white shadow-2xl shadow-black/20 ring-1 ring-white/20 transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-neutral-900 sm:w-auto md:text-base"
+  >
+    <span>Voir la démo propriétaire</span>
+  </a>
+
+  <a
+    href="/demo/demo-user"
+    className="group inline-flex w-full items-center justify-center rounded-full border border-white/70 bg-white/80 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-2xl shadow-blue-600/10 backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-white sm:w-auto md:text-base"
+  >
+    <span>Voir la démo client</span>
+  </a>
+</div>
 
           <div className="mt-5 flex flex-col justify-center gap-4 sm:flex-row">
             <a
