@@ -140,7 +140,7 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="relative overflow-hidden px-5 pb-12 pt-28 md:pb-16 md:pt-32">
+      <section className="relative overflow-hidden px-5 pb-16 pt-28 md:pb-16 md:pt-32">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -189,7 +189,7 @@ export default function Home() {
           <div className="mt-5 flex justify-center">
             <a
               href={whatsappUrl}
-              className="inline-flex w-full items-center justify-center rounded-full bg-black px-12 py-4 text-sm font-semibold text-white shadow-[0_24px_60px_rgba(0,0,0,0.28)] ring-1 ring-white/20 transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-neutral-900 sm:w-auto md:min-w-56 md:text-base"
+              className="inline-flex w-[82%] max-w-sm items-center justify-center rounded-full bg-black px-12 py-4 text-sm font-semibold text-white shadow-[0_24px_60px_rgba(0,0,0,0.28)] ring-1 ring-white/20 transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-neutral-900 sm:w-auto md:min-w-56 md:text-base"
             >
               Commencer
             </a>
