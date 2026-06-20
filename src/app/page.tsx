@@ -160,34 +160,35 @@ export default function Home() {
             Vendez l’accès WiFi de votre Starlink ou Fibre grâce à la plateforme RAZAFI.
           </p>
 
-          <div className="mx-auto mt-7 flex max-w-3xl flex-col items-center justify-center gap-3 sm:flex-row">
-  <a
-    href="/demo/demo-admin"
-    className="group inline-flex w-full items-center justify-center rounded-full bg-black px-7 py-4 text-sm font-semibold text-white shadow-2xl shadow-black/20 ring-1 ring-white/20 transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-neutral-900 sm:w-auto md:text-base"
-  >
-    <span>Voir la démo propriétaire</span>
-  </a>
-
-  <a
-    href="/demo/demo-user"
-    className="group inline-flex w-full items-center justify-center rounded-full border border-white/70 bg-white/80 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-2xl shadow-blue-600/10 backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-white sm:w-auto md:text-base"
-  >
-    <span>Voir la démo client</span>
-  </a>
-</div>
-
-          <div className="mt-5 flex flex-col justify-center gap-4 sm:flex-row">
+          <div className="mx-auto mt-7 flex max-w-4xl flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap">
             <a
-              href={whatsappUrl}
-              className="rounded-full bg-blue-600 px-8 py-4 font-semibold text-white shadow-xl shadow-blue-600/20 transition hover:scale-105 hover:bg-blue-700"
+              href="/demo/demo-admin"
+              className="inline-flex w-full items-center justify-center rounded-full border border-black/5 bg-white/80 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-2xl shadow-black/10 backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-white sm:w-auto md:text-base"
             >
-              Commencer
+              Voir la démo propriétaire
             </a>
+
+            <a
+              href="/demo/demo-user"
+              className="inline-flex w-full items-center justify-center rounded-full border border-black/5 bg-white/80 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-2xl shadow-black/10 backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-white sm:w-auto md:text-base"
+            >
+              Voir la démo client
+            </a>
+
             <a
               href="#faq"
-              className="rounded-full border border-neutral-200 px-8 py-4 font-semibold transition hover:scale-105 hover:bg-neutral-50"
+              className="inline-flex w-full items-center justify-center rounded-full border border-black/5 bg-white/80 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-2xl shadow-black/10 backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-white sm:w-auto md:text-base"
             >
               En savoir plus
+            </a>
+          </div>
+
+          <div className="mt-5 flex justify-center">
+            <a
+              href={whatsappUrl}
+              className="inline-flex w-full items-center justify-center rounded-full bg-black px-10 py-4 text-sm font-semibold text-white shadow-2xl shadow-black/20 ring-1 ring-white/20 transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-neutral-900 sm:w-auto md:text-base"
+            >
+              Commencer
             </a>
           </div>
         </motion.div>
