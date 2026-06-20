@@ -163,30 +163,33 @@ export default function Home() {
           <div className="mx-auto mt-7 flex max-w-4xl flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap">
             <a
               href="/demo/demo-admin"
-              className="inline-flex w-full items-center justify-center rounded-full border border-black/5 bg-white/80 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-2xl shadow-black/10 backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-white sm:w-auto md:text-base"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-neutral-200 bg-neutral-100/90 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-[0_18px_45px_rgba(15,23,42,0.10)] backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-neutral-300 hover:bg-white sm:w-auto md:text-base"
             >
-              Voir la démo propriétaire
+              <span aria-hidden="true">🖥️</span>
+              <span>Voir la démo propriétaire</span>
             </a>
 
             <a
               href="/demo/demo-user"
-              className="inline-flex w-full items-center justify-center rounded-full border border-black/5 bg-white/80 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-2xl shadow-black/10 backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-white sm:w-auto md:text-base"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-neutral-200 bg-neutral-100/90 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-[0_18px_45px_rgba(15,23,42,0.10)] backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-neutral-300 hover:bg-white sm:w-auto md:text-base"
             >
-              Voir la démo client
+              <span aria-hidden="true">📱</span>
+              <span>Voir la démo client</span>
             </a>
 
             <a
               href="#faq"
-              className="inline-flex w-full items-center justify-center rounded-full border border-black/5 bg-white/80 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-2xl shadow-black/10 backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-white sm:w-auto md:text-base"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-neutral-200 bg-neutral-100/90 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-[0_18px_45px_rgba(15,23,42,0.10)] backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-neutral-300 hover:bg-white sm:w-auto md:text-base"
             >
-              En savoir plus
+              <span aria-hidden="true">ℹ️</span>
+              <span>En savoir plus</span>
             </a>
           </div>
 
           <div className="mt-5 flex justify-center">
             <a
               href={whatsappUrl}
-              className="inline-flex w-full items-center justify-center rounded-full bg-black px-10 py-4 text-sm font-semibold text-white shadow-2xl shadow-black/20 ring-1 ring-white/20 transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-neutral-900 sm:w-auto md:text-base"
+              className="inline-flex w-full items-center justify-center rounded-full bg-black px-12 py-4 text-sm font-semibold text-white shadow-[0_24px_60px_rgba(0,0,0,0.28)] ring-1 ring-white/20 transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-neutral-900 sm:w-auto md:min-w-56 md:text-base"
             >
               Commencer
             </a>
