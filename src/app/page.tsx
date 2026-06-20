@@ -187,12 +187,12 @@ export default function Home() {
           </div>
 
           <div className="mt-5 flex justify-center">
-            <a
-              href={whatsappUrl}
-              className="inline-flex w-[82%] max-w-sm items-center justify-center rounded-full bg-black px-12 py-4 text-sm font-semibold text-white shadow-[0_24px_60px_rgba(0,0,0,0.28)] ring-1 ring-white/20 transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-neutral-900 sm:w-auto md:min-w-56 md:text-base"
-            >
-              Commencer
-            </a>
+          <a
+  href={whatsappUrl}
+  className="inline-flex w-auto min-w-[190px] items-center justify-center rounded-full bg-black px-10 py-4 text-sm font-semibold text-white shadow-[0_24px_60px_rgba(0,0,0,0.28)] ring-1 ring-white/20 transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-neutral-900 md:min-w-56 md:text-base"
+>
+  Commencer
+</a>
           </div>
         </motion.div>
       </section>
