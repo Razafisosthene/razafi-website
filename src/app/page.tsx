@@ -296,18 +296,20 @@ function PlatformAssistantWidget() {
         </div>
       )}
 
-      {/* ── Closed pill ── */}
-      <button
-        type="button"
-        onClick={() => setIsOpen((v) => !v)}
-        aria-label="Ouvrir l'assistant RAZAFI"
-        className="fixed bottom-24 right-4 z-50 flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2.5 shadow-[0_4px_20px_rgba(0,0,0,0.10)] transition hover:shadow-[0_4px_24px_rgba(0,0,0,0.16)] hover:border-neutral-300"
-      >
-        <span className="inline-block h-2 w-2 shrink-0 rounded-full bg-green-400" />
-        <span className="text-sm font-medium text-neutral-800">
-          {compactPill ? "Aide" : "Assistant RAZAFI"}
-        </span>
-      </button>
+      {/* ── Closed pill — hidden while panel is open ── */}
+      {!isOpen && (
+        <button
+          type="button"
+          onClick={() => setIsOpen(true)}
+          aria-label="Ouvrir l'assistant RAZAFI"
+          className="fixed bottom-24 right-4 z-50 flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2.5 shadow-[0_4px_20px_rgba(0,0,0,0.10)] transition hover:shadow-[0_4px_24px_rgba(0,0,0,0.16)] hover:border-neutral-300"
+        >
+          <span className="inline-block h-2 w-2 shrink-0 rounded-full bg-green-400" />
+          <span className="text-sm font-medium text-neutral-800">
+            {compactPill ? "Aide" : "Assistant RAZAFI"}
+          </span>
+        </button>
+      )}
     </>
   );
 }
