@@ -723,11 +723,11 @@ export default function Home() {
         aria-label="Contacter RAZAFI sur WhatsApp"
         className="fixed bottom-4 right-4 z-50 transition hover:scale-[1.02] active:scale-95"
       >
-        <div className="flex items-center rounded-full bg-[#25D366] p-2 shadow-xl md:gap-3 md:pr-5">
+        <div className="flex items-center rounded-full bg-[#25D366] p-2 shadow-xl transition md:gap-3 md:py-2 md:pl-2 md:pr-5">
           <img
             src="/images/moi.png"
             alt="RAZAFI"
-            className="h-11 w-11 rounded-full object-cover ring-2 ring-white"
+            className="h-12 w-12 rounded-full bg-white object-cover object-top ring-2 ring-white"
           />
           <span className="hidden text-sm font-bold text-white md:inline">
             WhatsApp
