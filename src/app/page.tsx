@@ -8,7 +8,6 @@ import {
   Router,
   MapPin,
   BarChart3,
-  MessageCircle,
   CheckCircle2,
   ChevronDown,
   ShieldCheck,
@@ -716,15 +715,32 @@ export default function Home() {
         </div>
       </footer>
 
+      {/* WhatsApp floating button — mobile: circular photo only · desktop: photo + label */}
       <a
         href={whatsappUrl}
-        className="fixed bottom-4 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 font-semibold text-white shadow-xl transition hover:scale-105 md:bottom-5 md:right-5 md:h-auto md:w-auto md:gap-2 md:px-5 md:py-4"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Contacter RAZAFI sur WhatsApp"
+        className="fixed bottom-4 right-4 z-50 transition hover:scale-105 active:scale-95"
       >
-        <MessageCircle className="h-5 w-5" />
-        <span className="hidden md:inline">WhatsApp</span>
+        <div className="flex items-center gap-3 rounded-full border border-black/8 bg-white p-1.5 shadow-[0_4px_24px_rgba(0,0,0,0.13)] md:pr-5">
+          {/* Photo bubble with green online dot */}
+          <div className="relative shrink-0">
+            <img
+              src="/moi.png"
+              alt="RAZAFI"
+              className="h-11 w-11 rounded-full object-cover md:h-10 md:w-10"
+            />
+            <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full border-2 border-white bg-green-400" />
+          </div>
+          {/* Label — hidden on mobile, visible on md+ */}
+          <span className="hidden text-sm font-semibold text-neutral-900 md:inline">
+            WhatsApp
+          </span>
+        </div>
       </a>
 
-      {/* Phase 5B: Platform prospect assistant — bottom-left, never interferes with WhatsApp */}
+      {/* Phase 5B: Platform prospect assistant — above WhatsApp, never interferes */}
       <PlatformAssistantWidget />
     </main>
   );
