@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -13,6 +13,8 @@ import {
   ChevronDown,
   ShieldCheck,
   Sparkles,
+  X,
+  ArrowUp,
 } from "lucide-react";
 
 const whatsappUrl =
@@ -104,6 +106,215 @@ function Reveal({
     </motion.div>
   );
 }
+
+// -----------------------------------------------------------------------
+// Phase 5B: Platform Prospect Assistant Widget
+// -----------------------------------------------------------------------
+
+const ASSISTANT_API_URL =
+  "https://portal.razafistore.com/api/assistant/chat";
+
+const ASSISTANT_FALLBACK =
+  "Je n'arrive pas à répondre pour le moment. Vous pouvez contacter RAZAFI sur WhatsApp.";
+
+const ASSISTANT_GREETING =
+  "Bonjour 👋 Je peux vous expliquer RAZAFI, le fonctionnement, les revenus, le matériel ou comment commencer.";
+
+const QUICK_CHIPS = [
+  "C'est quoi RAZAFI ?",
+  "Comment ça marche ?",
+  "Combien ça coûte ?",
+  "Ça marche avec Starlink ?",
+  "Je veux commencer",
+];
+
+type AssistantMessage = {
+  role: "assistant" | "user";
+  text: string;
+};
+
+function PlatformAssistantWidget() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [compactPill, setCompactPill] = useState(false);
+  const [messages, setMessages] = useState<AssistantMessage[]>([
+    { role: "assistant", text: ASSISTANT_GREETING },
+  ]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Shrink pill label after 5 s if still closed
+  useEffect(() => {
+    const timer = window.setTimeout(() => setCompactPill(true), 5000);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  // Scroll to bottom when new messages arrive
+  useEffect(() => {
+    if (isOpen) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, isOpen]);
+
+  async function sendMessage(text: string) {
+    const trimmed = text.trim();
+    if (!trimmed || isLoading) return;
+
+    setMessages((prev) => [...prev, { role: "user", text: trimmed }]);
+    setInput("");
+    setIsLoading(true);
+
+    try {
+      const res = await fetch(ASSISTANT_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          context: "platform_prospect",
+          message: trimmed,
+          page_path: "/",
+        }),
+      });
+      const data = await res.json();
+      const answer: string = data?.answer || ASSISTANT_FALLBACK;
+      setMessages((prev) => [...prev, { role: "assistant", text: answer }]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", text: ASSISTANT_FALLBACK },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendMessage(input);
+    }
+  }
+
+  return (
+    <>
+      {/* ── Open panel ── */}
+      {isOpen && (
+        <div
+          className="fixed bottom-20 left-4 z-50 flex w-[calc(100vw-1.5rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-[0_8px_40px_rgba(0,0,0,0.12)]"
+          style={{ maxHeight: "70vh" }}
+          role="dialog"
+          aria-label="Assistant RAZAFI"
+        >
+          {/* Header */}
+          <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-4 py-3">
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="inline-block h-2 w-2 rounded-full bg-green-400" />
+                <span className="text-sm font-semibold text-neutral-900">
+                  Assistant RAZAFI
+                </span>
+              </div>
+              <p className="mt-0.5 text-xs text-neutral-400">
+                Posez une question sur la plateforme.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              aria-label="Fermer l'assistant"
+              className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 transition hover:bg-neutral-100 hover:text-neutral-700"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+
+          {/* Messages */}
+          <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+            {messages.map((m, i) =>
+              m.role === "assistant" ? (
+                <div key={i} className="flex justify-start">
+                  <p className="max-w-[82%] rounded-2xl rounded-tl-sm bg-neutral-100 px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-line text-neutral-800">
+                    {m.text}
+                  </p>
+                </div>
+              ) : (
+                <div key={i} className="flex justify-end">
+                  <p className="max-w-[82%] rounded-2xl rounded-tr-sm bg-neutral-900 px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-line text-white">
+                    {m.text}
+                  </p>
+                </div>
+              )
+            )}
+
+            {isLoading && (
+              <div className="flex justify-start">
+                <p className="rounded-2xl rounded-tl-sm bg-neutral-100 px-3.5 py-2.5 text-sm text-neutral-400 italic">
+                  RAZAFI écrit…
+                </p>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Quick chips — shown only when no user message sent yet */}
+          {messages.length === 1 && (
+            <div className="flex shrink-0 flex-wrap gap-1.5 px-4 pb-3">
+              {QUICK_CHIPS.map((chip) => (
+                <button
+                  key={chip}
+                  type="button"
+                  onClick={() => sendMessage(chip)}
+                  disabled={isLoading}
+                  className="rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-xs text-neutral-700 transition hover:border-neutral-400 hover:bg-white disabled:opacity-40"
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Input row */}
+          <div className="flex shrink-0 items-center gap-2 border-t border-neutral-100 px-3 py-3">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              disabled={isLoading}
+              placeholder="Écrivez votre question…"
+              className="flex-1 rounded-full border border-neutral-200 bg-neutral-50 px-4 py-2 text-sm text-neutral-900 placeholder-neutral-400 outline-none transition focus:border-neutral-400 focus:bg-white disabled:opacity-40"
+            />
+            <button
+              type="button"
+              onClick={() => sendMessage(input)}
+              disabled={isLoading || !input.trim()}
+              aria-label="Envoyer"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-white transition hover:bg-neutral-700 disabled:opacity-30"
+            >
+              <ArrowUp className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Closed pill ── */}
+      <button
+        type="button"
+        onClick={() => setIsOpen((v) => !v)}
+        aria-label="Ouvrir l'assistant RAZAFI"
+        className="fixed bottom-4 left-4 z-50 flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2.5 shadow-[0_4px_20px_rgba(0,0,0,0.10)] transition hover:shadow-[0_4px_24px_rgba(0,0,0,0.16)] hover:border-neutral-300"
+      >
+        <span className="inline-block h-2 w-2 shrink-0 rounded-full bg-green-400" />
+        <span className="text-sm font-medium text-neutral-800">
+          {compactPill ? "…" : "Assistant RAZAFI"}
+        </span>
+      </button>
+    </>
+  );
+}
+
+// -----------------------------------------------------------------------
+// End Phase 5B widget
+// -----------------------------------------------------------------------
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -510,6 +721,9 @@ export default function Home() {
         <MessageCircle className="h-5 w-5" />
         <span className="hidden md:inline">WhatsApp</span>
       </a>
+
+      {/* Phase 5B: Platform prospect assistant — bottom-left, never interferes with WhatsApp */}
+      <PlatformAssistantWidget />
     </main>
   );
 }
