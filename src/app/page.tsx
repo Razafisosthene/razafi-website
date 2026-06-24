@@ -725,7 +725,7 @@ export default function Home() {
       >
         <div className="flex items-center rounded-full bg-[#25D366] p-2 shadow-xl md:gap-3 md:pr-5">
           <img
-            src="/moi.png"
+            src="/images/moi.png"
             alt="RAZAFI"
             className="h-11 w-11 rounded-full object-cover ring-2 ring-white"
           />
