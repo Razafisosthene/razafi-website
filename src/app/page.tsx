@@ -199,7 +199,7 @@ function PlatformAssistantWidget() {
       {/* ── Open panel ── */}
       {isOpen && (
         <div
-          className="fixed bottom-20 left-4 z-50 flex w-[calc(100vw-1.5rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-[0_8px_40px_rgba(0,0,0,0.12)]"
+          className="fixed bottom-24 right-3 left-3 z-50 flex max-h-[70vh] flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-[0_8px_40px_rgba(0,0,0,0.12)] sm:left-auto sm:right-4 sm:w-full sm:max-w-sm"
           style={{ maxHeight: "70vh" }}
           role="dialog"
           aria-label="Assistant RAZAFI"
@@ -301,11 +301,11 @@ function PlatformAssistantWidget() {
         type="button"
         onClick={() => setIsOpen((v) => !v)}
         aria-label="Ouvrir l'assistant RAZAFI"
-        className="fixed bottom-4 left-4 z-50 flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2.5 shadow-[0_4px_20px_rgba(0,0,0,0.10)] transition hover:shadow-[0_4px_24px_rgba(0,0,0,0.16)] hover:border-neutral-300"
+        className="fixed bottom-24 right-4 z-50 flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2.5 shadow-[0_4px_20px_rgba(0,0,0,0.10)] transition hover:shadow-[0_4px_24px_rgba(0,0,0,0.16)] hover:border-neutral-300"
       >
         <span className="inline-block h-2 w-2 shrink-0 rounded-full bg-green-400" />
         <span className="text-sm font-medium text-neutral-800">
-          {compactPill ? "…" : "Assistant RAZAFI"}
+          {compactPill ? "Aide" : "Assistant RAZAFI"}
         </span>
       </button>
     </>
