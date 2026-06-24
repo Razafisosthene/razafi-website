@@ -16,8 +16,7 @@ import {
   ArrowUp,
 } from "lucide-react";
 
-const whatsappUrl =
-  "https://wa.me/261340500592?text=Bonjour%20RAZAFI%2C%20je%20souhaite%20discuter%20d%27une%20installation%20WiFi.";
+const whatsappUrl = "https://wa.me/261340500592";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -119,13 +118,7 @@ const ASSISTANT_FALLBACK =
 const ASSISTANT_GREETING =
   "Bonjour 👋 Je peux vous expliquer RAZAFI, le fonctionnement, les revenus, le matériel ou comment commencer.";
 
-const QUICK_CHIPS = [
-  "C'est quoi RAZAFI ?",
-  "Comment ça marche ?",
-  "Combien ça coûte ?",
-  "Ça marche avec Starlink ?",
-  "Je veux commencer",
-];
+const QUICK_CHIPS: string[] = [];
 
 type AssistantMessage = {
   role: "assistant" | "user";
@@ -723,11 +716,11 @@ export default function Home() {
         aria-label="Contacter RAZAFI sur WhatsApp"
         className="fixed bottom-4 right-4 z-50 transition hover:scale-[1.02] active:scale-95"
       >
-        <div className="flex items-center rounded-full bg-[#25D366] p-2 shadow-xl transition md:gap-3 md:py-2 md:pl-2 md:pr-5">
+        <div className="flex items-center rounded-full bg-transparent p-0 shadow-xl transition md:gap-3 md:bg-[#25D366] md:p-2 md:py-2 md:pl-2 md:pr-5">
           <img
             src="/images/moi.png"
             alt="RAZAFI"
-            className="h-12 w-12 rounded-full bg-white object-cover object-top ring-2 ring-white"
+            className="h-14 w-14 rounded-full bg-white object-cover object-top shadow-md md:h-12 md:w-12"
           />
           <span className="hidden text-sm font-bold text-white md:inline">
             WhatsApp
