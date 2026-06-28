@@ -120,6 +120,30 @@ const ASSISTANT_GREETING =
 
 const QUICK_CHIPS: string[] = [];
 
+// Patch F.2: platform prospect conversation_id persistence
+const RAZAFI_PLATFORM_ASSISTANT_CID_KEY =
+  "razafi_platform_assistant_conversation_id_v1";
+
+function readPlatformAssistantConversationId(): string | null {
+  try {
+    if (typeof window === "undefined") return null;
+    const v = window.sessionStorage.getItem(RAZAFI_PLATFORM_ASSISTANT_CID_KEY);
+    return /^ast_[0-9a-f]{24}$/.test(String(v || "")) ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+function writePlatformAssistantConversationId(value: unknown) {
+  try {
+    if (typeof window === "undefined") return;
+    const v = String(value || "").trim();
+    if (/^ast_[0-9a-f]{24}$/.test(v)) {
+      window.sessionStorage.setItem(RAZAFI_PLATFORM_ASSISTANT_CID_KEY, v);
+    }
+  } catch {}
+}
+
 type AssistantMessage = {
   role: "assistant" | "user";
   text: string;
@@ -157,6 +181,7 @@ function PlatformAssistantWidget() {
     setIsLoading(true);
 
     try {
+      const conversationId = readPlatformAssistantConversationId();
       const res = await fetch(ASSISTANT_API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -164,9 +189,29 @@ function PlatformAssistantWidget() {
           context: "platform_prospect",
           message: trimmed,
           page_path: "/",
+          conversation_id: conversationId,
+          // G.3B: tiny safe static page context — no PII, no tracking, no visitor data
+          live_data: {
+            page_context: "razafi_public_home",
+            site_language: "fr",
+            visible_sections: [
+              "hero",
+              "how_it_works",
+              "owner_value",
+              "demo",
+              "faq",
+              "contact",
+            ],
+            main_cta: "whatsapp_or_demo",
+            product_context:
+              "RAZAFI helps Starlink/fibre owners sell WiFi access with automatic portal, payment, code delivery, and owner dashboard.",
+            context_version: "G.3B.1",
+          },
         }),
       });
       const data = await res.json();
+      // Patch F.2: persist conversation_id for multi-turn memory
+      writePlatformAssistantConversationId(data?.conversation_id);
       const answer: string = data?.answer || ASSISTANT_FALLBACK;
       setMessages((prev) => [...prev, { role: "assistant", text: answer }]);
     } catch {
