@@ -158,6 +158,24 @@ function PlatformAssistantWidget() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // WhatsApp-style auto-resize helpers
+  const RZ_MAX_H = 112; // ~4 lines
+  function autoResizeTextarea() {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    const sh = el.scrollHeight;
+    el.style.height = Math.min(sh, RZ_MAX_H) + "px";
+    el.style.overflowY = sh > RZ_MAX_H ? "auto" : "hidden";
+  }
+  function resetTextareaHeight() {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = "";
+    el.style.overflowY = "hidden";
+  }
 
   // Shrink pill label after 5 s if still closed
   useEffect(() => {
@@ -178,6 +196,7 @@ function PlatformAssistantWidget() {
 
     setMessages((prev) => [...prev, { role: "user", text: trimmed }]);
     setInput("");
+    resetTextareaHeight();
     setIsLoading(true);
 
     try {
@@ -224,11 +243,12 @@ function PlatformAssistantWidget() {
     }
   }
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") {
+  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage(input);
     }
+    // Shift+Enter: textarea inserts newline → onChange fires → autoResize
   }
 
   return (
@@ -310,15 +330,20 @@ function PlatformAssistantWidget() {
           )}
 
           {/* Input row */}
-          <div className="flex shrink-0 items-center gap-2 border-t border-neutral-100 px-3 py-3">
-            <input
-              type="text"
+          <div className="flex shrink-0 items-end gap-2 border-t border-neutral-100 px-3 py-3">
+            <textarea
+              ref={textareaRef}
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => {
+                setInput(e.target.value);
+                autoResizeTextarea();
+              }}
               onKeyDown={handleKeyDown}
               disabled={isLoading}
               placeholder="Écrivez votre question…"
-              className="flex-1 rounded-full border border-neutral-200 bg-neutral-50 px-4 py-2 text-sm text-neutral-900 placeholder-neutral-400 outline-none transition focus:border-neutral-400 focus:bg-white disabled:opacity-40"
+              rows={1}
+              style={{ minHeight: "40px", maxHeight: `${RZ_MAX_H}px`, overflowY: "hidden" }}
+              className="flex-1 resize-none rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm leading-relaxed text-neutral-900 placeholder-neutral-400 outline-none transition focus:border-neutral-400 focus:bg-white disabled:opacity-40"
             />
             <button
               type="button"
