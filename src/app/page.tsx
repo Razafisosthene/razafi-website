@@ -66,6 +66,10 @@ const faqItems = [
     q: "Les utilisateurs ont-ils besoin d’une application ?",
     a: "Non. Les utilisateurs se connectent simplement au WiFi, paient via Mobile Money puis reçoivent automatiquement leur accès Internet.",
   },
+  {
+    q: "Comment l’intelligence artificielle RAZAFI vous simplifie-t-elle la vie ?",
+    a: "RAZAFI intègre un assistant IA conçu pour rendre le WiFi plus simple à utiliser et plus facile à gérer. Il aide à guider les utilisateurs, accompagne les propriétaires dans leurs décisions et réduit le temps passé sur les tâches répétitives. L’objectif est clair : moins de complications, plus de temps pour vous, plus de liberté.",
+  },
  {
   q: "Puis-je suivre mon réseau et mon activité à distance ?",
   a: "Oui. Le réseau fonctionne automatiquement 24h/24 sans intervention humaine. Suivez les connexions, les ventes et l’activité directement depuis votre téléphone. Les paiements des utilisateurs sont reçus par la plateforme RAZAFI, puis votre part est versée selon l’organisation prévue avec vous.",
