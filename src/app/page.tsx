@@ -305,6 +305,35 @@ function PlatformAssistantWidget() {
 
     try {
       const conversationId = readPlatformAssistantConversationId();
+      // G.4: build safe public site_knowledge from page constants — no PII, no internal IDs
+      const site_knowledge = {
+        hero_title: "Plateforme pour votre zone WiFi",
+        hero_subtitle: "Compatible avec votre point d’accès préféré.",
+        hero_features: HERO_FEATURES,
+        value_proposition:
+          "RAZAFI transforme votre connexion Internet (Starlink ou fibre) en service WiFi payant automatisé. Vos clients choisissent un forfait, paient depuis leur téléphone via Mobile Money, reçoivent un code et se connectent. Vous suivez les ventes et les connexions depuis votre tableau de bord, à distance.",
+        key_strengths: [
+          "Paiement mobile automatique",
+          "Activation instantanée",
+          "Dashboard propriétaire à distance",
+          "Assistant IA intégré",
+          "Compatible Starlink, fibre, tout point d’accès",
+        ],
+        target_customers: targetCards
+          .map((c) => c.title + ": " + c.text.slice(0, 100))
+          .slice(0, 3),
+        faq_summary: faqItems
+          .map((f) => f.q.slice(0, 80) + " → " + f.a.slice(0, 120))
+          .slice(0, 6),
+        demo_cta_label: "Voir les démos",
+        demo_options: ["Démo propriétaire", "Démo client"],
+        contact_cta_label: "Parler sur WhatsApp",
+        compatibility_note:
+          "RAZAFI est compatible avec Starlink, fibre et tout point d’accès WiFi configuré en mode AP/bridge. Nous recommandons le MikroTik hAP ax² pour les petits et moyens sites.",
+        pricing_note:
+          "Pas d’abonnement mensuel fixe. RAZAFI fonctionne avec une commission sur les ventes réalisées. Le coût d’installation dépend du projet.",
+      };
+
       const res = await fetch(ASSISTANT_API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -313,7 +342,7 @@ function PlatformAssistantWidget() {
           message: trimmed,
           page_path: "/",
           conversation_id: conversationId,
-          // G.3B: tiny safe static page context — no PII, no tracking, no visitor data
+          // G.3B + G.4: safe static page context + structured site knowledge — no PII, no tracking
           live_data: {
             page_context: "razafi_public_home",
             site_language: "fr",
@@ -328,7 +357,8 @@ function PlatformAssistantWidget() {
             main_cta: "whatsapp_or_demo",
             product_context:
               "RAZAFI helps Starlink/fibre owners sell WiFi access with automatic portal, payment, code delivery, and owner dashboard.",
-            context_version: "G.3B.1",
+            context_version: "G.4.0",
+            site_knowledge,
           },
         }),
       });
