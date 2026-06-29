@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   Wifi,
   Smartphone,
@@ -83,6 +83,110 @@ const faqItems = [
     a: "Non. Les revenus dépendent du nombre d’utilisateurs, de l’emplacement et de la visibilité du réseau dans votre zone. Comme toute activité locale, il est important de faire connaître votre réseau WiFi autour de vous.",
   },
   ];
+
+// ── Hero animated feature cycle ─────────────────────────────────────────────
+const HERO_FEATURES = [
+  "Assistant IA intégré",
+  "Activation instantanée",
+  "Paiement mobile automatique",
+  "Dashboard propriétaire à distance",
+];
+
+function HeroFeatureCycle() {
+  const [index, setIndex] = useState(0);
+  const [visible, setVisible] = useState(true);
+  const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const interval = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
+        setIndex((prev) => (prev + 1) % HERO_FEATURES.length);
+        setVisible(true);
+      }, 350);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, [shouldReduceMotion]);
+
+  return (
+    <div
+      className="mx-auto mt-5 flex h-10 max-w-xl items-center justify-center overflow-hidden"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <motion.span
+        key={shouldReduceMotion ? 0 : index}
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 8 }}
+        animate={shouldReduceMotion ? { opacity: 1, y: 0 } : visible ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }}
+        transition={{ duration: 0.38, ease: "easeInOut" }}
+        className="text-[15px] font-medium whitespace-nowrap text-blue-600 sm:text-base md:text-lg"
+      >
+        {shouldReduceMotion ? HERO_FEATURES[0] : HERO_FEATURES[index]}
+      </motion.span>
+    </div>
+  );
+}
+
+// ── Hero demo dropdown button ────────────────────────────────────────────────
+function HeroDemoButton() {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-neutral-200 bg-neutral-100/90 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-[0_18px_45px_rgba(15,23,42,0.10)] backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-neutral-300 hover:bg-white sm:w-auto md:text-base"
+      >
+        <span aria-hidden="true">▶</span>
+        <span>Voir les démos</span>
+        <ChevronDown
+          className={`h-4 w-4 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      {open && (
+        <motion.div
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.22, ease: "easeOut" }}
+          className="absolute left-1/2 z-30 mt-2 w-52 -translate-x-1/2 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xl"
+        >
+          <a
+            href="/demo/demo-admin"
+            className="flex items-center gap-2 px-5 py-3.5 text-sm font-medium text-neutral-800 transition hover:bg-neutral-50"
+            onClick={() => setOpen(false)}
+          >
+            <span aria-hidden="true">🖥️</span>
+            Démo propriétaire
+          </a>
+          <div className="mx-4 h-px bg-neutral-100" />
+          <a
+            href="/demo/demo-user"
+            className="flex items-center gap-2 px-5 py-3.5 text-sm font-medium text-neutral-800 transition hover:bg-neutral-50"
+            onClick={() => setOpen(false)}
+          >
+            <span aria-hidden="true">📱</span>
+            Démo client
+          </a>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+// ── End hero components ──────────────────────────────────────────────────────
 
 function Reveal({
   children,
@@ -428,46 +532,26 @@ export default function Home() {
           </p>
 
           <h1 className="text-4xl font-semibold tracking-tight md:text-6xl lg:text-7xl">
-            Transformez votre connexion Internet en source de revenus.
+            Plateforme pour votre zone WiFi
           </h1>
 
+          <HeroFeatureCycle />
+
           <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-neutral-600 md:text-xl">
-            Vendez l’accès WiFi de votre Starlink ou Fibre grâce à la plateforme RAZAFI.
+            Compatible avec votre point d’accès préféré.
           </p>
 
           <div className="mx-auto mt-7 flex max-w-4xl flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap">
-            <a
-              href="/demo/demo-admin"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-neutral-200 bg-neutral-100/90 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-[0_18px_45px_rgba(15,23,42,0.10)] backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-neutral-300 hover:bg-white sm:w-auto md:text-base"
-            >
-              <span aria-hidden="true">🖥️</span>
-              <span>Voir la démo propriétaire</span>
-            </a>
-
-            <a
-              href="/demo/demo-user"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-neutral-200 bg-neutral-100/90 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-[0_18px_45px_rgba(15,23,42,0.10)] backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-neutral-300 hover:bg-white sm:w-auto md:text-base"
-            >
-              <span aria-hidden="true">📱</span>
-              <span>Voir la démo client</span>
-            </a>
-
-            <a
-              href="#faq"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-neutral-200 bg-neutral-100/90 px-7 py-4 text-sm font-semibold text-neutral-950 shadow-[0_18px_45px_rgba(15,23,42,0.10)] backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-neutral-300 hover:bg-white sm:w-auto md:text-base"
-            >
-              <span aria-hidden="true">ℹ️</span>
-              <span>En savoir plus</span>
-            </a>
+            <HeroDemoButton />
           </div>
 
           <div className="mt-5 flex justify-center">
-          <a
-  href={whatsappUrl}
-  className="inline-flex w-auto min-w-[190px] items-center justify-center rounded-full bg-black px-10 py-4 text-sm font-semibold text-white shadow-[0_24px_60px_rgba(0,0,0,0.28)] ring-1 ring-white/20 transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-neutral-900 md:min-w-56 md:text-base"
->
-  Commencer
-</a>
+            <a
+              href="#pour-qui"
+              className="inline-flex w-auto min-w-[190px] items-center justify-center rounded-full bg-black px-10 py-4 text-sm font-semibold text-white shadow-[0_24px_60px_rgba(0,0,0,0.28)] ring-1 ring-white/20 transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-neutral-900 md:min-w-56 md:text-base"
+            >
+              En savoir plus
+            </a>
           </div>
         </motion.div>
       </section>
