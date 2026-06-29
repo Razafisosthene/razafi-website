@@ -111,7 +111,7 @@ function HeroFeatureCycle() {
 
   return (
     <div
-      className="mx-auto mt-5 flex h-10 max-w-xl items-center justify-center overflow-hidden"
+      className="mx-auto mt-5 flex h-12 max-w-xl items-center justify-center overflow-hidden"
       aria-live="polite"
       aria-atomic="true"
     >
@@ -120,7 +120,7 @@ function HeroFeatureCycle() {
         initial={shouldReduceMotion ? false : { opacity: 0, y: 8 }}
         animate={shouldReduceMotion ? { opacity: 1, y: 0 } : visible ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }}
         transition={{ duration: 0.38, ease: "easeInOut" }}
-        className="text-[15px] font-medium whitespace-nowrap text-blue-600 sm:text-base md:text-lg"
+        className="text-[18px] font-semibold whitespace-nowrap text-blue-600 sm:text-xl md:text-3xl lg:text-4xl"
       >
         {shouldReduceMotion ? HERO_FEATURES[0] : HERO_FEATURES[index]}
       </motion.span>
@@ -537,7 +537,7 @@ export default function Home() {
 
           <HeroFeatureCycle />
 
-          <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-neutral-600 md:text-xl">
+          <p className="mx-auto mt-5 max-w-3xl text-sm leading-6 text-neutral-500 whitespace-nowrap sm:text-base">
             Compatible avec votre point d’accès préféré.
           </p>
 
