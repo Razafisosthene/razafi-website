@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RAZAFI — Plateforme WiFi communautaire",
+  title: "RAZAFI — Plateforme WiFi communautaire avec assistant IA",
   description:
-    "Transformez votre connexion Internet en source de revenus avec la plateforme WiFi RAZAFI.",
+    "RAZAFI aide les propriétaires à transformer leur connexion Starlink ou Fibre en zone WiFi monétisée, avec portail captif, paiement Mobile Money, dashboard propriétaire et assistant IA intégré.",
 };
 
 export default function RootLayout({
