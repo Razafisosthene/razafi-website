@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import FloatingRazafiContact from "@/components/FloatingRazafiContact";
 
 export const metadata: Metadata = {
   title:
@@ -251,6 +252,9 @@ export default function WifiIntelligenceArtificiellePage() {
           </div>
         </div>
       </footer>
+
+      {/* Same floating Assistant RAZAFI + WhatsApp block as the homepage */}
+      <FloatingRazafiContact />
     </main>
   );
 }
