@@ -41,7 +41,14 @@ const targetCards = [
   },
 ];
 
-const faqItems = [
+type FaqItem = {
+  q: string;
+  a: string;
+  guideHref?: string;
+  guideLabel?: string;
+};
+
+const faqItems: FaqItem[] = [
   {
     q: "À qui s’adresse RAZAFI ?",
     a: "RAZAFI s’adresse aux particuliers, fokontany, snacks, boutiques et espaces publics disposant déjà d’une connexion Internet et souhaitant la transformer en activité WiFi moderne dans leur zone.",
@@ -67,13 +74,15 @@ const faqItems = [
     a: "Non. Les utilisateurs se connectent simplement au WiFi, paient via Mobile Money puis reçoivent automatiquement leur accès Internet.",
   },
   {
-    q: "Est-ce que RAZAFI utilise l’intelligence artificielle",
-    a: "RAZAFI intègre un assistant IA conçu pour rendre le WiFi plus simple à utiliser et plus facile à gérer. Il aide à guider les utilisateurs, accompagne les propriétaires dans leurs décisions et réduit le temps passé sur les tâches répétitives. L’objectif est clair : moins de complications, plus de temps pour vous, plus de liberté.",
+    q: "Est-ce que RAZAFI utilise l’intelligence artificielle ?",
+    a: "Oui. RAZAFI intègre un assistant IA pour rendre le WiFi plus simple à utiliser et plus facile à gérer. Il guide les utilisateurs, aide les propriétaires à mieux comprendre leur activité et réduit le temps passé sur les tâches répétitives. Moins de complications, plus de temps pour vous, plus de liberté.",
+    guideHref: "/guide/wifi-intelligence-artificielle",
+    guideLabel: "Lire le guide : WiFi et intelligence artificielle",
   },
- {
-  q: "Puis-je suivre mon réseau et mon activité à distance ?",
-  a: "Oui. RAZAFI intègre un assistant IA pour rendre le WiFi plus simple à utiliser et plus facile à gérer. Il guide les utilisateurs, aide les propriétaires à mieux comprendre leur activité et réduit le temps passé sur les tâches répétitives. Moins de complications, plus de temps pour vous, plus de liberté.",
-},
+  {
+    q: "Puis-je suivre mon réseau et mon activité à distance ?",
+    a: "Oui. Le réseau fonctionne automatiquement 24h/24 sans intervention humaine. Suivez les connexions, les ventes et l’activité directement depuis votre téléphone. Les paiements des utilisateurs sont reçus par la plateforme RAZAFI, puis votre part est versée selon l’organisation prévue avec vous.",
+  },
   {
     q: "Peut-on suivre plusieurs réseaux ou plusieurs sites ?",
     a: "Oui. La plateforme RAZAFI permet de suivre plusieurs réseaux WiFi et plusieurs sites depuis un seul tableau de bord.",
@@ -846,9 +855,18 @@ export default function Home() {
               }`}
             >
               <div className="overflow-hidden">
-                <p className="px-5 pb-5 text-[15px] leading-6 text-neutral-600">
-                  {faq.a}
-                </p>
+                <div className="px-5 pb-5 text-[15px] leading-6 text-neutral-600">
+                  <p>{faq.a}</p>
+
+                  {faq.guideHref && faq.guideLabel ? (
+                    <a
+                      href={faq.guideHref}
+                      className="mt-3 inline-flex font-semibold text-neutral-950 underline underline-offset-4 transition hover:text-neutral-600"
+                    >
+                      {faq.guideLabel}
+                    </a>
+                  ) : null}
+                </div>
               </div>
             </div>
           </div>
