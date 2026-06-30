@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title:
@@ -11,22 +12,36 @@ export const metadata: Metadata = {
 export default function WifiIntelligenceArtificiellePage() {
   return (
     <main className="min-h-screen bg-white text-neutral-950">
-      <header className="border-b border-neutral-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-          <Link href="/" className="text-lg font-bold tracking-tight">
-            RAZAFI
+      <header className="fixed left-0 top-0 z-50 w-full border-b border-black/5 bg-white/80 backdrop-blur-2xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:py-4">
+          <Link href="/">
+            <Image
+              src="/images/logo-full.png"
+              alt="RAZAFI"
+              width={150}
+              height={40}
+              className="h-9 w-auto md:h-11"
+              priority
+            />
           </Link>
-
-          <Link
-            href="/"
-            className="rounded-full border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50"
+          <nav className="hidden items-center gap-8 text-sm text-neutral-600 md:flex">
+            <Link href="/#pour-qui" className="transition hover:text-black">
+              Pour qui ?
+            </Link>
+            <Link href="/#faq" className="transition hover:text-black">
+              FAQ
+            </Link>
+          </nav>
+          <a
+            href="https://portal.razafistore.com/admin/login.html"
+            className="rounded-full bg-black px-3 py-2 text-xs font-semibold text-white transition hover:scale-105 md:px-5 md:py-2.5 md:text-sm"
           >
-            Retour au site
-          </Link>
+            Espace propriétaire
+          </a>
         </div>
       </header>
 
-      <article className="mx-auto max-w-3xl px-6 py-14 md:py-20">
+      <article className="mx-auto max-w-3xl px-6 pb-14 pt-32 md:pb-20 md:pt-36">
         <p className="mb-4 text-sm font-semibold uppercase tracking-[0.28em] text-blue-600">
           Guide RAZAFI
         </p>
@@ -215,6 +230,27 @@ export default function WifiIntelligenceArtificiellePage() {
           </Link>
         </div>
       </article>
+
+      <footer className="border-t border-neutral-200 px-5 pb-24 pt-10 md:py-12">
+        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 md:flex-row">
+          <div>
+            <Image
+              src="/images/logo-full.png"
+              alt="RAZAFI"
+              width={150}
+              height={40}
+              className="h-8 w-auto"
+            />
+            <p className="mt-4 text-neutral-600">
+              Internet communautaire moderne.
+            </p>
+          </div>
+          <div className="text-neutral-600 md:text-right">
+            <p>Seychelles • Madagascar</p>
+            <p>WhatsApp : +261 34 05 005 92</p>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
