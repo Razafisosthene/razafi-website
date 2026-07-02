@@ -102,7 +102,7 @@ const HERO_FEATURES = [
   "Assistant IA intégré",
   "Activation instantanée",
   "Paiement mobile automatique",
-  "Dashboard propriétaire à distance",
+  "Suivi à distance",
 ];
 
 function HeroFeatureCycle() {
@@ -328,7 +328,7 @@ function PlatformAssistantWidget() {
         key_strengths: [
           "Paiement mobile automatique",
           "Activation instantanée",
-          "Dashboard propriétaire à distance",
+          "Suivi à distance",
           "Assistant IA intégré",
           "Compatible Starlink, fibre, tout point d’accès",
         ],
