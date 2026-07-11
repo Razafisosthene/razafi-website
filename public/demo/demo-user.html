@@ -340,10 +340,97 @@
       .plans-heading-row{gap:8px;}
       .plan-filter-btn{min-height:32px;padding:0 12px;font-size:13px;}
     }
+
+    /* =========================================================
+       DEMO CLIENT JOURNEY (ADDITIVE)
+       Welcome → WiFi Connection → Portal → … → Connection Success
+       ========================================================= */
+    body.rz-flow-locked{overflow:hidden;}
+    body.rz-flow-locked .portal-header,
+    body.rz-flow-locked .portal-container,
+    body.rz-flow-locked .portal-footer{visibility:hidden;}
+    .rz-flow-overlay{
+      position:fixed;inset:0;z-index:1200;
+      display:flex;align-items:center;justify-content:center;padding:18px;
+      background:
+        radial-gradient(circle at top left,rgba(0,122,255,.08),transparent 28%),
+        linear-gradient(180deg,#fbfbfd 0%,#f5f5f7 48%,#f2f2f7 100%);
+      opacity:1;transition:opacity .28s ease;
+    }
+    body.theme-dark .rz-flow-overlay{
+      background:
+        radial-gradient(circle at top left,rgba(0,122,255,.18),transparent 28%),
+        linear-gradient(180deg,#050507 0%,#0b0b0f 54%,#111116 100%);
+    }
+    .rz-flow-overlay.rz-flow-hidden{opacity:0;pointer-events:none;}
+    .rz-flow-card{
+      width:100%;max-width:420px;text-align:center;
+      border-radius:28px;border:1px solid var(--ios-border);
+      background:var(--ios-card);box-shadow:var(--ios-shadow);
+      padding:30px 22px 26px;
+      transform:translateY(0) scale(1);opacity:1;
+      transition:transform .28s ease,opacity .28s ease;
+    }
+    .rz-flow-overlay.rz-flow-hidden .rz-flow-card{transform:translateY(8px) scale(.985);opacity:0;}
+    .rz-flow-icon{
+      width:58px;height:58px;margin:0 auto 14px;border-radius:20px;
+      display:flex;align-items:center;justify-content:center;font-size:26px;line-height:1;
+      background:rgba(0,122,255,.10);border:1px solid rgba(0,122,255,.16);
+    }
+    body.theme-dark .rz-flow-icon{background:rgba(0,122,255,.18);border-color:rgba(0,122,255,.30);}
+    .rz-flow-icon.rz-flow-icon-green{background:rgba(52,199,89,.12);border-color:rgba(52,199,89,.24);}
+    body.theme-dark .rz-flow-icon.rz-flow-icon-green{background:rgba(52,199,89,.18);border-color:rgba(52,199,89,.32);}
+    .rz-flow-title{margin:0;font-size:clamp(1.35rem,6vw,1.62rem);font-weight:900;letter-spacing:-.035em;color:var(--ios-text);line-height:1.12;}
+    .rz-flow-sub{margin:9px auto 0;max-width:300px;color:var(--ios-muted);font-size:14px;font-weight:600;line-height:1.5;}
+    .rz-flow-network{
+      margin:14px auto 4px;font-weight:900;letter-spacing:-.05em;
+      font-size:clamp(1.55rem,7vw,1.95rem);line-height:1.05;color:var(--ios-text);
+    }
+    .rz-flow-network span{display:block;}
+    .rz-flow-secure-pill{
+      display:inline-flex;align-items:center;justify-content:center;gap:7px;
+      margin:12px auto 2px;padding:7px 13px;border-radius:999px;
+      background:rgba(52,199,89,.12);border:1px solid rgba(52,199,89,.22);
+      color:#167a35;font-size:13px;font-weight:800;white-space:nowrap;
+    }
+    body.theme-dark .rz-flow-secure-pill{color:#7ee59b;background:rgba(52,199,89,.14);border-color:rgba(52,199,89,.26);}
+    .rz-flow-btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:9px;
+      width:100%;min-height:46px;margin-top:20px;padding:10px 16px;
+      border:0;border-radius:999px;cursor:pointer;
+      background:var(--ios-blue);color:#fff;
+      font-size:15px;font-weight:800;letter-spacing:-.01em;
+      font-family:inherit;-webkit-tap-highlight-color:transparent;
+      box-shadow:0 10px 20px rgba(0,122,255,.18);
+      transition:transform .12s ease,box-shadow .16s ease,opacity .16s ease;
+    }
+    .rz-flow-btn:active{transform:scale(.98);}
+    .rz-flow-btn:disabled{opacity:.75;cursor:default;transform:none;}
+    .rz-flow-btn.rz-flow-btn-secondary{
+      margin-top:10px;background:rgba(118,118,128,.12);color:var(--ios-text);box-shadow:none;
+    }
+    body.theme-dark .rz-flow-btn.rz-flow-btn-secondary{background:rgba(255,255,255,.09);}
+    .rz-flow-btn.rz-flow-btn-tertiary{
+      margin-top:6px;min-height:38px;background:none;color:var(--ios-blue);
+      box-shadow:none;font-weight:800;font-size:14px;
+    }
+    .rz-flow-btn.rz-flow-btn-tertiary:hover{text-decoration:underline;}
+    body.theme-dark .rz-flow-btn.rz-flow-btn-tertiary{color:#7cb6ff;}
+    .rz-flow-spinner{
+      width:15px;height:15px;flex:0 0 auto;border-radius:999px;
+      border:2px solid rgba(255,255,255,.38);border-top-color:#fff;
+      animation:rzFlowSpin .7s linear infinite;
+    }
+    @keyframes rzFlowSpin{to{transform:rotate(360deg);}}
+    @media(max-width:420px){
+      .rz-flow-overlay{padding:14px;}
+      .rz-flow-card{padding:26px 18px 22px;border-radius:26px;}
+    }
   </style>
 </head>
 
 <body class="theme-light">
+<script>/* Demo client journey (additive): lock the portal before first paint */document.body.classList.add('rz-flow-locked');</script>
 
   <!-- ================= HEADER ================= -->
   <header class="portal-header">
@@ -528,6 +615,42 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ================= DEMO CLIENT JOURNEY (ADDITIVE) ================= -->
+  <!-- Full-page states: Welcome → WiFi Connection → (portal) → Success -->
+  <div class="rz-flow-overlay rz-flow-hidden" id="rzFlowWelcome" aria-hidden="true">
+    <div class="rz-flow-card">
+      <div class="rz-flow-icon" aria-hidden="true">👋</div>
+      <h2 class="rz-flow-title">Bienvenue dans la démo client</h2>
+      <p class="rz-flow-sub">Découvrez comment un utilisateur se connecte au WiFi, achète un forfait et obtient automatiquement son accès Internet.</p>
+      <button type="button" id="rzFlowWelcomeBtn" class="rz-flow-btn">Commencer la démo</button>
+    </div>
+  </div>
+
+  <div class="rz-flow-overlay rz-flow-hidden" id="rzFlowConnect" aria-hidden="true">
+    <div class="rz-flow-card">
+      <div class="rz-flow-icon" aria-hidden="true">📶</div>
+      <h2 class="rz-flow-title">Connexion au réseau WiFi</h2>
+      <p class="rz-flow-sub">Vous êtes sur le point de rejoindre</p>
+      <p class="rz-flow-network"><span>Kristof WiFi</span><span>Tsianolondroa</span></p>
+      <div class="rz-flow-secure-pill">🔒 Réseau sécurisé par RAZAFI</div>
+      <button type="button" id="rzFlowConnectBtn" class="rz-flow-btn">Se connecter au WiFi</button>
+    </div>
+  </div>
+
+  <div class="rz-flow-overlay rz-flow-hidden" id="rzFlowSuccess" aria-hidden="true">
+    <div class="rz-flow-card">
+      <div class="rz-flow-icon rz-flow-icon-green" aria-hidden="true">✅</div>
+      <h2 class="rz-flow-title">Connexion réussie</h2>
+      <p class="rz-flow-sub">Vous êtes maintenant connecté à</p>
+      <p class="rz-flow-network"><span>Kristof WiFi</span></p>
+      <p class="rz-flow-sub" style="margin-top:6px;">Bon surf !</p>
+      <div class="rz-flow-secure-pill">🟢 Internet activé</div>
+      <button type="button" id="rzFlowContinueBtn" class="rz-flow-btn">Continuer sur Internet</button>
+      <button type="button" id="rzFlowReplayBtn" class="rz-flow-btn rz-flow-btn-secondary">Refaire la démonstration</button>
+      <button type="button" id="rzFlowDiscoverBtn" class="rz-flow-btn rz-flow-btn-tertiary">Découvrir RAZAFI</button>
     </div>
   </div>
 
@@ -855,6 +978,101 @@
       });
     }
 
+  })();
+  </script>
+
+  <!-- ================= DEMO CLIENT JOURNEY JS (ADDITIVE) ================= -->
+  <script>
+  (function(){
+    "use strict";
+
+    /* State machine: Welcome → WiFi Connection → Portal → Success.
+       Purely presentational overlays — the portal, plans, payment,
+       MVola modal and network simulation above remain untouched. */
+
+    var overlays = {
+      welcome: document.getElementById("rzFlowWelcome"),
+      connect: document.getElementById("rzFlowConnect"),
+      success: document.getElementById("rzFlowSuccess")
+    };
+    var connectBtn        = document.getElementById("rzFlowConnectBtn");
+    var connectBtnDefault = connectBtn.innerHTML;
+
+    function showFlowScreen(name){
+      Object.keys(overlays).forEach(function(key){
+        var visible = key === name;
+        overlays[key].classList.toggle("rz-flow-hidden", !visible);
+        overlays[key].setAttribute("aria-hidden", visible ? "false" : "true");
+      });
+      // Whenever the connection screen is shown, its button is ready again.
+      if(name === "connect"){
+        connectBtn.disabled = false;
+        connectBtn.innerHTML = connectBtnDefault;
+      }
+      document.body.classList.add("rz-flow-locked");
+    }
+
+    function enterPortal(){
+      Object.keys(overlays).forEach(function(key){
+        overlays[key].classList.add("rz-flow-hidden");
+        overlays[key].setAttribute("aria-hidden","true");
+      });
+      document.body.classList.remove("rz-flow-locked");
+      window.scrollTo(0,0);
+    }
+
+    /* Welcome → WiFi Connection */
+    document.getElementById("rzFlowWelcomeBtn").addEventListener("click", function(){
+      showFlowScreen("connect");
+    });
+
+    /* WiFi Connection → (600 ms simulated join) → Portal */
+    connectBtn.addEventListener("click", function(){
+      if(connectBtn.disabled) return;
+      connectBtn.disabled = true;
+      connectBtn.innerHTML = '<span class="rz-flow-spinner" aria-hidden="true"></span><span>Connexion...</span>';
+      setTimeout(enterPortal, 600);
+    });
+
+    /* "Utiliser ce code" → Connection Success screen.
+       Additive interception: this capture-phase listener runs BEFORE the
+       original button handler and stops the event from reaching it, so the
+       legacy Google redirect (left untouched above) can never fire. */
+    document.addEventListener("click", function(e){
+      var hit = e.target && e.target.closest ? e.target.closest("#useCodeBtn") : null;
+      if(!hit) return;
+      e.stopPropagation();
+      e.preventDefault();
+      var btn = document.getElementById("useCodeBtn");
+      btn.textContent = "Connexion en cours…";
+      btn.disabled = true;
+      setTimeout(function(){
+        var modal = document.getElementById("mvolaModal");
+        if(modal) modal.classList.remove("open");
+        // Restore the voucher button so the demo can be replayed.
+        btn.textContent = "Utiliser ce code";
+        btn.disabled = false;
+        showFlowScreen("success");
+      }, 1200);
+    }, true);
+
+    /* Success → continue browsing on the Internet */
+    document.getElementById("rzFlowContinueBtn").addEventListener("click", function(){
+      window.location.href = "https://www.google.com";
+    });
+
+    /* Success → back to WiFi Connection (never Welcome) */
+    document.getElementById("rzFlowReplayBtn").addEventListener("click", function(){
+      showFlowScreen("connect");
+    });
+
+    /* Success → razafistore.com */
+    document.getElementById("rzFlowDiscoverBtn").addEventListener("click", function(){
+      window.location.href = "https://www.razafistore.com";
+    });
+
+    /* Initial state — Welcome, shown once per page load. */
+    showFlowScreen("welcome");
   })();
   </script>
 
