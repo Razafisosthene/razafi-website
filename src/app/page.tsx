@@ -373,6 +373,16 @@ function PlatformAssistantWidget() {
             context_version: "G.4.0",
             site_knowledge,
           },
+          // ANU-2: explicitly mark the same browser-owned page state as untrusted.
+          ui_snapshot: {
+            page_context: "razafi_public_home",
+            site_language: "fr",
+            visible_sections: ["hero", "how_it_works", "owner_value", "demo", "faq", "contact"],
+            main_cta: "whatsapp_or_demo",
+            product_context: "RAZAFI public website",
+            context_version: "ANU-2.0",
+            site_knowledge,
+          },
         }),
       });
       const data = await res.json();
