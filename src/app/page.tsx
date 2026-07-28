@@ -240,6 +240,8 @@ const QUICK_CHIPS: string[] = [];
 // Patch F.2: platform prospect conversation_id persistence
 const RAZAFI_PLATFORM_ASSISTANT_CID_KEY =
   "razafi_platform_assistant_conversation_id_v1";
+const RAZAFI_PLATFORM_ASSISTANT_MEMORY_TOKEN_KEY =
+  "razafi_platform_assistant_memory_token_v1";
 
 function readPlatformAssistantConversationId(): string | null {
   try {
@@ -257,6 +259,26 @@ function writePlatformAssistantConversationId(value: unknown) {
     const v = String(value || "").trim();
     if (/^ast_[0-9a-f]{24}$/.test(v)) {
       window.sessionStorage.setItem(RAZAFI_PLATFORM_ASSISTANT_CID_KEY, v);
+    }
+  } catch {}
+}
+
+function readPlatformAssistantMemoryToken(): string | null {
+  try {
+    if (typeof window === "undefined") return null;
+    const v = window.sessionStorage.getItem(RAZAFI_PLATFORM_ASSISTANT_MEMORY_TOKEN_KEY);
+    return /^mem_[0-9a-f]{64}$/.test(String(v || "")) ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+function writePlatformAssistantMemoryToken(value: unknown) {
+  try {
+    if (typeof window === "undefined") return;
+    const v = String(value || "").trim().toLowerCase();
+    if (/^mem_[0-9a-f]{64}$/.test(v)) {
+      window.sessionStorage.setItem(RAZAFI_PLATFORM_ASSISTANT_MEMORY_TOKEN_KEY, v);
     }
   } catch {}
 }
@@ -355,6 +377,7 @@ function PlatformAssistantWidget() {
           message: trimmed,
           page_path: "/",
           conversation_id: conversationId,
+          memory_token: readPlatformAssistantMemoryToken() || undefined,
           // G.3B + G.4: safe static page context + structured site knowledge — no PII, no tracking
           live_data: {
             page_context: "razafi_public_home",
@@ -388,6 +411,7 @@ function PlatformAssistantWidget() {
       const data = await res.json();
       // Patch F.2: persist conversation_id for multi-turn memory
       writePlatformAssistantConversationId(data?.conversation_id);
+      writePlatformAssistantMemoryToken(data?.memory_token);
       const answer: string = data?.answer || ASSISTANT_FALLBACK;
       setMessages((prev) => [...prev, { role: "assistant", text: answer }]);
     } catch {
