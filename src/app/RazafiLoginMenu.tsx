@@ -193,7 +193,7 @@ export default function RazafiLoginMenu() {
       {isOpen && !isMobile ? panel : null}
       {isOpen && isMobile && isMounted ? createPortal(mobileLayer, document.body) : null}
 
-      <style jsx>{`
+      <style jsx global>{`
         .rz-login-menu {
           position: relative;
           display: inline-flex;
