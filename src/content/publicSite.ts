@@ -5,6 +5,7 @@ export const HERO_FEATURES = [
   "Paiement automatique",
   "Activation instantanée",
   "Gestion à distance",
+  "Assistant IA intégré",
 ] as const;
 
 export const WHY_RAZAFI = [
@@ -99,7 +100,7 @@ export const PUBLIC_ASSISTANT_KNOWLEDGE = {
   payment_note:
     "Les moyens de paiement RAZAFI disponibles sont inclus dans l’offre concernée.",
   personalized_plan_note:
-    "Avec RAZAFI + Plan Personnalisé, ce sont les clients WiFi qui composent leur propre forfait selon Durée, Data et Vitesse.",
+    "Avec RAZAFI Sur Mesure, ce sont les clients WiFi qui composent leur propre forfait selon Durée, Data et Vitesse.",
   subscription_status_note:
     "RAZAFI intègre un cycle mensuel d’abonnement. Ne pas présenter comme entièrement certifié en production le cycle réel complet grace → suspended → paiement → réactivation tant que sa certification réelle n’est pas terminée.",
   faq_summary: FAQ_ITEMS.map((faq) => `${faq.q} → ${faq.a}`),

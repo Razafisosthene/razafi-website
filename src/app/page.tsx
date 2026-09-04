@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   BarChart3,
@@ -107,6 +107,45 @@ function DemoMenuButton() {
   );
 }
 
+function HeroFeatureLine() {
+  const [featureIndex, setFeatureIndex] = useState(0);
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (reduceMotion || HERO_FEATURES.length <= 1) return;
+
+    const timer = window.setInterval(() => {
+      setFeatureIndex((current) => (current + 1) % HERO_FEATURES.length);
+    }, 2800);
+
+    return () => window.clearInterval(timer);
+  }, [reduceMotion]);
+
+  return (
+    <p className="mx-auto mt-7 max-w-5xl text-lg font-semibold leading-8 text-blue-600 md:text-2xl">
+      <span className="hidden md:inline">{HERO_FEATURES.join(" · ")}</span>
+
+      <span className="inline-flex min-h-8 items-center justify-center md:hidden">
+        {reduceMotion ? (
+          HERO_FEATURES[0]
+        ) : (
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={HERO_FEATURES[featureIndex]}
+              initial={{ opacity: 0, y: 7 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -7 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+            >
+              {HERO_FEATURES[featureIndex]}
+            </motion.span>
+          </AnimatePresence>
+        )}
+      </span>
+    </p>
+  );
+}
+
 const whyIcons = [CreditCard, BarChart3, Palette, Sparkles] as const;
 
 type PublicOffer = {
@@ -176,7 +215,7 @@ export default function Home() {
         setOffersState("ready");
       } catch (error) {
         if (controller.signal.aborted) return;
-        console.error("[RAZAFI PUBLIC OFFERS]", error);
+        console.warn("[RAZAFI PUBLIC OFFERS]", error);
         setOffers([]);
         setOffersState("error");
       }
@@ -231,9 +270,7 @@ export default function Home() {
             Automatisez votre zone WiFi.
           </h1>
 
-          <p className="mx-auto mt-7 max-w-3xl text-lg font-semibold leading-8 text-blue-600 md:text-2xl">
-            {HERO_FEATURES.join(" · ")}
-          </p>
+          <HeroFeatureLine />
 
           <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-neutral-600 md:text-lg">
             RAZAFI vous permet de vendre et gérer l’accès à votre zone WiFi simplement, depuis votre téléphone.
