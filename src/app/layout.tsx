@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RAZAFI — Plateforme WiFi communautaire avec assistant IA",
+  title: "RAZAFI — Automatisez votre zone WiFi",
   description:
-    "RAZAFI aide les propriétaires à transformer leur connexion Starlink ou Fibre en zone WiFi monétisée, avec portail captif, paiement Mobile Money, dashboard propriétaire et assistant IA intégré.",
+    "RAZAFI automatise la vente et la gestion d’accès WiFi : paiement automatique, activation instantanée, gestion à distance, démos et offres Commission ou Abonnement.",
 };
 
 export default function RootLayout({

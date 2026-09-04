@@ -2,91 +2,64 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import FloatingRazafiContact from "@/components/FloatingRazafiContact";
+import RazafiLoginMenu from "@/app/RazafiLoginMenu";
+import { LEGAL_LINE, WHATSAPP_URL } from "@/content/publicSite";
 
 export const metadata: Metadata = {
   title:
     "WiFi et intelligence artificielle : comment RAZAFI simplifie la gestion d’une zone WiFi",
   description:
-    "Découvrez comment RAZAFI utilise l’intelligence artificielle et un assistant IA pour simplifier la gestion d’une zone WiFi, guider les utilisateurs, aider les propriétaires et améliorer l’expérience réseau.",
+    "Découvrez comment l’assistant IA RAZAFI aide à simplifier l’utilisation et la gestion d’une zone WiFi pour les propriétaires et leurs clients.",
 };
 
 export default function WifiIntelligenceArtificiellePage() {
   return (
     <main className="min-h-screen bg-white text-neutral-950">
-      <header className="fixed left-0 top-0 z-50 w-full border-b border-black/5 bg-white/80 backdrop-blur-2xl">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-black/5 bg-white/82 backdrop-blur-2xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:py-4">
-          <Link href="/">
+          <Link href="/" aria-label="Accueil RAZAFI">
             <Image
               src="/images/logo-full.png"
               alt="RAZAFI"
               width={150}
               height={40}
-              className="h-9 w-auto md:h-11"
+              className="h-9 w-auto md:h-10"
               priority
             />
           </Link>
-          <nav className="hidden items-center gap-8 text-sm text-neutral-600 md:flex">
-            <Link href="/#pour-qui" className="transition hover:text-black">
-              Pour qui ?
+
+          <nav className="hidden items-center gap-8 text-sm font-medium text-neutral-600 md:flex">
+            <Link href="/#demos" className="transition hover:text-neutral-950">
+              Démos
             </Link>
-            <Link href="/#faq" className="transition hover:text-black">
-              FAQ
+            <Link href="/#offres" className="transition hover:text-neutral-950">
+              Offres
             </Link>
           </nav>
-          <a
-            href="https://portal.razafistore.com/admin/login.html"
-            className="rounded-full bg-black px-3 py-2 text-xs font-semibold text-white transition hover:scale-105 md:px-5 md:py-2.5 md:text-sm"
-          >
-            Espace propriétaire
-          </a>
+
+          <RazafiLoginMenu />
         </div>
       </header>
 
-      <article className="mx-auto max-w-3xl px-6 pb-14 pt-32 md:pb-20 md:pt-36">
+      <article className="mx-auto max-w-3xl px-6 pb-16 pt-32 md:pb-24 md:pt-36">
         <p className="mb-4 text-sm font-semibold uppercase tracking-[0.28em] text-blue-600">
           Guide RAZAFI
         </p>
 
-        <h1 className="text-4xl font-bold tracking-tight text-neutral-950 md:text-5xl">
-          WiFi et intelligence artificielle : comment RAZAFI simplifie la
-          gestion d’une zone WiFi
+        <h1 className="text-4xl font-bold tracking-[-0.035em] text-neutral-950 md:text-5xl">
+          WiFi et intelligence artificielle : comment RAZAFI simplifie la gestion d’une zone WiFi
         </h1>
 
-        <p className="mt-6 text-lg leading-8 text-neutral-700">
-          Le WiFi est devenu essentiel dans la vie quotidienne. Dans une maison,
-          un quartier, un commerce ou une zone partagée, les utilisateurs veulent
-          une connexion simple, rapide et accessible. Mais pour le propriétaire
-          du réseau, gérer une zone WiFi peut vite devenir répétitif : suivre les
-          utilisateurs, comprendre les forfaits, vérifier l’activité, répondre
-          aux questions, adapter les offres et garder une bonne expérience pour
-          tout le monde.
-        </p>
-
-        <p className="mt-5 text-lg leading-8 text-neutral-700">
-          C’est là que l’intelligence artificielle peut apporter une vraie
-          différence. RAZAFI n’est pas seulement un portail WiFi. C’est une
-          plateforme WiFi communautaire avec assistant IA, pensée pour rendre la
-          gestion plus simple, plus claire et plus humaine.
+        <p className="mt-7 text-lg leading-8 text-neutral-700">
+          Gérer une zone WiFi ne se limite pas au signal. Il faut aussi suivre l’activité, comprendre les forfaits, répondre aux questions et garder une expérience simple pour les utilisateurs. RAZAFI intègre un assistant IA pour rendre ces tâches plus claires et plus faciles à gérer.
         </p>
 
         <section className="mt-12">
           <h2 className="text-2xl font-bold tracking-tight text-neutral-950">
-            Pourquoi l’intelligence artificielle devient importante dans le WiFi ?
+            Pourquoi l’intelligence artificielle peut aider dans le WiFi ?
           </h2>
-
           <p className="mt-4 leading-8 text-neutral-700">
-            Un réseau WiFi ne se limite pas au signal. Il y a aussi les
-            utilisateurs, les forfaits, les paiements, les habitudes de
-            connexion, les heures de forte utilisation et les décisions à prendre
-            pour garder un service fluide.
-          </p>
-
-          <p className="mt-4 leading-8 text-neutral-700">
-            L’intelligence artificielle peut aider le propriétaire à mieux
-            comprendre ce qui se passe, sans devoir tout analyser manuellement.
-            Elle peut accompagner les décisions, expliquer les informations
-            importantes et rendre la gestion du réseau plus accessible, même pour
-            une personne qui n’est pas technicienne.
+            Une zone WiFi produit de nombreuses informations utiles : activité, forfaits, paiements et questions des utilisateurs. L’intelligence artificielle peut aider à expliquer ces informations et à rendre la gestion plus accessible, même sans connaissances techniques avancées.
           </p>
         </section>
 
@@ -94,166 +67,101 @@ export default function WifiIntelligenceArtificiellePage() {
           <h2 className="text-2xl font-bold tracking-tight text-neutral-950">
             Comment RAZAFI utilise l’assistant IA ?
           </h2>
-
           <p className="mt-4 leading-8 text-neutral-700">
-            L’assistant IA RAZAFI est conçu pour simplifier le quotidien. Il peut
-            aider les utilisateurs à comprendre comment se connecter, comment
-            choisir un forfait, comment payer via Mobile Money et comment
-            utiliser leur accès Internet.
+            L’assistant IA RAZAFI aide les utilisateurs à comprendre comment se connecter, choisir un forfait, payer et utiliser leur accès Internet.
           </p>
-
           <p className="mt-4 leading-8 text-neutral-700">
-            Pour le propriétaire, l’assistant peut aussi aider à mieux comprendre
-            son activité : quels forfaits sont utiles, comment adapter les
-            offres, comment lire certaines informations du dashboard et comment
-            prendre de meilleures décisions pour sa zone WiFi.
+            Pour le propriétaire, l’assistant aide à mieux comprendre son activité, ses forfaits et les informations disponibles dans RAZAFI afin de prendre des décisions plus facilement.
           </p>
-
           <p className="mt-4 leading-8 text-neutral-700">
-            L’objectif n’est pas de compliquer la technologie. L’objectif est de
-            rendre le WiFi plus simple à utiliser et plus facile à gérer.
+            L’objectif reste simple : réduire les questions répétitives et rendre la plateforme plus facile à utiliser au quotidien.
           </p>
         </section>
 
         <section className="mt-10">
           <h2 className="text-2xl font-bold tracking-tight text-neutral-950">
-            Une plateforme WiFi plus simple pour les utilisateurs
+            Une expérience plus simple pour les clients WiFi
           </h2>
-
           <p className="mt-4 leading-8 text-neutral-700">
-            Avec RAZAFI, l’utilisateur n’a pas besoin d’installer une
-            application. Il se connecte au WiFi, choisit un forfait, paie via
-            Mobile Money et reçoit son accès automatiquement.
-          </p>
-
-          <p className="mt-4 leading-8 text-neutral-700">
-            L’assistant IA peut accompagner cette expérience en expliquant les
-            étapes avec des mots simples. Cela réduit la confusion, les questions
-            répétitives et les pertes de temps.
+            Les clients n’ont pas besoin d’installer une application. Ils se connectent au WiFi, choisissent un forfait, paient et obtiennent leur accès. L’assistant peut les guider lorsqu’ils ont une question sur le parcours.
           </p>
         </section>
 
         <section className="mt-10">
           <h2 className="text-2xl font-bold tracking-tight text-neutral-950">
-            Un assistant pour aider le propriétaire à gagner du temps
+            Un assistant pour faire gagner du temps au propriétaire
           </h2>
-
           <p className="mt-4 leading-8 text-neutral-700">
-            Un propriétaire qui partage sa connexion Starlink ou Fibre n’a pas
-            forcément envie de passer toute sa journée à gérer les détails
-            techniques. Il veut pouvoir suivre son activité, comprendre son
-            réseau et prendre les bonnes décisions sans perdre trop d’énergie.
+            Le propriétaire d’une zone WiFi veut pouvoir suivre son activité et comprendre ce qui se passe sans passer son temps dans des tâches répétitives ou des détails techniques.
           </p>
-
           <p className="mt-4 leading-8 text-neutral-700">
-            RAZAFI va dans ce sens : moins de tâches répétitives, plus de
-            clarté, plus de liberté. L’assistant IA peut devenir un véritable
-            soutien dans la gestion quotidienne. Il aide à transformer les
-            données du réseau en informations plus faciles à comprendre.
+            RAZAFI va dans ce sens : l’assistant transforme les informations disponibles dans la plateforme en explications plus faciles à comprendre et accompagne le propriétaire dans sa gestion quotidienne.
           </p>
         </section>
 
         <section className="mt-10">
           <h2 className="text-2xl font-bold tracking-tight text-neutral-950">
-            Intelligence artificielle et expérience réseau
+            RAZAFI : une plateforme WiFi plus intelligente
           </h2>
-
           <p className="mt-4 leading-8 text-neutral-700">
-            L’intelligence artificielle peut aussi aider à mieux comprendre
-            l’utilisation du réseau : moments chargés, habitudes des utilisateurs,
-            forfaits populaires, demandes fréquentes ou zones qui nécessitent
-            plus d’attention.
+            RAZAFI réunit portail WiFi, paiement, activation, suivi propriétaire, gestion des forfaits, espace client et Assistant IA. L’intelligence artificielle complète ces outils sans remplacer la simplicité du parcours.
           </p>
-
           <p className="mt-4 leading-8 text-neutral-700">
-            Dans une plateforme comme RAZAFI, cette intelligence peut aider le
-            propriétaire à améliorer progressivement l’expérience des
-            utilisateurs, sans devoir tout surveiller manuellement.
-          </p>
-        </section>
-
-        <section className="mt-10">
-          <h2 className="text-2xl font-bold tracking-tight text-neutral-950">
-            RAZAFI : une plateforme WiFi intelligente et accessible
-          </h2>
-
-          <p className="mt-4 leading-8 text-neutral-700">
-            RAZAFI combine plusieurs éléments importants : portail captif,
-            paiement Mobile Money, dashboard propriétaire, gestion des forfaits
-            et assistant IA intégré.
-          </p>
-
-          <p className="mt-4 leading-8 text-neutral-700">
-            Cette combinaison permet de créer une zone WiFi plus moderne, plus
-            simple à gérer et plus accessible pour les utilisateurs. L’idée est
-            simple : la technologie doit travailler pour le propriétaire, pas
-            l’inverse.
+            La technologie doit aider le propriétaire et ses clients, pas leur ajouter de la complexité.
           </p>
         </section>
 
         <section className="mt-12 rounded-[2rem] border border-neutral-200 bg-neutral-50 p-6 md:p-8">
-          <h2 className="text-2xl font-bold tracking-tight text-neutral-950">
-            Conclusion
-          </h2>
-
+          <h2 className="text-2xl font-bold tracking-tight text-neutral-950">En résumé</h2>
           <p className="mt-4 leading-8 text-neutral-700">
-            L’intelligence artificielle ne sert pas seulement à rendre le WiFi
-            plus technique. Elle peut aussi rendre la gestion plus simple, plus
-            claire et plus libre.
-          </p>
-
-          <p className="mt-4 leading-8 text-neutral-700">
-            Avec RAZAFI, le propriétaire peut mieux gérer sa zone WiFi, les
-            utilisateurs sont mieux guidés, et le service devient plus naturel au
-            quotidien.
-          </p>
-
-          <p className="mt-4 leading-8 text-neutral-700">
-            RAZAFI est une plateforme WiFi communautaire avec assistant IA,
-            pensée pour aider les propriétaires à transformer leur connexion
-            Internet en service utile, organisé et plus facile à gérer.
+            L’Assistant IA RAZAFI aide à rendre une zone WiFi plus simple à utiliser et plus facile à gérer : les clients sont mieux guidés et le propriétaire comprend plus facilement les informations utiles à son activité.
           </p>
         </section>
 
         <div className="mt-12 flex flex-col gap-3 sm:flex-row">
           <Link
-            href="/"
+            href="/#demos"
             className="inline-flex items-center justify-center rounded-full bg-neutral-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800"
           >
-            Découvrir RAZAFI
+            Voir les démos
           </Link>
-
           <Link
-            href="/#faq"
+            href="/#offres"
             className="inline-flex items-center justify-center rounded-full border border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-800 transition hover:bg-neutral-50"
           >
-            Voir la FAQ
+            Découvrir les offres
           </Link>
         </div>
       </article>
 
-      <footer className="border-t border-neutral-200 px-5 pb-24 pt-10 md:py-12">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 md:flex-row">
-          <div>
-            <Image
-              src="/images/logo-full.png"
-              alt="RAZAFI"
-              width={150}
-              height={40}
-              className="h-8 w-auto"
-            />
-            <p className="mt-4 text-neutral-600">
-              Internet communautaire moderne.
-            </p>
+      <footer className="border-t border-neutral-200 px-5 pb-32 pt-10 md:pb-12 md:pt-12">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <Image
+                src="/images/logo-full.png"
+                alt="RAZAFI"
+                width={150}
+                height={40}
+                className="h-8 w-auto"
+              />
+              <p className="mt-3 text-sm text-neutral-500">La plateforme WiFi intelligente.</p>
+            </div>
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-semibold text-neutral-700 transition hover:text-neutral-950"
+            >
+              WhatsApp : +261 34 05 005 92
+            </a>
           </div>
-          <div className="text-neutral-600 md:text-right">
-            <p>Seychelles • Madagascar</p>
-            <p>WhatsApp : +261 34 05 005 92</p>
-          </div>
+          <p className="mt-8 border-t border-neutral-200 pt-5 text-xs leading-5 text-neutral-500">
+            {LEGAL_LINE}
+          </p>
         </div>
       </footer>
 
-      {/* Same floating Assistant RAZAFI + WhatsApp block as the homepage */}
       <FloatingRazafiContact />
     </main>
   );
