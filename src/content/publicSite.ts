@@ -1,4 +1,5 @@
 export const WHATSAPP_URL = "https://wa.me/261340500592";
+export const PUBLIC_OFFERS_API_URL = "https://portal.razafistore.com/api/public/offers";
 
 export const HERO_FEATURES = [
   "Paiement automatique",
@@ -50,24 +51,6 @@ export const START_STEPS = [
   },
 ] as const;
 
-export const OFFERS = [
-  {
-    key: "base",
-    name: "RAZAFI Base",
-    description: "Tout l’essentiel pour automatiser et gérer votre zone WiFi.",
-    commissionPct: 20,
-    subscriptionAr: 30000,
-  },
-  {
-    key: "personalized",
-    name: "RAZAFI + Plan Personnalisé",
-    description:
-      "RAZAFI Base + vos clients composent leur propre forfait selon Durée · Data · Vitesse.",
-    commissionPct: 25,
-    subscriptionAr: 40000,
-  },
-] as const;
-
 export const FAQ_ITEMS = [
   {
     q: "De quoi ai-je besoin pour utiliser RAZAFI ?",
@@ -111,14 +94,8 @@ export const PUBLIC_ASSISTANT_KNOWLEDGE = {
   ],
   hardware_note:
     "RAZAFI configure le routeur MikroTik. Le propriétaire achète et installe ses points d’accès WiFi (AP). RAZAFI fournit un guide de configuration pour les AP et n’effectue pas leur installation physique.",
-  offers: OFFERS.map((offer) => ({
-    name: offer.name,
-    commission: `${offer.commissionPct} %`,
-    subscription: `${formatAriary(offer.subscriptionAr)} Ar / mois / zone WiFi`,
-    description: offer.description,
-  })),
-  pricing_model:
-    "Chaque offre peut être utilisée en mode commission ou en mode abonnement mensuel. Les tarifs publics actuels sont ceux listés dans offers.",
+  pricing_note:
+    "Les offres et tarifs publics affichés sur le site proviennent du catalogue RAZAFI actif. Selon l’offre, le modèle peut être une commission, un abonnement mensuel, ou les deux.",
   payment_note:
     "Les moyens de paiement RAZAFI disponibles sont inclus dans l’offre concernée.",
   personalized_plan_note:

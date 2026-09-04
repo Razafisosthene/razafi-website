@@ -20,7 +20,7 @@ import {
   FAQ_ITEMS,
   HERO_FEATURES,
   LEGAL_LINE,
-  OFFERS,
+  PUBLIC_OFFERS_API_URL,
   START_STEPS,
   WHATSAPP_URL,
   WHY_RAZAFI,
@@ -109,8 +109,82 @@ function DemoMenuButton() {
 
 const whyIcons = [CreditCard, BarChart3, Palette, Sparkles] as const;
 
+type PublicOffer = {
+  code: string;
+  name: string;
+  description: string | null;
+  commission_pct: number | null;
+  subscription_price_ar: number | null;
+};
+
+type PublicOffersState = "loading" | "ready" | "error";
+
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [offers, setOffers] = useState<PublicOffer[]>([]);
+  const [offersState, setOffersState] = useState<PublicOffersState>("loading");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadPublicOffers() {
+      try {
+        const response = await fetch(PUBLIC_OFFERS_API_URL, {
+          method: "GET",
+          headers: { Accept: "application/json" },
+          signal: controller.signal,
+        });
+        if (!response.ok) throw new Error(`public_offers_http_${response.status}`);
+
+        const payload = await response.json();
+        const items = Array.isArray(payload?.items) ? payload.items : [];
+        const normalized = items
+          .map((item: unknown): PublicOffer | null => {
+            if (!item || typeof item !== "object") return null;
+            const raw = item as Record<string, unknown>;
+            const code = String(raw.code || "").trim();
+            const name = String(raw.name || "").trim();
+            if (!code || !name) return null;
+
+            const commission = raw.commission_pct === null || raw.commission_pct === undefined
+              ? null
+              : Number(raw.commission_pct);
+            const subscription = raw.subscription_price_ar === null || raw.subscription_price_ar === undefined
+              ? null
+              : Number(raw.subscription_price_ar);
+
+            const commissionPct = commission !== null && Number.isFinite(commission) && commission >= 0 && commission <= 100
+              ? commission
+              : null;
+            const subscriptionAr = subscription !== null && Number.isFinite(subscription) && subscription >= 0
+              ? Math.trunc(subscription)
+              : null;
+
+            if (commissionPct === null && subscriptionAr === null) return null;
+
+            return {
+              code,
+              name,
+              description: typeof raw.description === "string" ? raw.description.trim() || null : null,
+              commission_pct: commissionPct,
+              subscription_price_ar: subscriptionAr,
+            };
+          })
+          .filter((item: PublicOffer | null): item is PublicOffer => item !== null);
+
+        setOffers(normalized);
+        setOffersState("ready");
+      } catch (error) {
+        if (controller.signal.aborted) return;
+        console.error("[RAZAFI PUBLIC OFFERS]", error);
+        setOffers([]);
+        setOffersState("error");
+      }
+    }
+
+    void loadPublicOffers();
+    return () => controller.abort();
+  }, []);
 
   return (
     <main className="min-h-screen bg-white text-neutral-950">
@@ -302,44 +376,72 @@ export default function Home() {
             </p>
           </Reveal>
 
-          <div className="mt-10 grid gap-4 lg:grid-cols-2">
-            {OFFERS.map((offer, index) => (
-              <Reveal
-                key={offer.key}
-                className={`rounded-[2.25rem] p-7 md:p-9 ${
-                  index === 1
-                    ? "bg-neutral-950 text-white"
-                    : "border border-neutral-200 bg-neutral-50"
-                }`}
-              >
-                <h3 className="text-3xl font-semibold tracking-tight">{offer.name}</h3>
-                <p className={`mt-4 min-h-14 leading-7 ${index === 1 ? "text-neutral-300" : "text-neutral-600"}`}>
-                  {offer.description}
-                </p>
+          {offersState === "loading" ? (
+            <div className="mt-10 rounded-[2rem] border border-neutral-200 bg-neutral-50 px-6 py-8 text-center text-sm text-neutral-500">
+              Chargement des offres RAZAFI…
+            </div>
+          ) : offersState === "error" || offers.length === 0 ? (
+            <div className="mt-10 rounded-[2rem] border border-neutral-200 bg-neutral-50 px-6 py-8 text-center">
+              <p className="font-semibold text-neutral-950">Tarifs temporairement indisponibles.</p>
+              <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-neutral-600">
+                Contactez RAZAFI pour connaître les offres actuellement disponibles.
+              </p>
+            </div>
+          ) : (
+            <div className="mt-10 grid gap-4 lg:grid-cols-2">
+              {offers.map((offer, index) => {
+                const emphasized = index % 2 === 1;
+                const hasCommission = offer.commission_pct !== null;
+                const hasSubscription = offer.subscription_price_ar !== null;
+                const hasBoth = hasCommission && hasSubscription;
 
-                <div className="mt-9 grid grid-cols-[1fr_auto_1fr] items-center gap-4">
-                  <div>
-                    <p className={`text-xs font-semibold uppercase tracking-[0.18em] ${index === 1 ? "text-neutral-400" : "text-neutral-500"}`}>
-                      Commission
+                return (
+                  <Reveal
+                    key={offer.code}
+                    className={`rounded-[2.25rem] p-7 md:p-9 ${
+                      emphasized
+                        ? "bg-neutral-950 text-white"
+                        : "border border-neutral-200 bg-neutral-50"
+                    }`}
+                  >
+                    <h3 className="text-3xl font-semibold tracking-tight">{offer.name}</h3>
+                    <p className={`mt-4 min-h-14 leading-7 ${emphasized ? "text-neutral-300" : "text-neutral-600"}`}>
+                      {offer.description || "Offre RAZAFI actuellement disponible."}
                     </p>
-                    <p className="mt-2 text-4xl font-semibold tracking-tight">{offer.commissionPct} %</p>
-                  </div>
-                  <span className={`text-sm font-semibold ${index === 1 ? "text-neutral-500" : "text-neutral-400"}`}>ou</span>
-                  <div className="text-right">
-                    <p className={`text-xs font-semibold uppercase tracking-[0.18em] ${index === 1 ? "text-neutral-400" : "text-neutral-500"}`}>
-                      Abonnement
-                    </p>
-                    <p className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">
-                      {formatAriary(offer.subscriptionAr)} Ar
-                    </p>
-                    <p className={`mt-1 text-xs ${index === 1 ? "text-neutral-400" : "text-neutral-500"}`}>
-                      / mois / zone WiFi
-                    </p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+
+                    <div className={`mt-9 grid items-center gap-4 ${hasBoth ? "grid-cols-[1fr_auto_1fr]" : "grid-cols-1"}`}>
+                      {hasCommission ? (
+                        <div>
+                          <p className={`text-xs font-semibold uppercase tracking-[0.18em] ${emphasized ? "text-neutral-400" : "text-neutral-500"}`}>
+                            Commission
+                          </p>
+                          <p className="mt-2 text-4xl font-semibold tracking-tight">{offer.commission_pct} %</p>
+                        </div>
+                      ) : null}
+
+                      {hasBoth ? (
+                        <span className={`text-sm font-semibold ${emphasized ? "text-neutral-500" : "text-neutral-400"}`}>ou</span>
+                      ) : null}
+
+                      {hasSubscription ? (
+                        <div className={hasBoth ? "text-right" : ""}>
+                          <p className={`text-xs font-semibold uppercase tracking-[0.18em] ${emphasized ? "text-neutral-400" : "text-neutral-500"}`}>
+                            Abonnement
+                          </p>
+                          <p className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">
+                            {formatAriary(offer.subscription_price_ar as number)} Ar
+                          </p>
+                          <p className={`mt-1 text-xs ${emphasized ? "text-neutral-400" : "text-neutral-500"}`}>
+                            / mois / zone WiFi
+                          </p>
+                        </div>
+                      ) : null}
+                    </div>
+                  </Reveal>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
