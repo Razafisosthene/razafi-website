@@ -553,13 +553,22 @@ export default function PaiementMobileWifiMadagascarPage() {
             <p className="mt-5 max-w-3xl leading-8 text-neutral-700">
               Le paiement mobile n’est qu’une partie de l’infrastructure. Découvrez aussi la connexion Internet, MikroTik, les points d’accès, la gestion à distance et le fonctionnement multi-site dans notre guide Business WiFi à Madagascar.
             </p>
-            <Link
-              href="/guide/business-wifi-madagascar"
-              className="mt-7 inline-flex items-center gap-2 rounded-full bg-neutral-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800"
-            >
-              Lire le guide Business WiFi
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/guide/business-wifi-madagascar"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-neutral-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800"
+              >
+                Lire le guide Business WiFi
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/guide/starlink-zone-wifi-madagascar"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-blue-200 bg-white px-6 py-3 text-sm font-semibold text-blue-700 transition hover:bg-blue-50"
+              >
+                Starlink & zone WiFi
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
         </section>
 

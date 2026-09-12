@@ -105,7 +105,7 @@ const ownerBenefits = [
 const faqItems = [
   {
     q: "Peut-on créer une zone WiFi avec Starlink à Madagascar ?",
-    a: "Techniquement, Starlink peut être utilisé comme connexion Internet d’une infrastructure WiFi compatible. L’utilisation commerciale ou la redistribution de la connexion doit cependant respecter les conditions du fournisseur et les autorisations éventuellement applicables.",
+    a: "Oui techniquement. Les conditions Starlink actuelles prévoient qu’un Priority Plan peut permettre la revente sous forme de community Wi‑Fi ou hotspot. L’exploitation commerciale doit aussi respecter les obligations réglementaires applicables à Madagascar.",
   },
   {
     q: "Est-ce que RAZAFI fonctionne uniquement avec Starlink ?",
@@ -499,9 +499,13 @@ export default function BusinessWifiMadagascarPage() {
                 La compatibilité technique d’une connexion Internet ne signifie pas automatiquement que toutes les formes de redistribution ou de revente sont autorisées. Le propriétaire doit respecter les conditions de son fournisseur Internet ainsi que les règles applicables à son activité.
               </p>
             </div>
-            <p className="mt-7 text-sm font-semibold text-neutral-400">
-              Guide détaillé Starlink & zone WiFi à Madagascar : prochainement.
-            </p>
+            <Link
+              href="/guide/starlink-zone-wifi-madagascar"
+              className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-blue-400 transition hover:text-blue-300"
+            >
+              Lire le guide : Starlink & zone WiFi Madagascar
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </section>
 

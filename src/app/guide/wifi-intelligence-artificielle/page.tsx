@@ -169,6 +169,22 @@ export default function WifiIntelligenceArtificiellePage() {
           </Link>
         </div>
 
+        <div className="mt-6 rounded-[2rem] border border-neutral-200 bg-white p-6 md:p-8">
+          <p className="text-sm font-semibold text-blue-600">Connexion Internet</p>
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-neutral-950">
+            Créer une zone WiFi avec Starlink à Madagascar
+          </h2>
+          <p className="mt-3 leading-7 text-neutral-700">
+            Découvrez le rôle de Starlink, MikroTik et des points d’accès, les Priority Plans, la capacité réelle d’une installation et les précautions réglementaires pour un hotspot WiFi.
+          </p>
+          <Link
+            href="/guide/starlink-zone-wifi-madagascar"
+            className="mt-5 inline-flex items-center justify-center rounded-full border border-neutral-200 bg-white px-6 py-3 text-sm font-semibold text-neutral-900 transition hover:bg-neutral-50"
+          >
+            Lire le guide Starlink & zone WiFi
+          </Link>
+        </div>
+
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/#demos"
