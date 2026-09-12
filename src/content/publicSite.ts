@@ -12,6 +12,8 @@ export const WHY_RAZAFI = [
   {
     title: "Vos clients deviennent autonomes",
     text: "Avec MVola, ils choisissent leur forfait, paient et obtiennent leur accès sans intervention manuelle.",
+    guideHref: "/guide/paiement-mobile-wifi-madagascar",
+    guideLabel: "Lire le guide : Paiement mobile WiFi Madagascar",
   },
   {
     title: "Vous gardez le contrôle à distance",

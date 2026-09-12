@@ -348,8 +348,15 @@ export default function BusinessWifiMadagascarPage() {
                 <div>
                   <h3 className="text-xl font-semibold">Paiement mobile avec MVola</h3>
                   <p className="mt-3 leading-7 text-neutral-300">
-                    MVola est actuellement le moyen de paiement mobile opérationnel avec RAZAFI. D’autres moyens de paiement sont progressivement prévus ou intégrés à la plateforme.
+                    MVola est actuellement le moyen de paiement mobile opérationnel avec RAZAFI. Airtel Money est en cours d’intégration et Orange Money n’est pas encore intégré.
                   </p>
+                  <Link
+                    href="/guide/paiement-mobile-wifi-madagascar"
+                    className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-white transition hover:text-blue-300"
+                  >
+                    Lire le guide Paiement mobile WiFi
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
                 </div>
               </div>
             </div>
