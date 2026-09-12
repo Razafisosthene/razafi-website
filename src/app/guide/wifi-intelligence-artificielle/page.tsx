@@ -137,7 +137,23 @@ export default function WifiIntelligenceArtificiellePage() {
           </p>
         </section>
 
-        <div className="mt-12 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-12 rounded-[2rem] border border-blue-100 bg-blue-50/60 p-6 md:p-8">
+          <p className="text-sm font-semibold text-blue-600">À lire aussi</p>
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-neutral-950">
+            Créer et gérer un business WiFi à Madagascar
+          </h2>
+          <p className="mt-3 leading-7 text-neutral-700">
+            Découvrez l’architecture complète d’une zone WiFi RAZAFI : connexion Internet, MikroTik, points d’accès, paiement mobile, gestion à distance et multi-site.
+          </p>
+          <Link
+            href="/guide/business-wifi-madagascar"
+            className="mt-5 inline-flex items-center justify-center rounded-full bg-neutral-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800"
+          >
+            Lire le guide Business WiFi
+          </Link>
+        </div>
+
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/#demos"
             className="inline-flex items-center justify-center rounded-full bg-neutral-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800"

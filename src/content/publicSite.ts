@@ -16,6 +16,8 @@ export const WHY_RAZAFI = [
   {
     title: "Vous gardez le contrôle à distance",
     text: "Suivez votre zone WiFi, vos clients et votre activité depuis votre téléphone.",
+    guideHref: "/guide/business-wifi-madagascar",
+    guideLabel: "Lire le guide : Business WiFi Madagascar",
   },
   {
     title: "Votre WiFi porte votre identité",
