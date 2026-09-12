@@ -47,11 +47,20 @@ export default function WifiIntelligenceArtificiellePage() {
             />
           </Link>
 
-          <nav className="hidden items-center gap-8 text-sm font-medium text-neutral-600 md:flex">
-            <Link href="/#demos" className="transition hover:text-neutral-950">
+          <nav className="flex items-center gap-6 text-sm font-medium text-neutral-600 md:gap-8">
+            <Link
+              href="/#demos"
+              className="hidden transition hover:text-neutral-950 md:inline"
+            >
               Démos
             </Link>
-            <Link href="/#offres" className="transition hover:text-neutral-950">
+            <Link href="/guides" className="transition hover:text-neutral-950">
+              Guides
+            </Link>
+            <Link
+              href="/#offres"
+              className="hidden transition hover:text-neutral-950 md:inline"
+            >
               Offres
             </Link>
           </nav>
