@@ -11,7 +11,7 @@ export const HERO_FEATURES = [
 export const WHY_RAZAFI = [
   {
     title: "Vos clients deviennent autonomes",
-    text: "Ils choisissent leur forfait, paient et obtiennent leur accès sans intervention manuelle.",
+    text: "Avec MVola, ils choisissent leur forfait, paient et obtiennent leur accès sans intervention manuelle.",
   },
   {
     title: "Vous gardez le contrôle à distance",
@@ -62,6 +62,10 @@ export const FAQ_ITEMS = [
     a: "RAZAFI configure le routeur MikroTik. Vous choisissez et installez vos points d’accès WiFi ; RAZAFI fournit le guide de configuration.",
   },
   {
+    q: "Quels moyens de paiement mobile sont disponibles avec RAZAFI ?",
+    a: "MVola est actuellement disponible. Airtel Money est en cours d’intégration et attend sa validation finale. Orange Money n’est pas encore intégré à RAZAFI.",
+  },
+  {
     q: "Commission ou abonnement : quelle différence ?",
     a: "Avec la commission, RAZAFI prélève un pourcentage sur vos ventes. Avec l’abonnement, vous payez un montant fixe chaque mois pour votre zone WiFi.",
   },
@@ -98,7 +102,7 @@ export const PUBLIC_ASSISTANT_KNOWLEDGE = {
   pricing_note:
     "Les offres et tarifs publics affichés sur le site proviennent du catalogue RAZAFI actif. Selon l’offre, le modèle peut être une commission, un abonnement mensuel, ou les deux.",
   payment_note:
-    "Les moyens de paiement RAZAFI disponibles sont inclus dans l’offre concernée.",
+    "MVola est actuellement opérationnel pour les paiements RAZAFI. Airtel Money est en cours d’intégration et attend sa validation finale. Orange Money a déjà été contacté, mais son intégration n’a pas encore commencé.",
   personalized_plan_note:
     "Avec RAZAFI Sur Mesure, ce sont les clients WiFi qui composent leur propre forfait selon Durée, Data et Vitesse.",
   subscription_status_note:

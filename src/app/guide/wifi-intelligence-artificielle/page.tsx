@@ -5,11 +5,30 @@ import FloatingRazafiContact from "@/components/FloatingRazafiContact";
 import RazafiLoginMenu from "@/app/RazafiLoginMenu";
 import { LEGAL_LINE, WHATSAPP_URL } from "@/content/publicSite";
 
+const guideTitle =
+  "WiFi et intelligence artificielle : comment RAZAFI simplifie la gestion d’une zone WiFi";
+const guideDescription =
+  "Découvrez comment l’assistant IA RAZAFI aide à simplifier l’utilisation et la gestion d’une zone WiFi pour les propriétaires et leurs clients.";
+
 export const metadata: Metadata = {
-  title:
-    "WiFi et intelligence artificielle : comment RAZAFI simplifie la gestion d’une zone WiFi",
-  description:
-    "Découvrez comment l’assistant IA RAZAFI aide à simplifier l’utilisation et la gestion d’une zone WiFi pour les propriétaires et leurs clients.",
+  title: guideTitle,
+  description: guideDescription,
+  alternates: {
+    canonical: "/guide/wifi-intelligence-artificielle",
+  },
+  openGraph: {
+    title: guideTitle,
+    description: guideDescription,
+    url: "/guide/wifi-intelligence-artificielle",
+    siteName: "RAZAFI",
+    locale: "fr_MG",
+    type: "article",
+  },
+  twitter: {
+    card: "summary",
+    title: guideTitle,
+    description: guideDescription,
+  },
 };
 
 export default function WifiIntelligenceArtificiellePage() {

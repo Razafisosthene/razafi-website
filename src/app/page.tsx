@@ -273,7 +273,7 @@ export default function Home() {
           <HeroFeatureLine />
 
           <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-neutral-600 md:text-lg">
-            RAZAFI vous permet de vendre et gérer l’accès à votre zone WiFi simplement, depuis votre téléphone.
+            RAZAFI automatise la vente et la gestion de votre zone WiFi à Madagascar : paiement mobile avec MVola, activation instantanée et suivi à distance depuis votre téléphone.
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -409,7 +409,7 @@ export default function Home() {
               Choisissez votre offre RAZAFI.
             </h2>
             <p className="mx-auto mt-5 max-w-2xl leading-7 text-neutral-600">
-              Commission ou abonnement : choisissez le modèle qui vous convient.
+              Commission ou abonnement : automatisez la vente d’accès WiFi avec paiement mobile et activation instantanée, selon le modèle qui vous convient.
             </p>
           </Reveal>
 

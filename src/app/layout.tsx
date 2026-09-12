@@ -12,10 +12,30 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const homeTitle = "RAZAFI | Zone WiFi & paiement mobile à Madagascar";
+const homeDescription =
+  "RAZAFI automatise la vente d’accès WiFi à Madagascar avec paiement MVola, activation instantanée, gestion à distance et routeur MikroTik.";
+
 export const metadata: Metadata = {
-  title: "RAZAFI — Automatisez votre zone WiFi",
-  description:
-    "RAZAFI automatise la vente et la gestion d’accès WiFi : paiement automatique, activation instantanée, gestion à distance, démos et offres Commission ou Abonnement.",
+  metadataBase: new URL("https://www.razafistore.com"),
+  title: homeTitle,
+  description: homeDescription,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: homeTitle,
+    description: homeDescription,
+    url: "/",
+    siteName: "RAZAFI",
+    locale: "fr_MG",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: homeTitle,
+    description: homeDescription,
+  },
 };
 
 export default function RootLayout({
