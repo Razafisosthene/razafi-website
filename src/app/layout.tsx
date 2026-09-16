@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 const homeTitle = "RAZAFI | Zone WiFi & paiement mobile à Madagascar";
 const homeDescription =
-  "RAZAFI automatise la vente d’accès WiFi à Madagascar avec paiement MVola, activation instantanée, gestion à distance et routeur MikroTik.";
+  "RAZAFI automatise la vente d’accès WiFi à Madagascar avec paiement mobile via MVola et Airtel Money, activation instantanée, gestion à distance et MikroTik.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.razafistore.com"),

@@ -11,7 +11,7 @@ export const HERO_FEATURES = [
 export const WHY_RAZAFI = [
   {
     title: "Vos clients deviennent autonomes",
-    text: "Avec MVola, ils choisissent leur forfait, paient et obtiennent leur accès sans intervention manuelle.",
+    text: "Avec MVola ou Airtel Money, ils choisissent leur forfait, paient et obtiennent leur accès sans intervention manuelle.",
     guideHref: "/guide/paiement-mobile-wifi-madagascar",
     guideLabel: "Lire le guide : Paiement mobile WiFi Madagascar",
   },
@@ -67,7 +67,7 @@ export const FAQ_ITEMS = [
   },
   {
     q: "Quels moyens de paiement mobile sont disponibles avec RAZAFI ?",
-    a: "MVola est actuellement disponible. Airtel Money est en cours d’intégration et attend sa validation finale. Orange Money n’est pas encore intégré à RAZAFI.",
+    a: "MVola et Airtel Money sont actuellement disponibles avec RAZAFI. Orange Money n’est pas encore intégré.",
   },
   {
     q: "Commission ou abonnement : quelle différence ?",
@@ -106,7 +106,7 @@ export const PUBLIC_ASSISTANT_KNOWLEDGE = {
   pricing_note:
     "Les offres et tarifs publics affichés sur le site proviennent du catalogue RAZAFI actif. Selon l’offre, le modèle peut être une commission, un abonnement mensuel, ou les deux.",
   payment_note:
-    "MVola est actuellement opérationnel pour les paiements RAZAFI. Airtel Money est en cours d’intégration et attend sa validation finale. Orange Money a déjà été contacté, mais son intégration n’a pas encore commencé.",
+    "MVola et Airtel Money sont actuellement opérationnels pour les paiements RAZAFI. Orange Money n’est pas encore intégré.",
   personalized_plan_note:
     "Avec RAZAFI Sur Mesure, ce sont les clients WiFi qui composent leur propre forfait selon Durée, Data et Vitesse.",
   subscription_status_note:

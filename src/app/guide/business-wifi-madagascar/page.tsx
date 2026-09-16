@@ -20,7 +20,7 @@ import { LEGAL_LINE, WHATSAPP_URL } from "@/content/publicSite";
 const pageTitle =
   "Business WiFi Madagascar | Créer et gérer une zone WiFi avec RAZAFI";
 const pageDescription =
-  "Découvrez comment créer et gérer une zone WiFi à Madagascar avec une connexion Internet, MikroTik, points d’accès, paiement mobile MVola et gestion à distance avec RAZAFI.";
+  "Découvrez comment créer et gérer une zone WiFi à Madagascar avec une connexion Internet, un routeur MikroTik, des points d’accès, le paiement mobile via MVola et Airtel Money et la gestion à distance avec RAZAFI.";
 const canonicalPath = "/guide/business-wifi-madagascar";
 
 export const metadata: Metadata = {
@@ -83,7 +83,7 @@ const paymentSteps = [
   {
     number: "03",
     title: "Paiement mobile",
-    text: "MVola est actuellement disponible pour le paiement RAZAFI.",
+    text: "MVola et Airtel Money sont actuellement disponibles pour les paiements RAZAFI.",
   },
   {
     number: "04",
@@ -117,7 +117,7 @@ const faqItems = [
   },
   {
     q: "Comment les clients paient-ils leur forfait WiFi ?",
-    a: "MVola est actuellement disponible pour le paiement RAZAFI. D’autres moyens de paiement mobile sont progressivement prévus ou intégrés à la plateforme.",
+    a: "MVola et Airtel Money sont actuellement disponibles pour les paiements RAZAFI. Orange Money n’est pas encore intégré.",
   },
   {
     q: "Peut-on gérer plusieurs zones WiFi avec le même compte ?",
@@ -151,7 +151,7 @@ const articleJsonLd = {
     url: "https://www.razafistore.com/",
   },
   datePublished: "2026-09-12",
-  dateModified: "2026-09-12",
+  dateModified: "2026-09-16",
 };
 
 const breadcrumbJsonLd = {
@@ -357,9 +357,9 @@ export default function BusinessWifiMadagascarPage() {
                   <CreditCard className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold">Paiement mobile avec MVola</h3>
+                  <h3 className="text-xl font-semibold">Paiement mobile avec MVola et Airtel Money</h3>
                   <p className="mt-3 leading-7 text-neutral-300">
-                    MVola est actuellement le moyen de paiement mobile opérationnel avec RAZAFI. Airtel Money est en cours d’intégration et Orange Money n’est pas encore intégré.
+                    MVola et Airtel Money sont actuellement opérationnels avec RAZAFI. Orange Money n’est pas encore intégré.
                   </p>
                   <Link
                     href="/guide/paiement-mobile-wifi-madagascar"

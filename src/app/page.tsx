@@ -292,7 +292,7 @@ export default function Home() {
           <HeroFeatureLine />
 
           <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-neutral-600 md:text-lg">
-            RAZAFI automatise la vente et la gestion de votre zone WiFi à Madagascar : paiement mobile avec MVola, activation instantanée et suivi à distance depuis votre téléphone.
+            RAZAFI automatise la vente et la gestion de votre zone WiFi à Madagascar : paiement mobile avec MVola et Airtel Money, activation instantanée et suivi à distance depuis votre téléphone.
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">

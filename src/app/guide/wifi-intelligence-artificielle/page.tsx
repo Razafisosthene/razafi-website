@@ -168,7 +168,7 @@ export default function WifiIntelligenceArtificiellePage() {
             Automatiser le paiement d’une zone WiFi à Madagascar
           </h2>
           <p className="mt-3 leading-7 text-neutral-700">
-            Découvrez le parcours forfait → paiement → validation → accès, avec MVola disponible et le statut actuel des intégrations Airtel Money et Orange Money.
+            Découvrez le parcours forfait → paiement → validation → accès, avec MVola et Airtel Money disponibles et le statut actuel d’Orange Money.
           </p>
           <Link
             href="/guide/paiement-mobile-wifi-madagascar"

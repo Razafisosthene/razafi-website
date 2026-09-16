@@ -14,9 +14,9 @@ import FloatingRazafiContact from "@/components/FloatingRazafiContact";
 import RazafiLoginMenu from "@/app/RazafiLoginMenu";
 import { LEGAL_LINE, WHATSAPP_URL } from "@/content/publicSite";
 
-const pageTitle = "Paiement mobile WiFi Madagascar | MVola & RAZAFI";
+const pageTitle = "Paiement mobile WiFi Madagascar | MVola & Airtel Money";
 const pageDescription =
-  "Découvrez comment automatiser le paiement d’un accès WiFi à Madagascar avec RAZAFI : MVola disponible, activation après paiement confirmé et gestion à distance.";
+  "Automatisez le paiement d’un accès WiFi à Madagascar avec RAZAFI : MVola et Airtel Money, activation après paiement confirmé et gestion à distance.";
 const canonicalPath = "/guide/paiement-mobile-wifi-madagascar";
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Paiement mobile pour zone WiFi à Madagascar | RAZAFI",
     description:
-      "Forfait WiFi, paiement MVola, validation et activation : découvrez comment RAZAFI automatise le parcours d’achat d’un accès WiFi.",
+      "Forfait WiFi, paiement avec MVola ou Airtel Money, validation et activation : découvrez comment RAZAFI automatise le parcours d’achat.",
     url: canonicalPath,
     siteName: "RAZAFI",
     locale: "fr_MG",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "Paiement mobile pour zone WiFi à Madagascar | RAZAFI",
     description:
-      "Forfait WiFi, paiement MVola, validation et activation avec RAZAFI.",
+      "Forfait WiFi, paiement avec MVola ou Airtel Money, validation et activation avec RAZAFI.",
   },
 };
 
@@ -56,7 +56,7 @@ const paymentSteps = [
   {
     number: "03",
     title: "Paiement mobile",
-    text: "Il poursuit son achat avec MVola, actuellement opérationnel avec RAZAFI.",
+    text: "Il poursuit son achat avec MVola ou Airtel Money, selon les moyens de paiement proposés sur sa zone WiFi.",
   },
   {
     number: "04",
@@ -98,30 +98,30 @@ const paymentStatuses = [
   },
   {
     name: "Airtel Money",
-    status: "Intégration en cours",
-    badgeClass: "bg-blue-50 text-blue-700 ring-blue-200",
-    text: "L’intégration Airtel Money est en cours. La mise en production reste soumise à la validation finale nécessaire avant que ce moyen de paiement soit annoncé comme disponible.",
+    status: "Disponible",
+    badgeClass: "bg-emerald-50 text-emerald-700 ring-emerald-200",
+    text: "Airtel Money est actuellement opérationnel pour les paiements RAZAFI. Les clients peuvent utiliser Airtel Money lorsqu’il est proposé sur leur zone WiFi.",
   },
   {
     name: "Orange Money",
-    status: "Prévu",
+    status: "Non disponible",
     badgeClass: "bg-neutral-100 text-neutral-700 ring-neutral-200",
-    text: "RAZAFI a déjà engagé les premiers échanges concernant Orange Money, mais l’intégration technique n’a pas encore commencé. Orange Money n’est donc pas actuellement disponible avec RAZAFI.",
+    text: "Orange Money n’est pas actuellement intégré à RAZAFI et n’est donc pas proposé comme moyen de paiement sur la plateforme.",
   },
 ];
 
 const faqItems = [
   {
     q: "Peut-on payer un forfait WiFi avec MVola ?",
-    a: "Oui. MVola est actuellement le moyen de paiement mobile opérationnel avec RAZAFI.",
+    a: "Oui. MVola est actuellement disponible pour les paiements RAZAFI.",
   },
   {
     q: "Airtel Money est-il disponible avec RAZAFI ?",
-    a: "Pas encore en production. L’intégration Airtel Money est en cours et attend la validation finale nécessaire avant son activation commerciale.",
+    a: "Oui. Airtel Money est actuellement disponible pour les paiements RAZAFI.",
   },
   {
     q: "Orange Money est-il disponible avec RAZAFI ?",
-    a: "Pas actuellement. Des premiers échanges ont déjà eu lieu, mais l’intégration technique Orange Money n’a pas encore commencé.",
+    a: "Pas actuellement. Orange Money n’est pas encore intégré à RAZAFI.",
   },
   {
     q: "L’accès WiFi est-il activé automatiquement après le paiement ?",
@@ -159,7 +159,7 @@ const articleJsonLd = {
     url: "https://www.razafistore.com/",
   },
   datePublished: "2026-09-12",
-  dateModified: "2026-09-12",
+  dateModified: "2026-09-16",
 };
 
 const breadcrumbJsonLd = {
@@ -258,7 +258,7 @@ export default function PaiementMobileWifiMadagascarPage() {
             </p>
             <div className="mx-auto mt-6 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-800">
               <Check className="h-4 w-4" />
-              MVola est actuellement disponible pour les paiements RAZAFI
+              MVola et Airtel Money sont actuellement disponibles pour les paiements RAZAFI
             </div>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
@@ -325,7 +325,7 @@ export default function PaiementMobileWifiMadagascarPage() {
             <div className="mx-auto mt-8 max-w-5xl rounded-[2rem] bg-neutral-950 p-7 text-center text-white md:p-9">
               <p className="text-sm font-semibold text-blue-400">Le parcours en une ligne</p>
               <p className="mt-3 text-balance text-xl font-semibold tracking-tight md:text-2xl">
-                WiFi → Forfait → MVola → Paiement confirmé → Accès Internet
+                WiFi → Forfait → Paiement mobile → Paiement confirmé → Accès Internet
               </p>
             </div>
           </div>
@@ -336,14 +336,14 @@ export default function PaiementMobileWifiMadagascarPage() {
             <div>
               <p className="text-sm font-semibold text-blue-600">Disponible avec RAZAFI</p>
               <h2 className="mt-3 text-balance text-4xl font-semibold tracking-[-0.035em] md:text-5xl">
-                Paiement WiFi avec MVola
+                Paiement WiFi avec MVola et Airtel Money
               </h2>
               <div className="mt-6 space-y-4 leading-8 text-neutral-600">
                 <p>
-                  MVola est actuellement le moyen de paiement mobile opérationnel pour les ventes d’accès WiFi RAZAFI.
+                  MVola et Airtel Money sont actuellement opérationnels pour les ventes d’accès WiFi RAZAFI.
                 </p>
                 <p>
-                  Le client choisit son forfait depuis le portail, poursuit le parcours de paiement MVola et valide la transaction depuis son téléphone. RAZAFI suit ensuite le résultat du paiement.
+                  Le client choisit son forfait depuis le portail puis poursuit le paiement avec MVola ou Airtel Money, selon les moyens proposés sur sa zone WiFi. RAZAFI suit ensuite le résultat de la transaction.
                 </p>
                 <p>
                   Lorsque celui-ci est confirmé, la plateforme peut poursuivre automatiquement la délivrance de l’accès correspondant. Le propriétaire n’a donc pas besoin de vérifier manuellement chaque transaction et de créer chaque accès un par un lorsque le parcours se déroule normalement.
@@ -355,14 +355,14 @@ export default function PaiementMobileWifiMadagascarPage() {
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">
                 <CreditCard className="h-6 w-6" />
               </div>
-              <p className="mt-7 text-sm font-semibold uppercase tracking-[0.24em] text-blue-400">MVola</p>
+              <p className="mt-7 text-sm font-semibold uppercase tracking-[0.24em] text-blue-400">MVola · Airtel Money</p>
               <h3 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">Un paiement relié au forfait choisi</h3>
               <p className="mt-5 leading-8 text-neutral-300">
-                L’objectif est de relier clairement un forfait WiFi, un paiement MVola et l’accès correspondant, sans transformer le parcours client en procédure technique.
+                L’objectif est de relier clairement un forfait WiFi, un paiement mobile et l’accès correspondant, sans transformer le parcours client en procédure technique.
               </p>
               <div className="mt-7 flex flex-wrap gap-2 text-sm font-medium text-neutral-200">
                 <span className="rounded-full border border-white/15 px-3 py-1.5">Forfait WiFi</span>
-                <span className="rounded-full border border-white/15 px-3 py-1.5">Paiement MVola</span>
+                <span className="rounded-full border border-white/15 px-3 py-1.5">Paiement mobile</span>
                 <span className="rounded-full border border-white/15 px-3 py-1.5">Validation</span>
                 <span className="rounded-full border border-white/15 px-3 py-1.5">Accès</span>
               </div>
@@ -404,7 +404,7 @@ export default function PaiementMobileWifiMadagascarPage() {
                 Quels moyens de paiement mobile sont disponibles avec RAZAFI ?
               </h2>
               <p className="mt-5 leading-8 text-neutral-600">
-                RAZAFI développe progressivement ses possibilités de paiement mobile, mais tous les opérateurs ne sont pas encore au même stade.
+                MVola et Airtel Money sont opérationnels avec RAZAFI. Orange Money n’est pas encore intégré à la plateforme.
               </p>
             </div>
 
@@ -424,7 +424,7 @@ export default function PaiementMobileWifiMadagascarPage() {
 
             <div className="mx-auto mt-8 max-w-4xl rounded-[2rem] border border-blue-100 bg-blue-50/60 p-6 md:p-8">
               <p className="leading-8 text-neutral-700">
-                À terme, proposer plusieurs moyens de paiement pourra permettre à davantage de clients de finaliser leur achat avec le service Mobile Money qu’ils utilisent déjà. Aujourd’hui, MVola reste le moyen de paiement mobile opérationnel sur RAZAFI.
+                Avec MVola et Airtel Money désormais opérationnels, davantage de clients peuvent finaliser leur achat avec le service Mobile Money qu’ils utilisent déjà, selon les moyens proposés sur leur zone WiFi.
               </p>
             </div>
           </div>

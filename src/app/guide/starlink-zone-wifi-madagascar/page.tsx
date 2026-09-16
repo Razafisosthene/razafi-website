@@ -19,7 +19,7 @@ import { LEGAL_LINE, WHATSAPP_URL } from "@/content/publicSite";
 
 const pageTitle = "Starlink WiFi Madagascar | Créer une zone WiFi avec RAZAFI";
 const pageDescription =
-  "Découvrez comment créer une zone WiFi avec Starlink à Madagascar : MikroTik, points d’accès, paiement MVola et gestion à distance avec RAZAFI.";
+  "Découvrez comment créer une zone WiFi avec Starlink à Madagascar : MikroTik, points d’accès, paiement mobile via MVola et Airtel Money, et gestion à distance avec RAZAFI.";
 const canonicalPath = "/guide/starlink-zone-wifi-madagascar";
 
 const STARLINK_TERMS_URL = "https://starlink.com/legal/documents/DOC-1540-49184-72";
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "Créer une zone WiFi avec Starlink à Madagascar | RAZAFI",
     description:
-      "Starlink, MikroTik, points d’accès, paiement MVola et gestion à distance avec RAZAFI.",
+      "Starlink, MikroTik, points d’accès, paiement mobile via MVola et Airtel Money, gestion à distance avec RAZAFI.",
   },
 };
 
@@ -147,7 +147,7 @@ const articleJsonLd = {
     url: "https://www.razafistore.com/",
   },
   datePublished: "2026-09-12",
-  dateModified: "2026-09-12",
+  dateModified: "2026-09-16",
 };
 
 const breadcrumbJsonLd = {
@@ -455,13 +455,13 @@ export default function StarlinkZoneWifiMadagascarPage() {
             <div>
               <p className="text-sm font-semibold text-blue-600">Paiement mobile</p>
               <h2 className="mt-3 text-balance text-4xl font-semibold tracking-[-0.035em] md:text-5xl">
-                De la connexion Starlink au paiement MVola
+                De la connexion Starlink au paiement mobile
               </h2>
               <p className="mt-6 leading-8 text-neutral-600">
                 Starlink fournit la connexion Internet. RAZAFI peut ensuite prendre en charge le parcours commercial de votre zone WiFi. Le client rejoint votre réseau, ouvre le portail RAZAFI, choisit son forfait et effectue son paiement avec le moyen disponible.
               </p>
               <p className="mt-5 font-semibold leading-8 text-neutral-950">
-                MVola est actuellement opérationnel pour les paiements RAZAFI.
+                MVola et Airtel Money sont actuellement opérationnels pour les paiements RAZAFI.
               </p>
               <Link
                 href="/guide/paiement-mobile-wifi-madagascar"
@@ -476,7 +476,7 @@ export default function StarlinkZoneWifiMadagascarPage() {
               <CreditCard className="h-7 w-7 text-blue-400" />
               <p className="mt-6 text-xs font-semibold uppercase tracking-[0.25em] text-blue-400">Parcours client</p>
               <p className="mt-3 text-2xl font-semibold leading-tight md:text-3xl">
-                Starlink → WiFi → RAZAFI → Forfait → MVola → Paiement confirmé → Accès Internet
+                Starlink → WiFi → RAZAFI → Forfait → Paiement mobile → Paiement confirmé → Accès Internet
               </p>
             </div>
           </div>
