@@ -152,6 +152,7 @@ type PublicOffer = {
   code: string;
   name: string;
   description: string | null;
+  details: string[];
   commission_pct: number | null;
   subscription_price_ar: number | null;
 };
@@ -201,10 +202,19 @@ export default function Home() {
 
             if (commissionPct === null && subscriptionAr === null) return null;
 
+            const details = Array.isArray(raw.details)
+              ? raw.details
+                  .filter((detail): detail is string => typeof detail === "string")
+                  .map((detail) => detail.trim())
+                  .filter(Boolean)
+                  .slice(0, 30)
+              : [];
+
             return {
               code,
               name,
               description: typeof raw.description === "string" ? raw.description.trim() || null : null,
+              details,
               commission_pct: commissionPct,
               subscription_price_ar: subscriptionAr,
             };
@@ -483,6 +493,32 @@ export default function Home() {
                         </div>
                       ) : null}
                     </div>
+
+                    {offer.details.length > 0 ? (
+                      <details
+                        className={`group mt-8 border-t pt-5 ${emphasized ? "border-white/10" : "border-neutral-200"}`}
+                      >
+                        <summary
+                          className={`flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold [&::-webkit-details-marker]:hidden ${
+                            emphasized ? "text-neutral-200" : "text-neutral-700"
+                          }`}
+                        >
+                          <span>Voir les détails</span>
+                          <ChevronDown className={`h-4 w-4 shrink-0 transition-transform duration-200 group-open:rotate-180 ${emphasized ? "text-neutral-500" : "text-neutral-400"}`} />
+                        </summary>
+                        <ul className="mt-4 grid gap-3">
+                          {offer.details.map((detail, detailIndex) => (
+                            <li
+                              key={`${offer.code}-detail-${detailIndex}`}
+                              className={`flex items-start gap-3 text-sm leading-6 ${emphasized ? "text-neutral-300" : "text-neutral-600"}`}
+                            >
+                              <span className={`mt-0.5 font-semibold ${emphasized ? "text-white" : "text-neutral-950"}`} aria-hidden="true">✓</span>
+                              <span>{detail}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </details>
+                    ) : null}
                   </Reveal>
                 );
               })}
