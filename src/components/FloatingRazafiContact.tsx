@@ -60,6 +60,7 @@ function writeMemoryToken(value: unknown) {
 type AssistantMessage = {
   role: "assistant" | "user";
   text: string;
+  streaming?: boolean;
 };
 
 function getPageContext(pathname: string) {
@@ -106,6 +107,7 @@ function PlatformAssistantWidget() {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [streamHasStarted, setStreamHasStarted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -118,9 +120,11 @@ function PlatformAssistantWidget() {
 
   useEffect(() => {
     if (isOpen) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      messagesEndRef.current?.scrollIntoView({
+        behavior: streamHasStarted ? "auto" : "smooth",
+      });
     }
-  }, [messages, isOpen]);
+  }, [messages, isOpen, streamHasStarted]);
 
   function autoResizeTextarea() {
     const element = textareaRef.current;
@@ -142,19 +146,50 @@ function PlatformAssistantWidget() {
     const trimmed = text.trim();
     if (!trimmed || isLoading) return;
 
-    setMessages((previous) => [...previous, { role: "user", text: trimmed }]);
+    setMessages((previous) => [
+      ...previous,
+      { role: "user", text: trimmed },
+      { role: "assistant", text: "", streaming: true },
+    ]);
     setInput("");
     resetTextareaHeight();
     setIsLoading(true);
+    setStreamHasStarted(false);
+
+    let streamedText = "";
+
+    const updatePendingAssistant = (nextText: string, streaming = true) => {
+      setMessages((previous) => {
+        const next = [...previous];
+        for (let index = next.length - 1; index >= 0; index -= 1) {
+          if (next[index]?.role === "assistant" && next[index]?.streaming) {
+            next[index] = { role: "assistant", text: nextText, streaming };
+            return next;
+          }
+        }
+        return [...next, { role: "assistant", text: nextText, streaming }];
+      });
+    };
+
+    const appendPendingAssistant = (delta: string) => {
+      if (!delta) return;
+      streamedText += delta;
+      setStreamHasStarted(true);
+      updatePendingAssistant(streamedText, true);
+    };
 
     try {
       const context = getPageContext(pathname);
       const response = await fetch(ASSISTANT_API_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "text/event-stream, application/json",
+        },
         body: JSON.stringify({
           context: "platform_prospect",
           message: trimmed,
+          stream: true,
           page_path: pathname,
           conversation_id: readConversationId(),
           memory_token: readMemoryToken() || undefined,
@@ -177,20 +212,96 @@ function PlatformAssistantWidget() {
         }),
       });
 
-      const data = await response.json();
-      writeConversationId(data?.conversation_id);
-      writeMemoryToken(data?.memory_token);
-      setMessages((previous) => [
-        ...previous,
-        { role: "assistant", text: data?.answer || ASSISTANT_FALLBACK },
-      ]);
+      const contentType = String(response.headers.get("content-type") || "").toLowerCase();
+
+      // Safe fallback: if the backend streaming flag is off or an older backend
+      // is still deployed, the exact same endpoint returns the normal JSON shape.
+      if (!contentType.includes("text/event-stream")) {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data?.error || "assistant_error");
+        writeConversationId(data?.conversation_id);
+        writeMemoryToken(data?.memory_token);
+        streamedText = String(data?.answer || ASSISTANT_FALLBACK);
+        setStreamHasStarted(Boolean(streamedText));
+        updatePendingAssistant(streamedText, false);
+        return;
+      }
+
+      if (!response.ok || !response.body) {
+        throw new Error("assistant_stream_unavailable");
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let streamDone = false;
+
+      const handleEventBlock = (block: string) => {
+        if (!block.trim()) return;
+        let eventName = "message";
+        const dataLines: string[] = [];
+
+        for (const rawLine of block.split("\n")) {
+          const line = rawLine.replace(/\r$/, "");
+          if (line.startsWith("event:")) {
+            eventName = line.slice(6).trim() || "message";
+          } else if (line.startsWith("data:")) {
+            dataLines.push(line.slice(5).trimStart());
+          }
+        }
+
+        if (!dataLines.length) return;
+        let payload: any = {};
+        try {
+          payload = JSON.parse(dataLines.join("\n"));
+        } catch {
+          return;
+        }
+
+        if (eventName === "meta" || eventName === "done") {
+          writeConversationId(payload?.conversation_id);
+          writeMemoryToken(payload?.memory_token);
+        }
+
+        if (eventName === "delta") {
+          appendPendingAssistant(String(payload?.text || ""));
+        } else if (eventName === "done") {
+          streamDone = true;
+          updatePendingAssistant(streamedText || ASSISTANT_FALLBACK, false);
+        } else if (eventName === "error") {
+          throw new Error(String(payload?.error || "assistant_stream_error"));
+        }
+      };
+
+      while (!streamDone) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true }).replace(/\r\n/g, "\n");
+
+        let boundary = buffer.indexOf("\n\n");
+        while (boundary !== -1) {
+          const block = buffer.slice(0, boundary);
+          buffer = buffer.slice(boundary + 2);
+          handleEventBlock(block);
+          boundary = buffer.indexOf("\n\n");
+        }
+      }
+
+      buffer += decoder.decode().replace(/\r\n/g, "\n");
+      if (buffer.trim()) handleEventBlock(buffer);
+
+      if (!streamedText.trim()) {
+        updatePendingAssistant(ASSISTANT_FALLBACK, false);
+      } else if (!streamDone) {
+        // Connection ended after a validated answer had started revealing.
+        // Keep the received text rather than replacing it with an unrelated error.
+        updatePendingAssistant(streamedText, false);
+      }
     } catch {
-      setMessages((previous) => [
-        ...previous,
-        { role: "assistant", text: ASSISTANT_FALLBACK },
-      ]);
+      updatePendingAssistant(streamedText.trim() || ASSISTANT_FALLBACK, false);
     } finally {
       setIsLoading(false);
+      setStreamHasStarted(false);
     }
   }
 
@@ -230,11 +341,13 @@ function PlatformAssistantWidget() {
           <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
             {messages.map((message, index) =>
               message.role === "assistant" ? (
-                <div key={index} className="flex justify-start">
-                  <p className="max-w-[84%] whitespace-pre-line rounded-2xl rounded-tl-sm bg-neutral-100 px-3.5 py-2.5 text-sm leading-relaxed text-neutral-800">
-                    {message.text}
-                  </p>
-                </div>
+                message.text ? (
+                  <div key={index} className="flex justify-start" aria-live={message.streaming ? "polite" : undefined}>
+                    <p className="max-w-[84%] whitespace-pre-line rounded-2xl rounded-tl-sm bg-neutral-100 px-3.5 py-2.5 text-sm leading-relaxed text-neutral-800">
+                      {message.text}
+                    </p>
+                  </div>
+                ) : null
               ) : (
                 <div key={index} className="flex justify-end">
                   <p className="max-w-[84%] whitespace-pre-line rounded-2xl rounded-tr-sm bg-neutral-900 px-3.5 py-2.5 text-sm leading-relaxed text-white">
@@ -244,7 +357,7 @@ function PlatformAssistantWidget() {
               ),
             )}
 
-            {isLoading ? (
+            {isLoading && !streamHasStarted ? (
               <div className="flex justify-start">
                 <p className="rounded-2xl rounded-tl-sm bg-neutral-100 px-3.5 py-2.5 text-sm italic text-neutral-400">
                   RAZAFI écrit…
