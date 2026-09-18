@@ -3,10 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ArrowUp, MessageCircle, X } from "lucide-react";
-import {
-  PUBLIC_ASSISTANT_KNOWLEDGE,
-  WHATSAPP_URL,
-} from "@/content/publicSite";
+import { WHATSAPP_URL } from "@/content/publicSite";
 
 const ASSISTANT_API_URL = "https://portal.razafistore.com/api/assistant/chat";
 const ASSISTANT_FALLBACK =
@@ -66,12 +63,21 @@ type AssistantMessage = {
 };
 
 function getPageContext(pathname: string) {
-  if (pathname.startsWith("/guide/wifi-intelligence-artificielle")) {
+  const path = pathname || "/";
+
+  if (path === "/guides" || path === "/guides/") {
     return {
-      pageContext: "razafi_public_guide_ai",
-      visibleSections: ["guide_ai", "guide_cta", "footer"],
-      productContext:
-        "RAZAFI public guide about WiFi and artificial intelligence.",
+      pageContext: "razafi_public_guides_index",
+      visibleSections: ["guides_index", "contact", "footer"],
+      productContext: "RAZAFI public guides index.",
+    };
+  }
+
+  if (path.startsWith("/guide/")) {
+    return {
+      pageContext: "razafi_public_guide",
+      visibleSections: ["guide_content", "guide_cta", "footer"],
+      productContext: "RAZAFI public guide page.",
     };
   }
 
@@ -158,8 +164,7 @@ function PlatformAssistantWidget() {
             visible_sections: context.visibleSections,
             main_cta: "whatsapp_or_demo",
             product_context: context.productContext,
-            context_version: "PUBLIC-V2.0",
-            site_knowledge: PUBLIC_ASSISTANT_KNOWLEDGE,
+            context_version: "ANU-WEB-1",
           },
           ui_snapshot: {
             page_context: context.pageContext,
@@ -167,8 +172,7 @@ function PlatformAssistantWidget() {
             visible_sections: context.visibleSections,
             main_cta: "whatsapp_or_demo",
             product_context: "RAZAFI public website",
-            context_version: "PUBLIC-V2.0",
-            site_knowledge: PUBLIC_ASSISTANT_KNOWLEDGE,
+            context_version: "ANU-WEB-1",
           },
         }),
       });

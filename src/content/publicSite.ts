@@ -86,32 +86,3 @@ export function formatAriary(value: number) {
   return new Intl.NumberFormat("fr-FR").format(value).replace(/\u202f/g, " ");
 }
 
-export const PUBLIC_ASSISTANT_KNOWLEDGE = {
-  hero_title: "Automatisez votre zone WiFi.",
-  hero_features: HERO_FEATURES,
-  value_proposition:
-    "RAZAFI est une plateforme qui automatise la vente et la gestion d’accès WiFi. Les clients choisissent un forfait, paient et obtiennent leur accès ; le propriétaire suit son activité à distance.",
-  key_strengths: [
-    "Paiement automatique",
-    "Activation instantanée",
-    "Gestion à distance",
-    "Portail WiFi personnalisé",
-    "Plan Personnalisé",
-    "Assistant IA",
-    "Espace client",
-    "Gestion de plusieurs zones WiFi avec un même compte propriétaire",
-  ],
-  hardware_note:
-    "RAZAFI configure le routeur MikroTik. Le propriétaire achète et installe ses points d’accès WiFi (AP). RAZAFI fournit un guide de configuration pour les AP et n’effectue pas leur installation physique.",
-  pricing_note:
-    "Les offres et tarifs publics affichés sur le site proviennent du catalogue RAZAFI actif. Selon l’offre, le modèle peut être une commission, un abonnement mensuel, ou les deux.",
-  payment_note:
-    "MVola et Airtel Money sont actuellement opérationnels pour les paiements RAZAFI. Orange Money n’est pas encore intégré.",
-  personalized_plan_note:
-    "Avec RAZAFI Sur Mesure, ce sont les clients WiFi qui composent leur propre forfait selon Durée, Data et Vitesse.",
-  subscription_status_note:
-    "RAZAFI intègre un cycle mensuel d’abonnement. Ne pas présenter comme entièrement certifié en production le cycle réel complet grace → suspended → paiement → réactivation tant que sa certification réelle n’est pas terminée.",
-  faq_summary: FAQ_ITEMS.map((faq) => `${faq.q} → ${faq.a}`),
-  demo_options: ["Démo propriétaire", "Démo client"],
-  guide_path: "/guide/wifi-intelligence-artificielle",
-} as const;
