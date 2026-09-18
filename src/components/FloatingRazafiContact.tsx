@@ -265,6 +265,10 @@ function PlatformAssistantWidget() {
 
         if (eventName === "delta") {
           appendPendingAssistant(String(payload?.text || ""));
+        } else if (eventName === "replace") {
+          streamedText = String(payload?.text || ASSISTANT_FALLBACK);
+          setStreamHasStarted(Boolean(streamedText));
+          updatePendingAssistant(streamedText, true);
         } else if (eventName === "done") {
           streamDone = true;
           updatePendingAssistant(streamedText || ASSISTANT_FALLBACK, false);
