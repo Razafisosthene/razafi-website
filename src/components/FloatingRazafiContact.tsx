@@ -108,6 +108,7 @@ function PlatformAssistantWidget() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [streamHasStarted, setStreamHasStarted] = useState(false);
+  const [reflectionLabel, setReflectionLabel] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -155,6 +156,7 @@ function PlatformAssistantWidget() {
     resetTextareaHeight();
     setIsLoading(true);
     setStreamHasStarted(false);
+    setReflectionLabel("Préparation de la réponse…");
 
     let streamedText = "";
 
@@ -174,6 +176,7 @@ function PlatformAssistantWidget() {
     const appendPendingAssistant = (delta: string) => {
       if (!delta) return;
       streamedText += delta;
+      setReflectionLabel(null);
       setStreamHasStarted(true);
       updatePendingAssistant(streamedText, true);
     };
@@ -222,6 +225,7 @@ function PlatformAssistantWidget() {
         writeConversationId(data?.conversation_id);
         writeMemoryToken(data?.memory_token);
         streamedText = String(data?.answer || ASSISTANT_FALLBACK);
+        setReflectionLabel(null);
         setStreamHasStarted(Boolean(streamedText));
         updatePendingAssistant(streamedText, false);
         return;
@@ -263,14 +267,24 @@ function PlatformAssistantWidget() {
           writeMemoryToken(payload?.memory_token);
         }
 
-        if (eventName === "delta") {
+        if (eventName === "status") {
+          const phase = String(payload?.phase || "").trim().toLowerCase();
+          const label = String(payload?.label || "").trim();
+          if (phase === "working" && label) {
+            setReflectionLabel(label);
+          } else if (phase === "answering") {
+            setReflectionLabel(null);
+          }
+        } else if (eventName === "delta") {
           appendPendingAssistant(String(payload?.text || ""));
         } else if (eventName === "replace") {
           streamedText = String(payload?.text || ASSISTANT_FALLBACK);
+          setReflectionLabel(null);
           setStreamHasStarted(Boolean(streamedText));
           updatePendingAssistant(streamedText, true);
         } else if (eventName === "done") {
           streamDone = true;
+          setReflectionLabel(null);
           updatePendingAssistant(streamedText || ASSISTANT_FALLBACK, false);
         } else if (eventName === "error") {
           throw new Error(String(payload?.error || "assistant_stream_error"));
@@ -304,6 +318,7 @@ function PlatformAssistantWidget() {
     } catch {
       updatePendingAssistant(streamedText.trim() || ASSISTANT_FALLBACK, false);
     } finally {
+      setReflectionLabel(null);
       setIsLoading(false);
       setStreamHasStarted(false);
     }
@@ -364,7 +379,7 @@ function PlatformAssistantWidget() {
             {isLoading && !streamHasStarted ? (
               <div className="flex justify-start">
                 <p className="rounded-2xl rounded-tl-sm bg-neutral-100 px-3.5 py-2.5 text-sm italic text-neutral-400">
-                  RAZAFI écrit…
+                  {reflectionLabel || "Préparation de la réponse…"}
                 </p>
               </div>
             ) : null}
