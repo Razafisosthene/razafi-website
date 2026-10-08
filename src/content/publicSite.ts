@@ -74,6 +74,14 @@ export const FAQ_ITEMS = [
     a: "Avec la commission, RAZAFI prélève un pourcentage sur vos ventes. Avec l’abonnement, vous payez un montant fixe chaque mois pour votre zone WiFi.",
   },
   {
+    q: "Comment suivre la consommation Internet de ma zone WiFi ?",
+    a: "Depuis l’Admin RAZAFI, consultez la consommation WAN par cycle, l’historique quotidien, la répartition entre clients authentifiés, accès gratuit et trafic non attribué, ainsi que les projections et alertes par paliers de 500 GB. Le suivi dépend des relevés disponibles pour chaque zone.",
+  },
+  {
+    q: "Comment fonctionne la protection intelligente des forfaits illimités ?",
+    a: "Lorsqu’elle est activée pour une zone WiFi et que les relevés permettent une décision fiable, RAZAFI protège le budget et la réserve configurés. Selon le niveau de protection, certaines durées de forfaits standards illimités peuvent disparaître ; les forfaits personnalisés illimités peuvent avoir une durée maximale réduite, un supplément tarifaire de 15 % ou 35 %, ou devenir temporairement indisponibles. Leur vitesse reste plafonnée par la configuration du propriétaire ; la protection ne garantit pas une réduction automatique supplémentaire du débit.",
+  },
+  {
     q: "Puis-je gérer plusieurs zones WiFi ?",
     a: "Oui. Un même compte propriétaire peut gérer plusieurs zones WiFi.",
   },
